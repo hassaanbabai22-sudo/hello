@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Store Policies - NexusScent</title>
+    <link href="templatemo-nexus-style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { background:#080808; color:#e8e0d0; font-family:'Montserrat',sans-serif; }
+        .whatsapp-float { position:fixed; width:60px; height:60px; bottom:20px; left:20px; background-color:#25D366; color:#FFF; border-radius:50px; text-align:center; font-size:30px; box-shadow:2px 2px 3px #999; z-index:100; display:flex; align-items:center; justify-content:center; text-decoration:none; }
+        .page-wrap { max-width:860px; margin:0 auto; padding:120px 24px 80px; }
+        .page-eyebrow { font-size:0.68rem; font-weight:700; letter-spacing:5px; text-transform:uppercase; color:#00ffcc; margin-bottom:14px; display:flex; align-items:center; gap:14px; }
+        .page-eyebrow::before,.page-eyebrow::after { content:''; width:36px; height:1px; background:linear-gradient(90deg,transparent,#00ffcc); }
+        .page-eyebrow::after { transform:scaleX(-1); }
+        .page-title { font-family:'Cormorant Garamond',serif; font-size:clamp(2.2rem,5vw,3.8rem); font-weight:300; color:#fff; margin-bottom:14px; }
+        .page-title span { color:#00ffcc; font-style:italic; }
+        .page-lead { color:#555; font-size:0.88rem; line-height:1.8; margin-bottom:50px; }
+        /* Sidebar nav */
+        .policies-layout { display:grid; grid-template-columns:200px 1fr; gap:40px; align-items:start; }
+        .policies-nav { position:sticky; top:100px; }
+        .policies-nav a { display:block; color:#444; font-size:0.8rem; padding:8px 14px; border-radius:8px; text-decoration:none; transition:0.2s; border-left:2px solid transparent; margin-bottom:4px; }
+        .policies-nav a:hover,.policies-nav a.active { color:#00ffcc; border-left-color:#00ffcc; background:rgba(0,255,204,0.04); }
+        .policy-block { margin-bottom:48px; scroll-margin-top:100px; }
+        .policy-block h2 { font-family:'Cormorant Garamond',serif; font-size:1.7rem; font-weight:300; color:#fff; margin-bottom:14px; padding-bottom:12px; border-bottom:1px solid #111; }
+        .policy-block h2 span { color:#00ffcc; font-style:italic; }
+        .policy-block h3 { color:#fff; font-size:0.88rem; font-weight:600; margin:20px 0 8px; }
+        .policy-block p { color:#555; font-size:0.84rem; line-height:1.9; margin-bottom:12px; }
+        .policy-block ul { padding-left:0; list-style:none; margin-bottom:12px; }
+        .policy-block ul li { color:#555; font-size:0.84rem; line-height:1.8; padding:5px 0; display:flex; gap:10px; }
+        .policy-block ul li::before { content:'—'; color:#00ffcc33; flex-shrink:0; }
+        .updated-tag { display:inline-block; background:#111; border:1px solid #1a1a1a; color:#444; font-size:0.72rem; padding:4px 10px; border-radius:6px; margin-bottom:40px; }
+        .footer-strip { background:#080808; border-top:1px solid #111; padding:24px 40px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-top:60px; }
+        .footer-strip p { color:#2a2a2a; font-size:0.78rem; }
+        .footer-strip p span { color:#00ffcc; }
+        .footer-strip-links { display:flex; gap:18px; }
+        .footer-strip-links a { color:#2a2a2a; font-size:0.78rem; text-decoration:none; transition:color 0.2s; }
+        .footer-strip-links a:hover { color:#00ffcc; }
+        @media(max-width:700px){ .policies-layout{grid-template-columns:1fr;} .policies-nav{display:none;} }
+    </style>
+</head>
+<body>
+<a href="https://wa.me/923098741371" class="whatsapp-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
+<nav>
+    <div class="nav-container">
+        <a href="index.html" class="logo">Nexus<span>Scent</span></a>
+        <ul class="nav-links">
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="gallery.html">Perfume Gallery</a></li>
+            <li><a href="track.html">Track Order</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="page-wrap">
+    <div class="page-eyebrow">Legal</div>
+    <h1 class="page-title">Store <span>Policies</span></h1>
+    <p class="page-lead">Please read our policies carefully. By placing an order with NexusScent, you agree to the terms outlined below.</p>
+    <div class="updated-tag">Last updated: January 2025</div>
+
+    <div class="policies-layout">
+        <nav class="policies-nav">
+            <a href="#privacy" class="active">Privacy Policy</a>
+            <a href="#terms">Terms of Service</a>
+            <a href="#shipping-pol">Shipping Policy</a>
+            <a href="#returns-pol">Returns Policy</a>
+            <a href="#payments">Payments</a>
+        </nav>
+
+        <div>
+            <div class="policy-block" id="privacy">
+                <h2>Privacy <span>Policy</span></h2>
+                <p>NexusScent ("we", "our", "us") is committed to protecting your personal information. This policy explains how we collect, use, and safeguard your data.</p>
+                <h3>Information We Collect</h3>
+                <ul>
+                    <li>Name, phone number, and delivery address (provided when placing an order)</li>
+                    <li>Email address (if provided for newsletter subscription)</li>
+                    <li>Order history and communication records via WhatsApp</li>
+                </ul>
+                <h3>How We Use Your Information</h3>
+                <ul>
+                    <li>To process and fulfil your orders</li>
+                    <li>To communicate order updates and tracking information</li>
+                    <li>To send promotional offers (only if you have subscribed)</li>
+                    <li>To improve our products and services</li>
+                </ul>
+                <h3>Data Sharing</h3>
+                <p>We do not sell or share your personal information with third parties, except courier companies required to deliver your order.</p>
+                <h3>Your Rights</h3>
+                <p>You may request to view, update, or delete your personal data at any time by contacting us on WhatsApp at +92 309 874 1371.</p>
+            </div>
+
+            <div class="policy-block" id="terms">
+                <h2>Terms of <span>Service</span></h2>
+                <p>By accessing our website or placing an order, you agree to these terms and conditions.</p>
+                <h3>Products</h3>
+                <ul>
+                    <li>All products listed are subject to availability</li>
+                    <li>Product images are for illustrative purposes — actual packaging may vary slightly</li>
+                    <li>We reserve the right to discontinue any product without notice</li>
+                </ul>
+                <h3>Orders</h3>
+                <ul>
+                    <li>Orders are confirmed only after WhatsApp acknowledgement from our team</li>
+                    <li>We reserve the right to cancel any order in case of pricing errors or stock issues</li>
+                    <li>Bulk or reseller orders are subject to separate terms — contact us directly</li>
+                </ul>
+                <h3>Pricing</h3>
+                <p>All prices are listed in Pakistani Rupees (PKR) and are subject to change without notice. Prices at the time of order confirmation are final.</p>
+            </div>
+
+            <div class="policy-block" id="shipping-pol">
+                <h2>Shipping <span>Policy</span></h2>
+                <p>We deliver nationwide across Pakistan via our trusted courier partners.</p>
+                <ul>
+                    <li>Standard delivery: 2–5 business days</li>
+                    <li>Quetta delivery: 1–2 business days</li>
+                    <li>We are not responsible for delays caused by couriers, public holidays, or natural events</li>
+                    <li>All items are carefully packaged — if damage occurs in transit, contact us within 48 hours</li>
+                </ul>
+                <p>For full details, see our <a href="shipping.html" style="color:#00ffcc;">Shipping Information</a> page.</p>
+            </div>
+
+            <div class="policy-block" id="returns-pol">
+                <h2>Returns & <span>Exchange Policy</span></h2>
+                <p>We accept returns and exchanges only in the following circumstances:</p>
+                <ul>
+                    <li>Damaged or broken bottle received</li>
+                    <li>Wrong product delivered</li>
+                    <li>Leaking or defective packaging</li>
+                </ul>
+                <p>Return requests must be made within 48 hours of delivery with photo/video evidence. We do not accept returns for change of mind or opened/used products.</p>
+                <p>For full details, see our <a href="returns.html" style="color:#00ffcc;">Returns & Exchange</a> page.</p>
+            </div>
+
+            <div class="policy-block" id="payments">
+                <h2>Payment <span>Terms</span></h2>
+                <p>We currently accept the following payment methods:</p>
+                <ul>
+                    <li>Cash on Delivery (COD) — available nationwide</li>
+                    <li>EasyPaisa — mobile wallet transfer</li>
+                    <li>JazzCash — mobile wallet transfer</li>
+                    <li>Bank Transfer — details provided on confirmation</li>
+                </ul>
+                <p>Payment via EasyPaisa, JazzCash, or bank transfer must be completed before dispatch. COD orders are payable upon delivery. We do not accept cheques.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="footer-strip">
+    <p>&copy; 2025 <span>NexusScent</span>. All rights reserved.</p>
+    <div class="footer-strip-links">
+        <a href="index.html">Home</a>
+        <a href="gallery.html">Shop</a>
+        <a href="faq.html">FAQ</a>
+        <a href="contact.html">Contact</a>
+    </div>
+</div>
+<script>
+// Highlight nav on scroll
+const sections = document.querySelectorAll('.policy-block');
+const links = document.querySelectorAll('.policies-nav a');
+window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => { if(window.scrollY >= s.offsetTop - 120) current = s.id; });
+    links.forEach(l => { l.classList.toggle('active', l.getAttribute('href') === '#'+current); });
+});
+</script>
+</body>
+</html>

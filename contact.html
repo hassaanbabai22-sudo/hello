@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - NexusScent</title>
+    <link href="templatemo-nexus-style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --gold:    #c9a84c;
+            --gold-lt: #e8c97a;
+            --teal:    #00ffcc;
+            --bg:      #080808;
+            --bg2:     #0d0d0d;
+            --bg3:     #111111;
+            --border:  #1c1c1c;
+            --text:    #e8e0d0;
+            --muted:   #5a5248;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Montserrat', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ── Ambient background ── */
+        body::before {
+            content: '';
+            position: fixed; inset: 0; z-index: 0;
+            background:
+                radial-gradient(ellipse 60% 50% at 15% 20%, rgba(201,168,76,0.06) 0%, transparent 70%),
+                radial-gradient(ellipse 50% 60% at 85% 75%, rgba(0,255,204,0.04) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        /* ── Nav ── */
+        nav { position: relative; z-index: 100; }
+
+        /* ── PAGE LAYOUT ── */
+        .contact-page {
+            position: relative; z-index: 1;
+            padding: 110px 24px 80px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        /* ── HERO HEADER ── */
+        .contact-hero {
+            text-align: center;
+            margin-bottom: 70px;
+        }
+        .contact-hero .eyebrow {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 18px;
+            display: flex; align-items: center; justify-content: center; gap: 14px;
+        }
+        .contact-hero .eyebrow::before,
+        .contact-hero .eyebrow::after {
+            content: '';
+            width: 50px; height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold));
+        }
+        .contact-hero .eyebrow::after { transform: scaleX(-1); }
+
+        .contact-hero h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.8rem, 7vw, 5.2rem);
+            font-weight: 300;
+            color: #fff;
+            line-height: 1.05;
+            margin-bottom: 18px;
+            letter-spacing: -1px;
+        }
+        .contact-hero h1 em {
+            font-style: italic;
+            color: var(--gold);
+        }
+        .contact-hero p {
+            color: var(--muted);
+            font-size: 0.92rem;
+            font-weight: 300;
+            letter-spacing: 0.5px;
+            max-width: 440px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        /* ── MAIN GRID ── */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.1fr;
+            gap: 28px;
+            align-items: start;
+        }
+
+        /* ── LEFT PANEL ── */
+        .left-panel { display: flex; flex-direction: column; gap: 18px; }
+
+        /* Info card */
+        .info-card {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 32px 28px;
+            position: relative;
+            overflow: hidden;
+        }
+        .info-card::before {
+            content: '';
+            position: absolute; top: 0; left: 0; right: 0; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+        }
+
+        .info-card .section-label {
+            font-size: 0.65rem; font-weight: 700; letter-spacing: 4px;
+            text-transform: uppercase; color: var(--gold);
+            margin-bottom: 22px; display: flex; align-items: center; gap: 10px;
+        }
+        .info-card .section-label::after {
+            content: ''; flex: 1; height: 1px;
+            background: linear-gradient(90deg, var(--border), transparent);
+        }
+
+        .contact-info-item {
+            display: flex; align-items: flex-start; gap: 16px;
+            margin-bottom: 22px;
+        }
+        .contact-info-item:last-child { margin-bottom: 0; }
+
+        .ci-icon {
+            width: 42px; height: 42px; border-radius: 12px;
+            background: var(--bg2); border: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: center;
+            color: var(--gold); font-size: 0.95rem; flex-shrink: 0;
+            transition: 0.3s;
+        }
+        .contact-info-item:hover .ci-icon {
+            background: var(--gold);
+            color: #111;
+            border-color: var(--gold);
+        }
+        .ci-text .ci-label { font-size: 0.7rem; color: var(--muted); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 4px; }
+        .ci-text .ci-val   { font-size: 0.92rem; color: var(--text); font-weight: 500; }
+        .ci-text a { color: var(--text); text-decoration: none; transition: color 0.2s; }
+        .ci-text a:hover { color: var(--gold); }
+
+        /* Hours card */
+        .hours-card {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 26px 28px;
+        }
+        .hours-row { display: flex; justify-content: space-between; align-items: center; padding: 9px 0; border-bottom: 1px solid var(--border); }
+        .hours-row:last-child { border-bottom: none; }
+        .hours-row .day  { font-size: 0.83rem; color: var(--muted); }
+        .hours-row .time { font-size: 0.83rem; color: var(--text); font-weight: 500; }
+        .hours-row.today .day  { color: var(--gold); }
+        .hours-row.today .time { color: var(--gold); }
+        .open-dot { width: 7px; height: 7px; border-radius: 50%; background: #00ffcc; display: inline-block; margin-right: 6px; animation: blink 1.8s infinite; }
+        @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+        /* Social card */
+        .social-card {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 24px 28px;
+        }
+        .social-grid { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+        .social-btn {
+            display: flex; align-items: center; gap: 8px;
+            padding: 9px 16px; border-radius: 10px;
+            font-size: 0.82rem; font-weight: 600; text-decoration: none;
+            border: 1px solid var(--border); background: var(--bg2);
+            color: var(--muted); transition: 0.25s; cursor: pointer;
+        }
+        .social-btn:hover { transform: translateY(-2px); }
+        .social-btn.wa  { border-color: #25D36633; }
+        .social-btn.wa:hover  { background: #25D36622; color: #25D366; border-color: #25D366; }
+        .social-btn.ig  { border-color: #E1306C33; }
+        .social-btn.ig:hover  { background: #E1306C22; color: #E1306C; border-color: #E1306C; }
+        .social-btn.fb  { border-color: #1877F233; }
+        .social-btn.fb:hover  { background: #1877F222; color: #1877F2; border-color: #1877F2; }
+
+        /* ── RIGHT PANEL — FORM ── */
+        .form-card {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 38px 34px;
+            position: relative;
+            overflow: hidden;
+        }
+        .form-card::after {
+            content: '';
+            position: absolute; bottom: 0; right: 0;
+            width: 220px; height: 220px;
+            background: radial-gradient(circle, rgba(201,168,76,0.06) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .form-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.9rem; font-weight: 400; color: #fff;
+            margin-bottom: 6px; line-height: 1.2;
+        }
+        .form-title span { color: var(--gold); font-style: italic; }
+        .form-subtitle { color: var(--muted); font-size: 0.83rem; margin-bottom: 28px; line-height: 1.7; }
+
+        /* Topic chips */
+        .topic-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+        .chip {
+            padding: 7px 14px; border-radius: 20px;
+            border: 1px solid var(--border); background: var(--bg2);
+            color: var(--muted); font-size: 0.78rem; cursor: pointer;
+            transition: 0.2s; user-select: none;
+        }
+        .chip:hover  { border-color: var(--gold); color: var(--gold); }
+        .chip.active { border-color: var(--gold); color: #111; background: var(--gold); }
+
+        /* Form fields */
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+        .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+        .form-group label { font-size: 0.7rem; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 12px 16px;
+            border-radius: 11px;
+            font-size: 0.9rem;
+            font-family: 'Montserrat', sans-serif;
+            outline: none;
+            transition: border 0.25s, box-shadow 0.25s;
+            width: 100%;
+        }
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(201,168,76,0.08);
+        }
+        .form-group input::placeholder,
+        .form-group textarea::placeholder { color: #333; }
+        .form-group select option { background: #111; }
+        .form-group textarea { resize: none; height: 110px; line-height: 1.6; }
+
+        /* Submit */
+        .submit-row { display: flex; gap: 12px; align-items: center; margin-top: 6px; }
+        .btn-whatsapp {
+            flex: 1;
+            background: linear-gradient(135deg, #25D366, #1aaa52);
+            color: #fff; border: none;
+            padding: 14px 20px; border-radius: 12px;
+            font-size: 0.93rem; font-weight: 700;
+            cursor: pointer; transition: 0.25s;
+            display: flex; align-items: center; justify-content: center; gap: 9px;
+            font-family: 'Montserrat', sans-serif;
+            box-shadow: 0 4px 20px rgba(37,211,102,0.2);
+        }
+        .btn-whatsapp:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(37,211,102,0.35);
+        }
+        .btn-whatsapp:active { transform: translateY(0); }
+
+        .btn-call {
+            background: var(--bg2); color: var(--gold);
+            border: 1px solid var(--gold); border-radius: 12px;
+            padding: 14px 18px; cursor: pointer; font-size: 1rem;
+            transition: 0.25s; text-decoration: none;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .btn-call:hover { background: var(--gold); color: #111; }
+
+        .form-note {
+            text-align: center; color: var(--muted);
+            font-size: 0.75rem; margin-top: 14px; line-height: 1.6;
+        }
+        .form-note i { color: #25D366; margin-right: 4px; }
+
+        /* ── SUCCESS TOAST ── */
+        #toast {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px);
+            background: #111; border: 1px solid var(--gold);
+            color: var(--text); padding: 14px 24px;
+            border-radius: 12px; font-size: 0.88rem;
+            z-index: 9999; transition: transform 0.4s cubic-bezier(.175,.885,.32,1.275);
+            display: flex; align-items: center; gap: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+            white-space: nowrap;
+        }
+        #toast.show { transform: translateX(-50%) translateY(0); }
+        #toast i { color: #25D366; font-size: 1.1rem; }
+
+        /* ── WHATSAPP FLOAT ── */
+        .whatsapp-float {
+            position: fixed; width: 60px; height: 60px;
+            bottom: 20px; left: 20px;
+            background: #25D366; color: #fff;
+            border-radius: 50%; text-align: center;
+            font-size: 30px; box-shadow: 0 4px 20px rgba(37,211,102,0.4);
+            z-index: 100; text-decoration: none;
+            display: flex; align-items: center; justify-content: center;
+            transition: transform 0.2s;
+        }
+        .whatsapp-float:hover { transform: scale(1.1); }
+
+        /* ── DIVIDER ── */
+        .scent-divider {
+            text-align: center; margin: 60px 0 50px;
+            display: flex; align-items: center; gap: 20px; color: var(--muted);
+            font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase;
+        }
+        .scent-divider::before, .scent-divider::after {
+            content: ''; flex: 1; height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border), transparent);
+        }
+
+        /* ── FAQ SECTION ── */
+        .faq-section h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem; font-weight: 300; color: #fff;
+            text-align: center; margin-bottom: 30px;
+        }
+        .faq-section h2 span { color: var(--gold); font-style: italic; }
+
+        .faq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        .faq-item {
+            background: var(--bg3); border: 1px solid var(--border);
+            border-radius: 14px; padding: 20px 22px; cursor: pointer;
+            transition: border 0.2s;
+        }
+        .faq-item:hover { border-color: var(--gold); }
+        .faq-q {
+            font-size: 0.88rem; font-weight: 600; color: var(--text);
+            display: flex; justify-content: space-between; align-items: center; gap: 12px;
+        }
+        .faq-q i { color: var(--gold); font-size: 0.8rem; flex-shrink: 0; transition: transform 0.3s; }
+        .faq-item.open .faq-q i { transform: rotate(45deg); }
+        .faq-a {
+            font-size: 0.82rem; color: var(--muted); line-height: 1.7;
+            max-height: 0; overflow: hidden; transition: max-height 0.3s ease, margin-top 0.3s;
+        }
+        .faq-item.open .faq-a { max-height: 200px; margin-top: 12px; }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 800px) {
+            .contact-grid { grid-template-columns: 1fr; }
+            .faq-grid     { grid-template-columns: 1fr; }
+            .form-row     { grid-template-columns: 1fr; }
+            .form-card    { padding: 28px 22px; }
+        }
+        @media (max-width: 480px) {
+            .info-card, .hours-card, .social-card { padding: 22px 18px; }
+            .submit-row { flex-direction: column; }
+            .btn-call { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+<a href="https://wa.me/923098741371" class="whatsapp-float" target="_blank">
+    <i class="fab fa-whatsapp"></i>
+</a>
+
+<nav>
+    <div class="nav-container">
+        <a href="index.html" class="logo">Nexus<span>Scent</span></a>
+        <ul class="nav-links">
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="gallery.html">Perfume Gallery</a></li>
+            <li><a href="stats.html">Market Stats</a></li>
+            <li><a href="track.html">Track Order</a></li>
+            <li><a href="contact.html" class="active">Contact</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="contact-page">
+
+    <!-- HERO -->
+    <div class="contact-hero">
+        <div class="eyebrow">Get In Touch</div>
+        <h1>We'd Love to<br><em>Hear From You</em></h1>
+        <p>Whether it's a question about a fragrance, an order inquiry, or just a love for scents — we're here for you.</p>
+    </div>
+
+    <!-- MAIN GRID -->
+    <div class="contact-grid">
+
+        <!-- LEFT -->
+        <div class="left-panel">
+
+            <!-- Contact Info -->
+            <div class="info-card">
+                <div class="section-label">Reach Us</div>
+
+                <div class="contact-info-item">
+                    <div class="ci-icon"><i class="fab fa-whatsapp"></i></div>
+                    <div class="ci-text">
+                        <div class="ci-label">WhatsApp Business</div>
+                        <div class="ci-val"><a href="https://wa.me/923098741371" target="_blank">+92 309 874 1371</a></div>
+                    </div>
+                </div>
+
+                <div class="contact-info-item">
+                    <div class="ci-icon"><i class="fas fa-phone-alt"></i></div>
+                    <div class="ci-text">
+                        <div class="ci-label">Phone / Call</div>
+                        <div class="ci-val"><a href="tel:+923098741371">+92 309 874 1371</a></div>
+                    </div>
+                </div>
+
+                <div class="contact-info-item">
+                    <div class="ci-icon"><i class="fas fa-map-marker-alt"></i></div>
+                    <div class="ci-text">
+                        <div class="ci-label">Location</div>
+                        <div class="ci-val">Karachi, Pakistan 🇵🇰</div>
+                    </div>
+                </div>
+
+                <div class="contact-info-item">
+                    <div class="ci-icon"><i class="fas fa-shipping-fast"></i></div>
+                    <div class="ci-text">
+                        <div class="ci-label">Delivery</div>
+                        <div class="ci-val">Nationwide • 2–5 Business Days</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hours -->
+            <div class="hours-card">
+                <div class="section-label" style="font-size:0.65rem;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;display:flex;align-items:center;gap:10px;">
+                    Business Hours
+                    <span style="flex:1;height:1px;background:linear-gradient(90deg,var(--border),transparent);display:block;"></span>
+                </div>
+                <div class="hours-row" id="hr-mon"><span class="day">Monday – Friday</span><span class="time">10:00 AM – 9:00 PM</span></div>
+                <div class="hours-row" id="hr-sat"><span class="day">Saturday</span><span class="time">11:00 AM – 8:00 PM</span></div>
+                <div class="hours-row" id="hr-sun"><span class="day">Sunday</span><span class="time">12:00 PM – 6:00 PM</span></div>
+                <div style="margin-top:14px;font-size:0.78rem;color:var(--muted);">
+                    <span class="open-dot"></span>Usually responds within <strong style="color:var(--text)">1–2 hours</strong> on WhatsApp
+                </div>
+            </div>
+
+            <!-- Social -->
+            <div class="social-card">
+                <div class="section-label" style="font-size:0.65rem;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:10px;">
+                    Follow Us
+                    <span style="flex:1;height:1px;background:linear-gradient(90deg,var(--border),transparent);display:block;"></span>
+                </div>
+                <div class="social-grid">
+                    <a href="https://wa.me/923098741371" target="_blank" class="social-btn wa">
+                        <i class="fab fa-whatsapp"></i> WhatsApp
+                    </a>
+                    <a href="#" class="social-btn ig">
+                        <i class="fab fa-instagram"></i> Instagram
+                    </a>
+                    <a href="https://www.facebook.com/profile.php?id=61563976653948" target="_blank" class="social-btn fb">
+                        <i class="fab fa-facebook-f"></i> Facebook
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- RIGHT — FORM -->
+        <div class="form-card">
+            <div class="form-title">Send Us a <span>Message</span></div>
+            <div class="form-subtitle">Fill in the form and we'll send it directly to our WhatsApp — you'll get a reply fast.</div>
+
+            <!-- Topic chips -->
+            <div class="topic-chips" id="topic-chips">
+                <div class="chip active" data-topic="General Inquiry">💬 General Inquiry</div>
+                <div class="chip" data-topic="Product Question">🌸 Product Question</div>
+                <div class="chip" data-topic="Order Issue">📦 Order Issue</div>
+                <div class="chip" data-topic="Custom Order">✨ Custom Order</div>
+                <div class="chip" data-topic="Bulk / Wholesale">🏪 Bulk / Wholesale</div>
+                <div class="chip" data-topic="Feedback">⭐ Feedback</div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Your Name</label>
+                    <input type="text" id="f-name" placeholder="e.g. Ahmed Khan">
+                </div>
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" id="f-phone" placeholder="+92 3XX XXXXXXX">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Perfume of Interest <span style="color:var(--muted);font-size:0.65rem;letter-spacing:1px;">(optional)</span></label>
+                <select id="f-perfume">
+                    <option value="">— Select a fragrance —</option>
+                    <option>Sapphire – Ahmed Al Maghribi</option>
+                    <option>Deep Blue</option>
+                    <option>Deep Black</option>
+                    <option>Ameer Al Oud</option>
+                    <option>Marj</option>
+                    <option>Oud Roses</option>
+                    <option>Bin Sheikh</option>
+                    <option>Ameer Ahmed Al Maghribi</option>
+                    <option>Tif Tif EDP</option>
+                    <option>Niswah Ahmed Al Maghribi</option>
+                    <option>Thomas Kosmala No.9</option>
+                    <option>Lattafa Ameer Al Oud</option>
+                    <option>Armaf Dubai Chocolate</option>
+                    <option>Reef 33</option>
+                    <option>Lattafa Asad</option>
+                    <option>Blue Oud</option>
+                    <option>Cherry by Ahmed</option>
+                    <option>Lattafa Nebra</option>
+                    <option>Afnan 9pm</option>
+                    <option>Lattafa Atlas</option>
+                    <option>Other / Not Listed</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Your Message</label>
+                <textarea id="f-message" placeholder="Tell us what's on your mind — we love hearing from our customers…"></textarea>
+            </div>
+
+            <div class="submit-row">
+                <button class="btn-whatsapp" onclick="sendMessage()">
+                    <i class="fab fa-whatsapp" style="font-size:1.1rem;"></i>
+                    Send via WhatsApp
+                </button>
+                <a href="tel:+923098741371" class="btn-call" title="Call us">
+                    <i class="fas fa-phone-alt"></i>
+                </a>
+            </div>
+
+            <div class="form-note">
+                <i class="fab fa-whatsapp"></i>
+                Your message will open in WhatsApp — just tap Send. We reply within 1–2 hours.
+            </div>
+        </div>
+
+    </div><!-- /grid -->
+
+    <!-- DIVIDER -->
+    <div class="scent-divider">✦ &nbsp; Frequently Asked &nbsp; ✦</div>
+
+    <!-- FAQ -->
+    <div class="faq-section">
+        <h2>Quick <span>Answers</span></h2>
+        <div class="faq-grid">
+            <div class="faq-item" onclick="toggleFaq(this)">
+                <div class="faq-q">Do you deliver all over Pakistan? <i class="fas fa-plus"></i></div>
+                <div class="faq-a">Yes! We deliver nationwide through TCS, Leopards, and M&P. Delivery typically takes 2–5 business days depending on your city.</div>
+            </div>
+            <div class="faq-item" onclick="toggleFaq(this)">
+                <div class="faq-q">Are your perfumes 100% original? <i class="fas fa-plus"></i></div>
+                <div class="faq-a">Absolutely. Every fragrance in our collection is sourced directly and 100% authentic. We take pride in offering only genuine products.</div>
+            </div>
+            <div class="faq-item" onclick="toggleFaq(this)">
+                <div class="faq-q">Can I return or exchange a perfume? <i class="fas fa-plus"></i></div>
+                <div class="faq-a">If you receive a damaged or wrong product, contact us on WhatsApp within 48 hours and we'll arrange an exchange right away.</div>
+            </div>
+            <div class="faq-item" onclick="toggleFaq(this)">
+                <div class="faq-q">Do you offer bulk or wholesale pricing? <i class="fas fa-plus"></i></div>
+                <div class="faq-a">Yes! We offer special pricing for bulk orders. Send us a WhatsApp message with your requirements and we'll get you the best deal.</div>
+            </div>
+            <div class="faq-item" onclick="toggleFaq(this)">
+                <div class="faq-q">How can I track my order? <i class="fas fa-plus"></i></div>
+                <div class="faq-a">Visit our <a href="track.html" style="color:var(--gold)">Track Order</a> page and enter your Order ID. You can also message us on WhatsApp for a real-time update.</div>
+            </div>
+            <div class="faq-item" onclick="toggleFaq(this)">
+                <div class="faq-q">What payment methods do you accept? <i class="fas fa-plus"></i></div>
+                <div class="faq-a">We accept Cash on Delivery (COD), EasyPaisa, JazzCash, and Bank Transfer. Payment details are shared after order confirmation on WhatsApp.</div>
+            </div>
+        </div>
+    </div>
+
+</div><!-- /contact-page -->
+
+<!-- TOAST -->
+<div id="toast"><i class="fas fa-check-circle"></i> Opening WhatsApp…</div>
+
+<script>
+/* ── Topic chips ── */
+document.querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+        document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+    });
+});
+
+function getActiveTopic(){
+    const active = document.querySelector('.chip.active');
+    return active ? active.dataset.topic : 'General Inquiry';
+}
+
+/* ── Business hours highlight ── */
+(function(){
+    const day = new Date().getDay(); // 0=Sun,6=Sat
+    if(day >= 1 && day <= 5) document.getElementById('hr-mon').classList.add('today');
+    else if(day === 6)       document.getElementById('hr-sat').classList.add('today');
+    else                     document.getElementById('hr-sun').classList.add('today');
+})();
+
+/* ── Send via WhatsApp ── */
+function sendMessage(){
+    const name    = document.getElementById('f-name').value.trim();
+    const phone   = document.getElementById('f-phone').value.trim();
+    const perfume = document.getElementById('f-perfume').value;
+    const message = document.getElementById('f-message').value.trim();
+    const topic   = getActiveTopic();
+
+    if(!name)    { shakeField('f-name');    return; }
+    if(!phone)   { shakeField('f-phone');   return; }
+    if(!message) { shakeField('f-message'); return; }
+
+    let msg = "✉️ *New Message — NexusScent*%0A%0A";
+    msg += "📌 *Topic:* " + topic + "%0A";
+    msg += "👤 *Name:* " + name + "%0A";
+    msg += "📞 *Phone:* " + phone + "%0A";
+    if(perfume) msg += "🌸 *Perfume:* " + perfume + "%0A";
+    msg += "%0A💬 *Message:*%0A" + encodeURIComponent(message);
+
+    showToast();
+    setTimeout(() => {
+        window.open("https://wa.me/923098741371?text=" + msg, "_blank");
+    }, 400);
+}
+
+function shakeField(id){
+    const el = document.getElementById(id);
+    el.style.borderColor = '#ff4444';
+    el.style.animation = 'shake 0.4s ease';
+    el.focus();
+    setTimeout(() => { el.style.borderColor = ''; el.style.animation = ''; }, 1500);
+}
+
+function showToast(){
+    const t = document.getElementById('toast');
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+/* ── FAQ toggle ── */
+function toggleFaq(el){
+    const wasOpen = el.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(f => f.classList.remove('open'));
+    if(!wasOpen) el.classList.add('open');
+}
+
+/* ── Shake animation ── */
+const style = document.createElement('style');
+style.textContent = `@keyframes shake {
+    0%,100%{transform:translateX(0)}
+    20%{transform:translateX(-6px)}
+    40%{transform:translateX(6px)}
+    60%{transform:translateX(-4px)}
+    80%{transform:translateX(4px)}
+}`;
+document.head.appendChild(style);
+</script>
+</body>
+</html>

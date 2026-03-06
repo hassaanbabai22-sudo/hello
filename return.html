@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Returns & Exchange - NexusScent</title>
+    <link href="templatemo-nexus-style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { background: #080808; color: #e8e0d0; font-family: 'Montserrat', sans-serif; }
+        .whatsapp-float { position:fixed; width:60px; height:60px; bottom:20px; left:20px; background-color:#25D366; color:#FFF; border-radius:50px; text-align:center; font-size:30px; box-shadow:2px 2px 3px #999; z-index:100; display:flex; align-items:center; justify-content:center; text-decoration:none; }
+        .page-wrap { max-width: 900px; margin: 0 auto; padding: 120px 24px 80px; }
+        .page-eyebrow { font-size:0.68rem; font-weight:700; letter-spacing:5px; text-transform:uppercase; color:#00ffcc; margin-bottom:14px; display:flex; align-items:center; gap:14px; }
+        .page-eyebrow::before,.page-eyebrow::after { content:''; width:36px; height:1px; background:linear-gradient(90deg,transparent,#00ffcc); }
+        .page-eyebrow::after { transform:scaleX(-1); }
+        .page-title { font-family:'Cormorant Garamond',serif; font-size:clamp(2.2rem,5vw,3.8rem); font-weight:300; color:#fff; margin-bottom:14px; }
+        .page-title span { color:#00ffcc; font-style:italic; }
+        .page-lead { color:#555; font-size:0.9rem; line-height:1.8; margin-bottom:50px; max-width:540px; }
+        .steps-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:18px; margin-bottom:50px; }
+        .step-card { background:#111; border:1px solid #1a1a1a; border-radius:16px; padding:26px 24px; position:relative; }
+        .step-card .step-num { width:32px; height:32px; border-radius:50%; border:1px solid #00ffcc44; color:#00ffcc; font-size:0.82rem; font-weight:700; display:flex; align-items:center; justify-content:center; margin-bottom:14px; }
+        .step-card h3 { color:#fff; font-size:0.9rem; font-weight:600; margin-bottom:8px; }
+        .step-card p { color:#555; font-size:0.82rem; line-height:1.7; }
+        .policy-section { margin-bottom:40px; }
+        .policy-section h2 { font-family:'Cormorant Garamond',serif; font-size:1.6rem; font-weight:300; color:#fff; margin-bottom:16px; }
+        .policy-section h2 span { color:#00ffcc; font-style:italic; }
+        .policy-list { list-style:none; padding:0; }
+        .policy-list li { display:flex; gap:12px; align-items:flex-start; padding:12px 0; border-bottom:1px solid #111; color:#555; font-size:0.84rem; line-height:1.7; }
+        .policy-list li:last-child { border-bottom:none; }
+        .policy-list li i { color:#00ffcc; margin-top:3px; flex-shrink:0; }
+        .policy-list li.no i { color:#ff6b6b; }
+        .two-col { display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-bottom:40px; }
+        .pol-box { background:#111; border:1px solid #1a1a1a; border-radius:14px; padding:24px 22px; }
+        .pol-box h3 { color:#fff; font-size:0.88rem; font-weight:600; margin-bottom:14px; display:flex; align-items:center; gap:8px; }
+        .pol-box h3 i { color:#00ffcc; }
+        .pol-box h3.red i { color:#ff6b6b; }
+        .note-box { background:#0d0d0d; border:1px solid #1a1a1a; border-left:3px solid #00ffcc; border-radius:0 12px 12px 0; padding:16px 20px; margin-bottom:30px; }
+        .note-box p { color:#666; font-size:0.84rem; line-height:1.7; }
+        .note-box strong { color:#00ffcc; }
+        .cta-box { background:linear-gradient(135deg,rgba(0,255,204,0.06),rgba(0,255,204,0.02)); border:1px solid rgba(0,255,204,0.2); border-radius:16px; padding:32px 28px; text-align:center; }
+        .cta-box h3 { color:#fff; font-family:'Cormorant Garamond',serif; font-size:1.5rem; font-weight:300; margin-bottom:8px; }
+        .cta-box p { color:#555; font-size:0.84rem; margin-bottom:20px; }
+        .cta-box a { background:#25D366; color:#fff; padding:11px 28px; border-radius:30px; text-decoration:none; font-size:0.85rem; font-weight:700; display:inline-flex; align-items:center; gap:8px; transition:0.2s; }
+        .cta-box a:hover { background:#1ebe5d; transform:translateY(-2px); }
+        .footer-strip { background:#080808; border-top:1px solid #111; padding:24px 40px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-top:60px; }
+        .footer-strip p { color:#2a2a2a; font-size:0.78rem; }
+        .footer-strip p span { color:#00ffcc; }
+        .footer-strip-links { display:flex; gap:18px; }
+        .footer-strip-links a { color:#2a2a2a; font-size:0.78rem; text-decoration:none; transition:color 0.2s; }
+        .footer-strip-links a:hover { color:#00ffcc; }
+        @media(max-width:600px){ .two-col { grid-template-columns:1fr; } }
+    </style>
+</head>
+<body>
+<a href="https://wa.me/923098741371" class="whatsapp-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
+<nav>
+    <div class="nav-container">
+        <a href="index.html" class="logo">Nexus<span>Scent</span></a>
+        <ul class="nav-links">
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="gallery.html">Perfume Gallery</a></li>
+            <li><a href="track.html">Track Order</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="page-wrap">
+    <div class="page-eyebrow">Customer Care</div>
+    <h1 class="page-title">Returns & <span>Exchange</span></h1>
+    <p class="page-lead">Your satisfaction is our priority. If something isn't right with your order, we'll make it right — fast and hassle-free.</p>
+
+    <h2 style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:300;color:#fff;margin-bottom:20px;">How to <span style="color:#00ffcc;font-style:italic;">Return or Exchange</span></h2>
+    <div class="steps-grid">
+        <div class="step-card"><div class="step-num">1</div><h3>Contact Us Within 48 Hours</h3><p>Message us on WhatsApp within 48 hours of receiving your order with your Order ID and photos of the issue.</p></div>
+        <div class="step-card"><div class="step-num">2</div><h3>We Review Your Request</h3><p>Our team will review your request and confirm eligibility for return or exchange within a few hours.</p></div>
+        <div class="step-card"><div class="step-num">3</div><h3>Send Back the Product</h3><p>We'll arrange pickup or guide you to ship the product back in its original packaging.</p></div>
+        <div class="step-card"><div class="step-num">4</div><h3>Replacement Dispatched</h3><p>Once received and verified, your replacement or refund is processed within 2–3 business days.</p></div>
+    </div>
+
+    <div class="two-col">
+        <div class="pol-box">
+            <h3><i class="fas fa-check-circle"></i> Eligible for Return</h3>
+            <ul class="policy-list">
+                <li><i class="fas fa-check"></i> Damaged or broken bottle received</li>
+                <li><i class="fas fa-check"></i> Wrong product delivered</li>
+                <li><i class="fas fa-check"></i> Leaking or defective packaging</li>
+                <li><i class="fas fa-check"></i> Missing items from order</li>
+            </ul>
+        </div>
+        <div class="pol-box">
+            <h3 class="red"><i class="fas fa-times-circle"></i> Not Eligible</h3>
+            <ul class="policy-list">
+                <li class="no"><i class="fas fa-times"></i> Change of mind after delivery</li>
+                <li class="no"><i class="fas fa-times"></i> Opened and used perfume</li>
+                <li class="no"><i class="fas fa-times"></i> Request after 48 hours of delivery</li>
+                <li class="no"><i class="fas fa-times"></i> Damage caused after delivery</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="note-box">
+        <p><strong>Important:</strong> Please take photos or a video when unboxing your order. This helps us process your return request much faster and protects you in case of any delivery damage.</p>
+    </div>
+    <div class="note-box">
+        <p><strong>Refunds:</strong> Refunds are processed via EasyPaisa, JazzCash, or bank transfer. Cash on Delivery orders will receive a store credit or replacement product.</p>
+    </div>
+
+    <div class="cta-box">
+        <h3>Need to raise a return request?</h3>
+        <p>Message us on WhatsApp with your Order ID and photos. We'll handle the rest.</p>
+        <a href="https://wa.me/923098741371?text=Hi! I'd like to request a return for Order ID: " target="_blank"><i class="fab fa-whatsapp"></i> Start Return Request</a>
+    </div>
+</div>
+
+<div class="footer-strip">
+    <p>&copy; 2025 <span>NexusScent</span>. All rights reserved.</p>
+    <div class="footer-strip-links">
+        <a href="index.html">Home</a>
+        <a href="gallery.html">Shop</a>
+        <a href="shipping.html">Shipping</a>
+        <a href="policies.html">Policies</a>
+        <a href="contact.html">Contact</a>
+    </div>
+</div>
+</body>
+</html>

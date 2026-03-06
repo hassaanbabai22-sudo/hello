@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Market Stats - NexusScent</title>
+    <link href="templatemo-nexus-style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --teal:   #00ffcc;
+            --gold:   #c9a84c;
+            --bg:     #080808;
+            --bg2:    #0d0d0d;
+            --bg3:    #111111;
+            --border: #1a1a1a;
+            --text:   #e8e0d0;
+            --muted:  #4a4a4a;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed; inset: 0; z-index: 0;
+            background:
+                radial-gradient(ellipse 60% 50% at 20% 20%, rgba(0,255,204,0.04) 0%, transparent 65%),
+                radial-gradient(ellipse 50% 60% at 80% 80%, rgba(201,168,76,0.04) 0%, transparent 65%);
+            pointer-events: none;
+        }
+
+        /* ── WhatsApp ── */
+        .whatsapp-float { position:fixed; width:60px; height:60px; bottom:20px; left:20px; background:#25D366; color:#fff; border-radius:50%; font-size:28px; box-shadow:0 4px 20px rgba(37,211,102,0.4); z-index:100; text-decoration:none; display:flex; align-items:center; justify-content:center; transition:transform 0.2s; }
+        .whatsapp-float:hover { transform:scale(1.1); }
+
+        /* ════════════════════════════════
+           HERO
+        ════════════════════════════════ */
+        .stats-hero {
+            position: relative; z-index: 1;
+            padding: 140px 24px 80px;
+            text-align: center;
+            overflow: hidden;
+        }
+        .stats-hero::before {
+            content: '';
+            position: absolute; inset: 0;
+            background-image:
+                linear-gradient(rgba(0,255,204,0.025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,255,204,0.025) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridDrift 25s linear infinite;
+        }
+        @keyframes gridDrift { from{background-position:0 0} to{background-position:50px 50px} }
+
+        .hero-orb { position:absolute; border-radius:50%; filter:blur(90px); pointer-events:none; }
+        .orb1 { width:500px; height:500px; background:rgba(0,255,204,0.05); top:-150px; left:-150px; animation:orbFloat 9s ease-in-out infinite; }
+        .orb2 { width:400px; height:400px; background:rgba(201,168,76,0.04); bottom:-100px; right:-100px; animation:orbFloat 11s ease-in-out infinite reverse; }
+        @keyframes orbFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-28px)} }
+
+        .hero-content { position:relative; z-index:2; max-width:700px; margin:0 auto; }
+
+        .hero-eyebrow {
+            font-size: 0.65rem; font-weight: 700; letter-spacing: 6px;
+            text-transform: uppercase; color: var(--teal);
+            margin-bottom: 22px;
+            display: flex; align-items: center; justify-content: center; gap: 16px;
+        }
+        .hero-eyebrow::before, .hero-eyebrow::after {
+            content: ''; width: 50px; height: 1px;
+            background: linear-gradient(90deg, transparent, var(--teal));
+        }
+        .hero-eyebrow::after { transform: scaleX(-1); }
+
+        .hero-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(3rem, 8vw, 5.5rem);
+            font-weight: 300; color: #fff;
+            line-height: 1; letter-spacing: -2px;
+            margin-bottom: 18px;
+        }
+        .hero-title span { color: var(--teal); font-style: italic; }
+        .hero-title .gold { color: var(--gold); font-style: italic; }
+
+        .hero-sub {
+            color: var(--muted); font-size: 0.9rem;
+            line-height: 1.8; max-width: 500px; margin: 0 auto;
+        }
+
+        /* ════════════════════════════════
+           BIG NUMBERS STRIP
+        ════════════════════════════════ */
+        .numbers-strip {
+            position: relative; z-index: 1;
+            background: var(--bg3);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            padding: 60px 28px;
+        }
+        .numbers-inner {
+            max-width: 1100px; margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+        }
+        .num-item {
+            text-align: center;
+            padding: 10px 20px;
+            border-right: 1px solid var(--border);
+            position: relative;
+        }
+        .num-item:last-child { border-right: none; }
+        .num-val {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(3rem, 5vw, 4.5rem);
+            font-weight: 300; color: var(--teal);
+            line-height: 1; display: block;
+            margin-bottom: 8px;
+        }
+        .num-val.gold { color: var(--gold); }
+        .num-label { color: var(--muted); font-size: 0.72rem; letter-spacing: 2px; text-transform: uppercase; }
+        .num-badge {
+            display: inline-block; background: rgba(0,255,204,0.08);
+            border: 1px solid rgba(0,255,204,0.2); color: var(--teal);
+            font-size: 0.65rem; letter-spacing: 1px; padding: 2px 8px;
+            border-radius: 20px; margin-top: 8px;
+        }
+
+        /* ════════════════════════════════
+           PAKISTAN FRAGRANCE MARKET
+        ════════════════════════════════ */
+        .market-section {
+            position: relative; z-index: 1;
+            padding: 100px 28px;
+            max-width: 1100px; margin: 0 auto;
+        }
+
+        .section-eyebrow {
+            font-size: 0.62rem; font-weight: 700; letter-spacing: 5px;
+            text-transform: uppercase; color: var(--teal);
+            margin-bottom: 14px;
+            display: flex; align-items: center; gap: 12px;
+        }
+        .section-eyebrow::after { content:''; flex:0 0 40px; height:1px; background:linear-gradient(90deg,var(--teal),transparent); }
+        .section-heading { font-family:'Cormorant Garamond',serif; font-size:clamp(2rem,4vw,3rem); font-weight:300; color:#fff; margin-bottom:14px; }
+        .section-heading span { color:var(--teal); font-style:italic; }
+        .section-heading .gold { color:var(--gold); font-style:italic; }
+
+        /* Two-col market layout */
+        .market-grid { display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:start; margin-top:50px; }
+
+        /* Market data cards */
+        .mdata-card {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 28px 26px;
+            margin-bottom: 16px;
+            transition: border-color 0.2s;
+        }
+        .mdata-card:hover { border-color: rgba(0,255,204,0.2); }
+        .mdata-card .mdc-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; }
+        .mdata-card .mdc-label { color:var(--muted); font-size:0.78rem; letter-spacing:1px; text-transform:uppercase; }
+        .mdata-card .mdc-val { font-family:'Cormorant Garamond',serif; font-size:1.8rem; font-weight:300; color:#fff; }
+        .mdata-card .mdc-val span { color:var(--teal); font-size:1rem; font-style:italic; }
+
+        /* Progress bars */
+        .prog-wrap { margin-bottom: 18px; }
+        .prog-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; }
+        .prog-name { color:var(--muted); font-size:0.78rem; }
+        .prog-pct  { color:var(--text); font-size:0.78rem; font-weight:600; }
+        .prog-bar  { height:5px; background:#111; border-radius:3px; overflow:hidden; margin-bottom:12px; }
+        .prog-fill { height:100%; border-radius:3px; background:linear-gradient(90deg, var(--teal), #00c9a7); transition:width 1.4s cubic-bezier(.4,0,.2,1); width:0; }
+        .prog-fill.gold { background:linear-gradient(90deg, var(--gold), #e8c97a); }
+
+        /* Chart bars */
+        .chart-bars {
+            display: flex; align-items: flex-end; gap: 10px;
+            height: 140px; margin-top: 20px;
+        }
+        .bar-col { flex: 1; display:flex; flex-direction:column; align-items:center; gap:6px; }
+        .bar-fill {
+            width: 100%; border-radius: 4px 4px 0 0;
+            background: linear-gradient(180deg, var(--teal), rgba(0,255,204,0.3));
+            transition: height 1.4s cubic-bezier(.4,0,.2,1);
+            min-height: 4px;
+        }
+        .bar-fill.gold { background: linear-gradient(180deg, var(--gold), rgba(201,168,76,0.3)); }
+        .bar-label { color:var(--muted); font-size:0.65rem; letter-spacing:1px; white-space:nowrap; }
+        .bar-val   { color:var(--text); font-size:0.72rem; font-weight:600; }
+
+        /* ════════════════════════════════
+           SCENT POPULARITY
+        ════════════════════════════════ */
+        .scent-section {
+            position: relative; z-index: 1;
+            background: var(--bg3);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            padding: 90px 28px;
+        }
+        .scent-inner { max-width:1100px; margin:0 auto; }
+
+        .scent-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-top:50px; }
+        .scent-card {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 26px 22px;
+            position: relative; overflow:hidden;
+            transition: border-color 0.25s, transform 0.25s;
+            cursor: pointer; text-decoration:none; display:block;
+        }
+        .scent-card:hover { border-color:rgba(0,255,204,0.3); transform:translateY(-5px); }
+        .scent-card::before {
+            content:''; position:absolute; top:0; left:0; right:0; height:2px;
+            background:linear-gradient(90deg,transparent,var(--teal),transparent);
+            opacity:0; transition:opacity 0.25s;
+        }
+        .scent-card:hover::before { opacity:1; }
+        .sc-rank { position:absolute; top:16px; right:18px; font-family:'Cormorant Garamond',serif; font-size:2.5rem; font-weight:300; color:rgba(0,255,204,0.07); line-height:1; }
+        .sc-icon { font-size:1.8rem; margin-bottom:12px; display:block; }
+        .sc-name { color:#fff; font-size:0.95rem; font-weight:600; margin-bottom:6px; }
+        .sc-cat  { color:var(--muted); font-size:0.72rem; letter-spacing:1.5px; text-transform:uppercase; margin-bottom:14px; }
+        .sc-bar-wrap { height:4px; background:#1a1a1a; border-radius:2px; margin-bottom:8px; }
+        .sc-bar { height:100%; border-radius:2px; background:linear-gradient(90deg,var(--teal),#00c9a7); transition:width 1.4s ease; width:0; }
+        .sc-pct { color:var(--teal); font-size:0.78rem; font-weight:700; }
+
+        /* ════════════════════════════════
+           PAKISTAN TRENDS
+        ════════════════════════════════ */
+        .trends-section {
+            position: relative; z-index:1;
+            padding: 100px 28px;
+            max-width: 1100px; margin: 0 auto;
+        }
+        .trends-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:50px; }
+        .trend-card {
+            background:var(--bg3); border:1px solid var(--border); border-radius:18px;
+            padding:28px 26px; display:flex; gap:18px; align-items:flex-start;
+            transition:border-color 0.2s, transform 0.2s;
+        }
+        .trend-card:hover { border-color:rgba(0,255,204,0.2); transform:translateY(-4px); }
+        .trend-icon { width:48px; height:48px; border-radius:14px; background:var(--bg2); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; color:var(--teal); font-size:1.1rem; flex-shrink:0; transition:0.2s; }
+        .trend-card:hover .trend-icon { background:var(--teal); color:#111; border-color:var(--teal); }
+        .trend-body h4 { color:#fff; font-size:0.92rem; font-weight:600; margin-bottom:8px; }
+        .trend-body p  { color:var(--muted); font-size:0.82rem; line-height:1.7; }
+        .trend-tag { display:inline-flex; align-items:center; gap:5px; background:rgba(0,255,204,0.07); border:1px solid rgba(0,255,204,0.15); color:var(--teal); font-size:0.68rem; letter-spacing:1px; padding:3px 10px; border-radius:20px; margin-top:10px; }
+        .trend-tag.up   { background:rgba(105,240,64,0.07); border-color:rgba(105,240,64,0.2); color:#69f040; }
+        .trend-tag.gold { background:rgba(201,168,76,0.07); border-color:rgba(201,168,76,0.2); color:var(--gold); }
+
+        /* ════════════════════════════════
+           CTA BANNER
+        ════════════════════════════════ */
+        .cta-banner {
+            position: relative; z-index:1;
+            background: linear-gradient(135deg, rgba(0,255,204,0.06) 0%, rgba(201,168,76,0.04) 100%);
+            border-top: 1px solid rgba(0,255,204,0.15);
+            border-bottom: 1px solid rgba(0,255,204,0.15);
+            padding: 80px 28px;
+            text-align: center;
+        }
+        .cta-banner h2 { font-family:'Cormorant Garamond',serif; font-size:clamp(2rem,4vw,3rem); font-weight:300; color:#fff; margin-bottom:12px; }
+        .cta-banner h2 span { color:var(--teal); font-style:italic; }
+        .cta-banner p { color:var(--muted); font-size:0.9rem; margin-bottom:32px; line-height:1.7; max-width:480px; margin-left:auto; margin-right:auto; }
+        .cta-btns { display:flex; justify-content:center; gap:14px; flex-wrap:wrap; }
+        .btn-teal { background:var(--teal); color:#111; padding:13px 34px; border-radius:40px; text-decoration:none; font-size:0.88rem; font-weight:700; transition:0.25s; }
+        .btn-teal:hover { background:#00e6b8; transform:translateY(-3px); box-shadow:0 8px 28px rgba(0,255,204,0.3); }
+        .btn-outline { background:transparent; color:var(--teal); border:1px solid var(--teal); padding:13px 34px; border-radius:40px; text-decoration:none; font-size:0.88rem; font-weight:600; transition:0.25s; }
+        .btn-outline:hover { background:rgba(0,255,204,0.08); transform:translateY(-3px); }
+
+        /* ════════════════════════════════
+           FOOTER
+        ════════════════════════════════ */
+        .footer { background:#080808; border-top:1px solid rgba(0,255,204,0.1); }
+        .footer-content { max-width:1200px; margin:0 auto; }
+        .footer-top { padding:60px 40px 40px; display:grid; grid-template-columns:1.4fr 1fr 1fr 1fr 1.3fr; gap:40px; border-bottom:1px solid #111; }
+        .footer-brand .brand-logo { font-family:'Cormorant Garamond',serif; font-size:1.6rem; color:#fff; margin-bottom:12px; }
+        .footer-brand .brand-logo span { color:#00ffcc; }
+        .footer-brand p { color:#444; font-size:0.82rem; line-height:1.8; margin-bottom:20px; max-width:220px; }
+        .footer-socials { display:flex; gap:10px; }
+        .footer-social-btn { width:36px; height:36px; border-radius:10px; border:1px solid #1a1a1a; background:#111; display:flex; align-items:center; justify-content:center; color:#444; font-size:0.9rem; text-decoration:none; transition:0.2s; }
+        .footer-social-btn:hover { border-color:#00ffcc; color:#00ffcc; }
+        .footer-social-btn.wa:hover { border-color:#25D366; color:#25D366; }
+        .footer-social-btn.fb:hover { border-color:#1877F2; color:#1877F2; }
+        .footer-col h4 { color:#fff; font-size:0.72rem; font-weight:700; letter-spacing:3px; text-transform:uppercase; margin-bottom:20px; display:flex; align-items:center; gap:8px; }
+        .footer-col h4::after { content:''; flex:1; height:1px; background:linear-gradient(90deg,#1a1a1a,transparent); }
+        .footer-col ul { list-style:none; padding:0; }
+        .footer-col ul li { margin-bottom:10px; }
+        .footer-col ul li a { color:#444; text-decoration:none; font-size:0.84rem; transition:0.2s; display:flex; align-items:center; gap:6px; }
+        .footer-col ul li a:hover { color:#00ffcc; padding-left:4px; }
+        .footer-col ul li a i { font-size:0.65rem; opacity:0.5; }
+        .footer-newsletter p { color:#444; font-size:0.82rem; line-height:1.7; margin-bottom:16px; }
+        .newsletter-wrap { position:relative; }
+        .newsletter-input { background:#0d0d0d; border:1px solid #1a1a1a; color:#fff; padding:11px 46px 11px 14px; border-radius:10px; font-size:0.85rem; width:100%; outline:none; box-sizing:border-box; font-family:'Montserrat',sans-serif; }
+        .newsletter-input::placeholder { color:#333; }
+        .newsletter-submit { position:absolute; right:6px; top:50%; transform:translateY(-50%); background:#00ffcc; color:#111; border:none; width:32px; height:32px; border-radius:8px; cursor:pointer; font-size:0.8rem; display:flex; align-items:center; justify-content:center; transition:0.2s; }
+        .newsletter-submit:hover { background:#00e6b8; }
+        .footer-bottom { padding:20px 40px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; }
+        .footer-bottom p { color:#2a2a2a; font-size:0.78rem; }
+        .footer-bottom p span { color:#00ffcc; }
+        .footer-bottom-links { display:flex; gap:20px; }
+        .footer-bottom-links a { color:#2a2a2a; font-size:0.78rem; text-decoration:none; transition:color 0.2s; }
+        .footer-bottom-links a:hover { color:#00ffcc; }
+
+        /* ── Responsive ── */
+        @media(max-width:900px){
+            .numbers-inner { grid-template-columns:repeat(2,1fr); gap:28px; }
+            .num-item { border-right:none; border-bottom:1px solid var(--border); padding-bottom:28px; }
+            .market-grid,.trends-grid { grid-template-columns:1fr; }
+            .scent-grid { grid-template-columns:repeat(2,1fr); }
+            .footer-top { grid-template-columns:1fr 1fr; padding:40px 24px 30px; }
+            .footer-brand { grid-column:1/-1; }
+            .footer-bottom { padding:16px 24px; flex-direction:column; text-align:center; }
+        }
+        @media(max-width:560px){
+            .scent-grid { grid-template-columns:1fr; }
+            .footer-top { grid-template-columns:1fr; }
+            .numbers-inner { grid-template-columns:1fr 1fr; }
+        }
+
+        /* reveal */
+        .reveal { opacity:0; transform:translateY(28px); transition:opacity 0.7s ease, transform 0.7s ease; }
+        .reveal.visible { opacity:1; transform:translateY(0); }
+    </style>
+</head>
+<body>
+
+<a href="https://wa.me/923098741371" class="whatsapp-float" target="_blank">
+    <i class="fab fa-whatsapp"></i>
+</a>
+
+<nav>
+    <div class="nav-container">
+        <a href="index.html" class="logo">Nexus<span>Scent</span></a>
+        <ul class="nav-links">
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="gallery.html">Perfume Gallery</a></li>
+            <li><a href="stats.html" class="active">Market Stats</a></li>
+            <li><a href="track.html">Track Order</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <div class="nav-bottom">
+            <a href="gallery.html" class="cyber-button">Buy Now</a>
+        </div>
+    </div>
+</nav>
+
+<!-- ════════════════════════════════
+     HERO
+════════════════════════════════ -->
+<section class="stats-hero">
+    <div class="hero-orb orb1"></div>
+    <div class="hero-orb orb2"></div>
+    <div class="hero-content">
+        <div class="hero-eyebrow">Data & Performance</div>
+        <h1 class="hero-title">
+            Market<br><span>Statistics</span>
+        </h1>
+        <p class="hero-sub">Real numbers behind Pakistan's AI-powered fragrance house. Our growth, our customers, our impact.</p>
+    </div>
+</section>
+
+<!-- ════════════════════════════════
+     BIG NUMBERS
+════════════════════════════════ -->
+<div class="numbers-strip">
+    <div class="numbers-inner">
+        <div class="num-item reveal">
+            <span class="num-val" data-target="20" data-suffix="+">0</span>
+            <div class="num-label">Fragrances Curated</div>
+            <div class="num-badge">Growing Collection</div>
+        </div>
+        <div class="num-item reveal">
+            <span class="num-val gold" data-target="98" data-suffix="%">0</span>
+            <div class="num-label">Customer Satisfaction</div>
+            <div class="num-badge" style="background:rgba(201,168,76,0.08);border-color:rgba(201,168,76,0.2);color:var(--gold);">Verified Reviews</div>
+        </div>
+        <div class="num-item reveal">
+            <span class="num-val" data-target="500" data-suffix="+">0</span>
+            <div class="num-label">Orders Delivered</div>
+            <div class="num-badge">Nationwide PK</div>
+        </div>
+        <div class="num-item reveal">
+            <span class="num-val gold" data-target="12" data-suffix="hr+">0</span>
+            <div class="num-label">Avg Scent Longevity</div>
+            <div class="num-badge" style="background:rgba(201,168,76,0.08);border-color:rgba(201,168,76,0.2);color:var(--gold);">EDP & Oud Range</div>
+        </div>
+    </div>
+</div>
+
+<!-- ════════════════════════════════
+     MARKET DATA
+════════════════════════════════ -->
+<section class="market-section">
+    <div class="reveal">
+        <div class="section-eyebrow">Pakistan Fragrance Industry</div>
+        <h2 class="section-heading">The <span>Fragrance</span> Market<br>We Operate In</h2>
+    </div>
+
+    <div class="market-grid">
+        <!-- Left col -->
+        <div>
+            <div class="mdata-card reveal">
+                <div class="mdc-top">
+                    <span class="mdc-label">Pakistan Fragrance Market Size</span>
+                </div>
+                <div class="mdc-val">$180M <span>/ annually</span></div>
+                <div style="margin-top:10px;color:var(--muted);font-size:0.8rem;line-height:1.7;">Pakistan's fragrance industry is one of South Asia's fastest-growing — driven by deep cultural traditions of oud and attar use.</div>
+            </div>
+
+            <div class="mdata-card reveal">
+                <div class="mdc-top">
+                    <span class="mdc-label">Fragrance Preference by Category</span>
+                </div>
+                <div class="prog-wrap" style="margin-top:14px;">
+                    <div class="prog-row"><span class="prog-name">Arabian / Oud</span><span class="prog-pct">42%</span></div>
+                    <div class="prog-bar"><div class="prog-fill" data-width="42"></div></div>
+                    <div class="prog-row"><span class="prog-name">Fresh / Aquatic</span><span class="prog-pct">28%</span></div>
+                    <div class="prog-bar"><div class="prog-fill" data-width="28"></div></div>
+                    <div class="prog-row"><span class="prog-name">Floral / Oriental</span><span class="prog-pct">20%</span></div>
+                    <div class="prog-bar"><div class="prog-fill gold" data-width="20"></div></div>
+                    <div class="prog-row"><span class="prog-name">Gourmand / Sweet</span><span class="prog-pct">10%</span></div>
+                    <div class="prog-bar"><div class="prog-fill gold" data-width="10"></div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right col: chart -->
+        <div class="mdata-card reveal" style="height:100%;">
+            <div class="mdc-top">
+                <span class="mdc-label">NexusScent Monthly Orders</span>
+                <span style="color:var(--teal);font-size:0.75rem;">↑ Growing</span>
+            </div>
+            <div class="chart-bars" id="order-chart">
+                <div class="bar-col"><div class="bar-fill" data-h="35"></div><span class="bar-val">35</span><span class="bar-label">Jan</span></div>
+                <div class="bar-col"><div class="bar-fill" data-h="52"></div><span class="bar-val">52</span><span class="bar-label">Feb</span></div>
+                <div class="bar-col"><div class="bar-fill" data-h="48"></div><span class="bar-val">48</span><span class="bar-label">Mar</span></div>
+                <div class="bar-col"><div class="bar-fill gold" data-h="70"></div><span class="bar-val">70</span><span class="bar-label">Apr</span></div>
+                <div class="bar-col"><div class="bar-fill" data-h="65"></div><span class="bar-val">65</span><span class="bar-label">May</span></div>
+                <div class="bar-col"><div class="bar-fill gold" data-h="90"></div><span class="bar-val">90</span><span class="bar-label">Jun</span></div>
+                <div class="bar-col"><div class="bar-fill" data-h="85"></div><span class="bar-val">85</span><span class="bar-label">Jul</span></div>
+                <div class="bar-col"><div class="bar-fill gold" data-h="110"></div><span class="bar-val">110</span><span class="bar-label">Aug</span></div>
+            </div>
+            <div style="margin-top:20px;display:flex;gap:16px;">
+                <span style="font-size:0.72rem;color:var(--muted);display:flex;align-items:center;gap:6px;"><span style="width:10px;height:3px;background:var(--teal);border-radius:2px;display:inline-block;"></span>Standard Month</span>
+                <span style="font-size:0.72rem;color:var(--muted);display:flex;align-items:center;gap:6px;"><span style="width:10px;height:3px;background:var(--gold);border-radius:2px;display:inline-block;"></span>Peak Month</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ════════════════════════════════
+     SCENT POPULARITY
+════════════════════════════════ -->
+<section class="scent-section">
+    <div class="scent-inner">
+        <div class="reveal" style="text-align:center;margin-bottom:0;">
+            <div class="section-eyebrow" style="justify-content:center;">Customer Favourites</div>
+            <h2 class="section-heading" style="text-align:center;">Our <span>Best Selling</span><br>Fragrances</h2>
+        </div>
+        <div class="scent-grid">
+            <a href="gallery.html" class="scent-card reveal">
+                <div class="sc-rank">01</div>
+                <span class="sc-icon">💎</span>
+                <div class="sc-name">Sapphire</div>
+                <div class="sc-cat">Ahmed Al Maghribi · EDP</div>
+                <div class="sc-bar-wrap"><div class="sc-bar" data-width="92"></div></div>
+                <div class="sc-pct">92% popularity score</div>
+            </a>
+            <a href="gallery.html" class="scent-card reveal">
+                <div class="sc-rank">02</div>
+                <span class="sc-icon">🌹</span>
+                <div class="sc-name">Oud Roses</div>
+                <div class="sc-cat">Oriental · EDP</div>
+                <div class="sc-bar-wrap"><div class="sc-bar" data-width="87"></div></div>
+                <div class="sc-pct">87% popularity score</div>
+            </a>
+            <a href="gallery.html" class="scent-card reveal">
+                <div class="sc-rank">03</div>
+                <span class="sc-icon">🌊</span>
+                <div class="sc-name">Deep Blue</div>
+                <div class="sc-cat">Aquatic · Fresh</div>
+                <div class="sc-bar-wrap"><div class="sc-bar" data-width="81"></div></div>
+                <div class="sc-pct">81% popularity score</div>
+            </a>
+            <a href="gallery.html" class="scent-card reveal">
+                <div class="sc-rank">04</div>
+                <span class="sc-icon">🖤</span>
+                <div class="sc-name">Bin Sheikh</div>
+                <div class="sc-cat">Oriental · Oud</div>
+                <div class="sc-bar-wrap"><div class="sc-bar" data-width="78"></div></div>
+                <div class="sc-pct">78% popularity score</div>
+            </a>
+            <a href="gallery.html" class="scent-card reveal">
+                <div class="sc-rank">05</div>
+                <span class="sc-icon">🍫</span>
+                <div class="sc-name">Armaf Dubai Chocolate</div>
+                <div class="sc-cat">Gourmand · Sweet</div>
+                <div class="sc-bar-wrap"><div class="sc-bar" data-width="74"></div></div>
+                <div class="sc-pct">74% popularity score</div>
+            </a>
+            <a href="gallery.html" class="scent-card reveal">
+                <div class="sc-rank">06</div>
+                <span class="sc-icon">🌙</span>
+                <div class="sc-name">Afnan 9PM</div>
+                <div class="sc-cat">Amber · Oriental</div>
+                <div class="sc-bar-wrap"><div class="sc-bar" data-width="70"></div></div>
+                <div class="sc-pct">70% popularity score</div>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ════════════════════════════════
+     PAKISTAN TRENDS
+════════════════════════════════ -->
+<section class="trends-section">
+    <div class="reveal">
+        <div class="section-eyebrow">Industry Insights</div>
+        <h2 class="section-heading">Pakistan Fragrance <span class="gold">Trends</span> 2025</h2>
+    </div>
+    <div class="trends-grid">
+        <div class="trend-card reveal">
+            <div class="trend-icon"><i class="fas fa-fire"></i></div>
+            <div class="trend-body">
+                <h4>Oud Dominates the Market</h4>
+                <p>Arabian oud-based fragrances account for over 40% of all premium fragrance sales in Pakistan, driven by cultural and religious significance.</p>
+                <span class="trend-tag up"><i class="fas fa-arrow-up"></i> +18% YoY Growth</span>
+            </div>
+        </div>
+        <div class="trend-card reveal">
+            <div class="trend-icon"><i class="fas fa-mobile-alt"></i></div>
+            <div class="trend-body">
+                <h4>Online Fragrance Sales Rising</h4>
+                <p>E-commerce fragrance purchases in Pakistan have grown 60% since 2022, with WhatsApp-based ordering becoming the most popular channel.</p>
+                <span class="trend-tag up"><i class="fas fa-arrow-up"></i> +60% Since 2022</span>
+            </div>
+        </div>
+        <div class="trend-card reveal">
+            <div class="trend-icon"><i class="fas fa-star"></i></div>
+            <div class="trend-body">
+                <h4>Arabian Brands Outperform Western</h4>
+                <p>Brands like Lattafa, Ahmed Al Maghribi, and Armaf have overtaken many European houses in Pakistani market share due to price-to-quality ratio.</p>
+                <span class="trend-tag gold"><i class="fas fa-crown"></i> Top Trending</span>
+            </div>
+        </div>
+        <div class="trend-card reveal">
+            <div class="trend-icon"><i class="fas fa-users"></i></div>
+            <div class="trend-body">
+                <h4>Youth-Driven Demand</h4>
+                <p>18–30 year olds now make up 65% of perfume buyers in Pakistan, preferring bold, long-lasting oriental fragrances with strong projection.</p>
+                <span class="trend-tag up"><i class="fas fa-arrow-up"></i> 65% of Buyers</span>
+            </div>
+        </div>
+        <div class="trend-card reveal">
+            <div class="trend-icon"><i class="fas fa-robot"></i></div>
+            <div class="trend-body">
+                <h4>AI in Fragrance is New</h4>
+                <p>NexusScent is pioneering AI-powered fragrance identification in Pakistan — a technology not yet adopted by any other local perfume retailer.</p>
+                <span class="trend-tag"><i class="fas fa-bolt"></i> First in Pakistan</span>
+            </div>
+        </div>
+        <div class="trend-card reveal">
+            <div class="trend-icon"><i class="fas fa-gift"></i></div>
+            <div class="trend-body">
+                <h4>Gifting Culture Booming</h4>
+                <p>Perfumes are now the #1 gifting choice for Eid, weddings, and birthdays in Pakistan — with premium packaging driving purchase decisions.</p>
+                <span class="trend-tag gold"><i class="fas fa-heart"></i> #1 Gift Choice</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA BANNER -->
+<div class="cta-banner">
+    <h2>Ready to Find Your <span>Signature Scent?</span></h2>
+    <p>Explore our curated collection of authentic Arabian and international fragrances — delivered across Pakistan.</p>
+    <div class="cta-btns">
+        <a href="gallery.html" class="btn-teal">Shop the Collection</a>
+        <a href="contact.html" class="btn-outline">Ask Us Anything</a>
+    </div>
+</div>
+
+<!-- ════════════════════════════════
+     FOOTER
+════════════════════════════════ -->
+<footer class="footer">
+    <div class="footer-content">
+        <div class="footer-top">
+            <div class="footer-brand footer-col">
+                <div class="brand-logo">Nexus<span>Scent</span></div>
+                <p>Pakistan's first AI-powered fragrance house. Luxury scents, decoded and delivered to your door.</p>
+                <div class="footer-socials">
+                    <a href="https://wa.me/923098741371" target="_blank" class="footer-social-btn wa"><i class="fab fa-whatsapp"></i></a>
+                    <a href="https://www.facebook.com/profile.php?id=61563976653948" target="_blank" class="footer-social-btn fb"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="footer-social-btn"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Shop</h4>
+                <ul>
+                    <li><a href="gallery.html"><i class="fas fa-chevron-right"></i> New Arrivals</a></li>
+                    <li><a href="gallery.html"><i class="fas fa-chevron-right"></i> All Perfumes</a></li>
+                    <li><a href="gallery.html"><i class="fas fa-chevron-right"></i> Premium Oud</a></li>
+                    <li><a href="gallery.html"><i class="fas fa-chevron-right"></i> Arabic Collection</a></li>
+                    <li><a href="gallery.html"><i class="fas fa-chevron-right"></i> Best Sellers</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Help</h4>
+                <ul>
+                    <li><a href="track.html"><i class="fas fa-chevron-right"></i> Track My Order</a></li>
+                    <li><a href="shipping.html"><i class="fas fa-chevron-right"></i> Shipping Info</a></li>
+                    <li><a href="returns.html"><i class="fas fa-chevron-right"></i> Returns & Exchange</a></li>
+                    <li><a href="faq.html"><i class="fas fa-chevron-right"></i> FAQ</a></li>
+                    <li><a href="contact.html"><i class="fas fa-chevron-right"></i> Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="about.html"><i class="fas fa-chevron-right"></i> About NexusScent</a></li>
+                    <li><a href="policies.html"><i class="fas fa-chevron-right"></i> Privacy Policy</a></li>
+                    <li><a href="policies.html"><i class="fas fa-chevron-right"></i> Terms of Service</a></li>
+                    <li><a href="policies.html"><i class="fas fa-chevron-right"></i> Store Policies</a></li>
+                    <li><a href="contact.html"><i class="fas fa-chevron-right"></i> Get in Touch</a></li>
+                </ul>
+            </div>
+            <div class="footer-col footer-newsletter">
+                <h4>Stay Updated</h4>
+                <p style="color:#444;font-size:0.82rem;line-height:1.7;margin-bottom:16px;">New arrivals, exclusive deals & fragrance tips straight to your inbox.</p>
+                <div class="newsletter-wrap">
+                    <input type="email" class="newsletter-input" placeholder="Your email address">
+                    <button class="newsletter-submit" onclick="subscribeNewsletter()"><i class="fas fa-arrow-right"></i></button>
+                </div>
+                <div style="margin-top:16px;">
+                    <a href="https://wa.me/923098741371" target="_blank" style="display:flex;align-items:center;gap:8px;color:#25D366;font-size:0.82rem;text-decoration:none;">
+                        <i class="fab fa-whatsapp"></i> Chat on WhatsApp
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 <span>NexusScent</span>. All rights reserved. Made with ❤️ in Quetta, Pakistan.</p>
+            <div class="footer-bottom-links">
+                <a href="policies.html">Privacy</a>
+                <a href="policies.html">Terms</a>
+                <a href="shipping.html">Shipping</a>
+                <a href="returns.html">Returns</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script>
+/* ── Scroll reveal ── */
+const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+/* ── Counter animation ── */
+function animateCounter(el, target, suffix=''){
+    let start = 0; const dur = 1800;
+    const step = ts => {
+        if(!start) start = ts;
+        const p = Math.min((ts - start) / dur, 1);
+        const ease = 1 - Math.pow(1-p, 3);
+        el.textContent = Math.floor(ease * target) + suffix;
+        if(p < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+}
+const counterObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+        if(e.isIntersecting){
+            const t = parseInt(e.target.dataset.target);
+            const s = e.target.dataset.suffix || '';
+            animateCounter(e.target, t, s);
+            counterObs.unobserve(e.target);
+        }
+    });
+}, { threshold: 0.5 });
+document.querySelectorAll('.num-val[data-target]').forEach(el => counterObs.observe(el));
+
+/* ── Progress bars ── */
+const progObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+        if(e.isIntersecting){
+            e.target.querySelectorAll('.prog-fill').forEach(bar => {
+                bar.style.width = bar.dataset.width + '%';
+            });
+            e.target.querySelectorAll('.sc-bar').forEach(bar => {
+                bar.style.width = bar.dataset.width + '%';
+            });
+            progObs.unobserve(e.target);
+        }
+    });
+}, { threshold: 0.3 });
+document.querySelectorAll('.mdata-card, .scent-card').forEach(el => progObs.observe(el));
+
+/* ── Bar chart ── */
+const chartObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+        if(e.isIntersecting){
+            const maxH = 140;
+            const bars = e.target.querySelectorAll('.bar-fill');
+            const vals = Array.from(bars).map(b => parseInt(b.dataset.h));
+            const maxVal = Math.max(...vals);
+            bars.forEach(bar => {
+                const h = (parseInt(bar.dataset.h) / maxVal) * (maxH - 20);
+                bar.style.height = h + 'px';
+            });
+            chartObs.unobserve(e.target);
+        }
+    });
+}, { threshold: 0.3 });
+const chart = document.getElementById('order-chart');
+if(chart) chartObs.observe(chart);
+
+/* ── Newsletter ── */
+function subscribeNewsletter(){
+    const input = document.querySelector('.newsletter-input');
+    if(!input.value || !input.value.includes('@')){ input.style.borderColor='#ff4444'; return; }
+    const btn = document.querySelector('.newsletter-submit');
+    btn.innerHTML = '<i class="fas fa-check"></i>';
+    btn.style.background = '#00e6b8';
+    input.value = '';
+    setTimeout(() => { btn.innerHTML = '<i class="fas fa-arrow-right"></i>'; btn.style.background = ''; }, 2500);
+}
+</script>
+
+<script src="templatemo-nexus-scripts.js"></script>
+</body>
+</html>

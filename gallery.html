@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfume Gallery - NexusScent</title>
+    <link href="templatemo-nexus-style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        .features-grid { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; margin-top: 40px; }
+        .feature-card { background: #111; color: #fff; padding: 20px; border-radius: 15px; width: 300px; text-align: center; transition: 0.3s; border: 1px solid transparent; cursor: pointer; }
+        .feature-card:hover { transform: translateY(-5px); border: 1px solid #00ffcc; }
+        .feature-card img { width: 100%; height: 250px; object-fit: cover; border-radius: 10px; margin-bottom: 15px; display: block; transition: 0.3s; }
+        .perfume-price { color: #00ffcc; font-weight: bold; font-size: 1.2rem; margin: 10px 0; }
+        .btn-secondary { background: transparent; color: #00ffcc; border: 1px solid #00ffcc; padding: 10px 20px; border-radius: 5px; cursor: pointer; transition: 0.3s; width: 100%; margin-top: 6px; }
+        .btn-secondary:hover { background: #00ffcc; color: #000; }
+
+        #cart-icon { position: fixed; bottom: 30px; right: 30px; background: #00ffcc; color: #111; width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; font-size: 1.5rem; z-index: 9999; box-shadow: 0 0 15px rgba(0,255,204,0.7); }
+
+        #cart-popup { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 9998; justify-content: center; align-items: center; }
+        #cart-content { background: #111; color: #fff; padding: 30px; border-radius: 15px; width: 90%; max-width: 500px; max-height: 90%; overflow-y: auto; position: relative; border: 1px solid #333; }
+        #cart-content h3 { margin-top: 0; text-align: center; color: #00ffcc; }
+        .cart-item { display: flex; justify-content: space-between; margin: 10px 0; align-items: center; padding-bottom: 10px; border-bottom: 1px solid #333; }
+        .cart-item button { background: #ff4444; color: #fff; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; }
+        .cart-buttons { display: flex; justify-content: space-between; margin-top: 20px; }
+        .cart-buttons button { background: #00ffcc; color: #111; border: none; padding: 10px 15px; border-radius: 10px; cursor: pointer; font-weight: bold; }
+
+        #checkout-form { display: none; margin-top: 20px; border-top: 1px solid #333; padding-top: 20px; }
+        #checkout-form h4 { color: #00ffcc; margin-bottom: 15px; text-align: center; }
+        #checkout-form input, #checkout-form textarea { width: 100%; background: #1a1a1a; border: 1px solid #444; color: #fff; padding: 10px 12px; border-radius: 8px; margin-bottom: 12px; font-size: 0.95rem; box-sizing: border-box; outline: none; transition: border 0.2s; }
+        #checkout-form input:focus, #checkout-form textarea:focus { border-color: #00ffcc; }
+        #checkout-form textarea { resize: none; height: 80px; }
+        #checkout-form .send-btn { width: 100%; background: #25D366; color: #fff; border: none; padding: 12px; border-radius: 10px; font-size: 1rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        #back-btn { background: transparent; color: #aaa; border: none; cursor: pointer; font-size: 0.85rem; margin-bottom: 10px; padding: 0; }
+
+        .whatsapp-float { position: fixed; width: 60px; height: 60px; bottom: 20px; left: 20px; background-color: #25D366; color: #FFF; border-radius: 50px; text-align: center; font-size: 30px; box-shadow: 2px 2px 3px #999; z-index: 100; }
+        .whatsapp-float i { margin-top: 16px; display: block; }
+
+        /* ===== ORDER CONFIRMATION POPUP ===== */
+        #order-confirm-overlay {
+            display: none;
+            position: fixed; top:0; left:0; width:100%; height:100%;
+            background: rgba(0,0,0,0.92);
+            z-index: 99999;
+            justify-content: center; align-items: center;
+            padding: 20px; box-sizing: border-box;
+        }
+        #order-confirm-overlay.active { display: flex; }
+        #order-confirm-box {
+            background: #0d0d0d;
+            border: 1px solid #00ffcc;
+            border-radius: 20px;
+            padding: 36px 32px;
+            max-width: 460px;
+            width: 100%;
+            text-align: center;
+            animation: bounceIn 0.4s cubic-bezier(.175,.885,.32,1.275);
+            position: relative;
+        }
+        @keyframes bounceIn {
+            from { opacity:0; transform: scale(0.8); }
+            to   { opacity:1; transform: scale(1); }
+        }
+        .confirm-tick {
+            width: 72px; height: 72px;
+            background: linear-gradient(135deg, #00ffcc, #00c9a7);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 18px;
+            font-size: 2rem; color: #111;
+            box-shadow: 0 0 30px rgba(0,255,204,0.4);
+        }
+        #order-confirm-box h2 { color: #00ffcc; margin: 0 0 6px; font-size: 1.5rem; }
+        #order-confirm-box p  { color: #aaa; font-size: 0.92rem; margin: 0 0 20px; }
+
+        .order-id-badge {
+            background: #111;
+            border: 2px dashed #00ffcc;
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin: 0 auto 20px;
+            display: inline-block;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .order-id-badge .label { color: #666; font-size: 0.78rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px; }
+        .order-id-badge .code  { color: #00ffcc; font-size: 1.9rem; font-weight: 900; letter-spacing: 4px; font-family: monospace; }
+
+        .copy-btn {
+            background: transparent; border: 1px solid #333; color: #888;
+            padding: 6px 14px; border-radius: 6px; cursor: pointer;
+            font-size: 0.8rem; margin-top: 8px; transition: 0.2s;
+        }
+        .copy-btn:hover { border-color: #00ffcc; color: #00ffcc; }
+
+        .confirm-note {
+            background: #1a1a1a; border-radius: 10px; padding: 12px 16px;
+            color: #888; font-size: 0.83rem; line-height: 1.6;
+            margin-bottom: 20px; text-align: left;
+        }
+        .confirm-note strong { color: #00ffcc; }
+
+        .confirm-actions { display: flex; flex-direction: column; gap: 10px; }
+        .btn-track-order {
+            background: #00ffcc; color: #111; border: none;
+            padding: 12px; border-radius: 10px; font-size: 0.97rem;
+            font-weight: 700; cursor: pointer; text-decoration: none;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        .btn-track-order:hover { background: #00e6b8; }
+        .btn-close-confirm {
+            background: transparent; border: 1px solid #333; color: #666;
+            padding: 10px; border-radius: 10px; cursor: pointer; font-size: 0.9rem;
+        }
+        .btn-close-confirm:hover { border-color: #555; color: #aaa; }
+
+        /* ===== PRODUCT MODAL ===== */
+        #product-modal { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.88); z-index: 10000; justify-content: center; align-items: center; padding: 16px; box-sizing: border-box; }
+        #product-modal.active { display: flex; }
+        #product-modal-inner { background: #111; border: 1px solid #1e1e1e; border-radius: 20px; width: 100%; max-width: 860px; max-height: 94vh; overflow-y: auto; display: flex; flex-direction: row; position: relative; animation: popIn 0.28s cubic-bezier(.175,.885,.32,1.275); }
+        @keyframes popIn { from { opacity:0; transform: scale(0.93) translateY(24px); } to { opacity:1; transform: scale(1) translateY(0); } }
+        #modal-close { position: absolute; top:14px; right:16px; background:#1c1c1c; border:none; color:#aaa; width:34px; height:34px; border-radius:50%; cursor:pointer; font-size:1rem; z-index:10; display:flex; align-items:center; justify-content:center; transition:0.2s; }
+        #modal-close:hover { background:#ff4444; color:#fff; }
+        #modal-slider-wrap { width:44%; min-width:240px; flex-shrink:0; padding:28px 14px 24px 24px; display:flex; flex-direction:column; gap:10px; }
+        #main-img-wrap { position:relative; }
+        #modal-main-img { width:100%; aspect-ratio:1/1; object-fit:cover; border-radius:14px; border:2px solid #1e1e1e; transition:opacity 0.22s ease; display:block; }
+        #slider-prev,#slider-next { position:absolute; top:50%; transform:translateY(-50%); background:rgba(0,0,0,0.55); color:#fff; border:none; width:30px; height:30px; border-radius:50%; cursor:pointer; font-size:0.85rem; display:flex; align-items:center; justify-content:center; transition:0.2s; z-index:4; }
+        #slider-prev { left:6px; } #slider-next { right:6px; }
+        #slider-prev:hover,#slider-next:hover { background:#00ffcc; color:#111; }
+        #modal-thumbs { display:flex; gap:7px; flex-wrap:wrap; }
+        .modal-thumb { width:54px; height:54px; object-fit:cover; border-radius:8px; border:2px solid #2a2a2a; cursor:pointer; transition:0.2s; }
+        .modal-thumb:hover { transform:scale(1.07); }
+        .modal-thumb.active { border-color:#00ffcc; }
+        #modal-info { flex:1; padding:32px 24px 24px 14px; display:flex; flex-direction:column; gap:10px; }
+        #modal-name { font-size:1.55rem; font-weight:700; color:#fff; margin:0; line-height:1.2; }
+        #modal-price { color:#00ffcc; font-size:1.75rem; font-weight:800; margin:2px 0; }
+        #modal-desc { color:#999; font-size:0.92rem; line-height:1.65; margin:0; }
+        .qty-row { display:flex; align-items:center; gap:12px; }
+        .qty-row span { color:#888; font-size:0.88rem; }
+        .qty-controls { display:flex; align-items:center; border:1px solid #2a2a2a; border-radius:8px; overflow:hidden; }
+        .qty-btn { background:#1a1a1a; color:#fff; border:none; width:34px; height:34px; font-size:1.1rem; cursor:pointer; transition:0.15s; }
+        .qty-btn:hover { background:#00ffcc; color:#111; }
+        #modal-qty-display { width:38px; text-align:center; background:#111; color:#fff; font-weight:bold; font-size:1rem; border-left:1px solid #2a2a2a; border-right:1px solid #2a2a2a; height:34px; line-height:34px; }
+        .modal-actions { display:flex; flex-direction:column; gap:9px; margin-top:4px; }
+        .btn-add-cart { background:transparent; border:2px solid #00ffcc; color:#00ffcc; padding:11px; border-radius:10px; font-size:0.97rem; font-weight:700; cursor:pointer; transition:0.2s; display:flex; align-items:center; justify-content:center; gap:8px; }
+        .btn-add-cart:hover { background:#00ffcc; color:#111; }
+        .btn-buy-now { background:#00ffcc; border:none; color:#111; padding:11px; border-radius:10px; font-size:0.97rem; font-weight:700; cursor:pointer; transition:0.2s; display:flex; align-items:center; justify-content:center; gap:8px; }
+        .btn-buy-now:hover { background:#00e6b8; }
+        #modal-buynow-form { display:none; flex-direction:column; gap:9px; margin-top:4px; border-top:1px solid #1e1e1e; padding-top:14px; }
+        #modal-buynow-form input, #modal-buynow-form textarea { width:100%; background:#1a1a1a; border:1px solid #333; color:#fff; padding:9px 12px; border-radius:8px; font-size:0.9rem; box-sizing:border-box; outline:none; transition:border 0.2s; }
+        #modal-buynow-form input:focus, #modal-buynow-form textarea:focus { border-color:#00ffcc; }
+        #modal-buynow-form textarea { resize:none; height:68px; }
+        .btn-wa-send { background:#25D366; color:#fff; border:none; padding:11px; border-radius:10px; font-size:0.93rem; font-weight:bold; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; }
+        .btn-wa-send:hover { background:#1ebe5d; }
+        .btn-cancel-form { background:transparent; color:#666; border:none; cursor:pointer; font-size:0.8rem; text-align:left; }
+        @media (max-width:600px) {
+            #product-modal-inner { flex-direction:column; }
+            #modal-slider-wrap { width:100%; padding:18px 18px 0 18px; }
+            #modal-info { padding:14px 18px 20px 18px; }
+        }
+    </style>
+</head>
+<body>
+
+<a href="https://wa.me/923098741371" class="whatsapp-float" target="_blank">
+    <i class="fab fa-whatsapp"></i>
+</a>
+
+<nav>
+    <div class="nav-container">
+        <a href="index.html" class="logo">Nexus<span>Scent</span></a>
+        <ul class="nav-links">
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="gallery.html" class="active">Perfume Gallery</a></li>
+            <li><a href="stats.html">Market Stats</a></li>
+            <li><a href="track.html">Track Order</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </div>
+</nav>
+
+<section style="padding: 100px 0;">
+    <div class="features-container">
+        <div class="section-header" style="text-align:center; margin-bottom: 40px;">
+            <h2 class="section-title" style="color:#00ffcc; font-size: 2.5rem;">Nexus_Scent</h2>
+            <p class="section-subtitle" style="color:#adb5bd;">Click any product to view details</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card" onclick="openModal('Sapphire', 7000, ['sapphire1.jpg'], 'Ahmed Al Maghribi Sapphire 100ml — A bold, luxurious fragrance with deep woody and amber notes. Perfect for evening wear.')"><img src="sapphire1.jpg" alt="Sapphire"><h3>Sapphire</h3><p>Ahmed Al Maghribi Sapphire 100ml</p><div class="perfume-price">Rs. 7,000</div><button class="btn-secondary">View Details</button></div>
+            <div class="feature-card" onclick="openModal('Deep Blue', 2000, ['deep blue.jpg'], 'Wave of arctic freshness. A cool, aquatic fragrance inspired by the ocean breeze — fresh, clean, and invigorating.')"><img src="deep blue.jpg" alt="Deep Blue"><h3>Deep Blue</h3><p>Wave of arctic freshness.</p><div class="perfume-price">Rs. 2,000</div><button class="btn-secondary">View Details</button></div>
+            <div class="feature-card" onclick="openModal('Deep Black', 2000, ['deep black.jpg'], 'Deep Black Perfume 75ML — Dark, mysterious, and powerful. A rich blend of musk and oud for those who leave a lasting impression.')"><img src="deep black.jpg" alt="Deep Black"><h3>Deep Black</h3><p>Deep Black Perfume 75ML</p><div class="perfume-price">Rs. 2,000</div><button class="btn-secondary">View Details</button></div>
+            <div class="feature-card" onclick="openModal('Ameer Al Oud', 5000, ['ameer al oud.jpg'], 'A royal oriental fragrance enriched with precious oud. Deep, resinous, and long-lasting — fit for royalty.')"><img src="ameer al oud.jpg" alt="Ameer Al Oud"><h3>Ameer Al Oud</h3><div class="perfume-price">Rs. 5,000</div><button class="btn-secondary">View Details</button></div>
+            <div class="feature-card" onclick="openModal('Marj', 14200, ['Marj-Perfume..jpg'], 'A luxurious floral masterpiece. Marj blends rare florals with a warm, sensual base — timeless elegance in a bottle.')"><img src="Marj-Perfume..jpg" alt="Marj"><h3>Marj</h3><div class="perfume-price">Rs. 14,200</div><button class="btn-secondary">View Details</button></div>
+            <div class="feature-card" onclick="openModal('Oud Roses', 9400, ['oud roses.jpg'], 'The perfect union of precious oud and blooming roses. A romantic, rich scent that lasts all day.')"><img src="oud roses.jpg" alt="Oud Roses"><h3>Oud Roses</h3><div class="perfume-price">Rs. 9,400</div><button class="btn-secondary">View Details</button></div>
+            <div class="feature-card" onclick="openModal('Bin Sheikh', 14500, ['bin sheikh.jpg'], 'An exclusive, opulent fragrance. Deep oud with spiced oriental notes — commanding and unforgettable.')"><img src="bin sheikh.jpg" alt="Bin Sheikh"><h3>Bin Sheikh</h3><div class="perfume-price">Rs. 14,500</div><button class="btn-secondary">View Details</button></div>
+            <div class="feature-card" onclick="openModal('Bin Ameer', 5500, ['bin ameer ahmed al maghribi.webp'], 'Ameer Ahmed Al Maghribi — A signature blend of spice, oud, and exotic florals.')"><img src="bin ameer ahmed al maghribi.webp" alt="bin ameer"><h3>Ameer Ahmed Al Maghribi</h3><div class="perfume-price">Rs. 5,500</div><button class="btn-secondary">View Details</button></div>
+            <div class="feature-card" onclick="openModal('Tif Tif', 9700, ['test.jpg'], 'Tif Tif EDP by Ahmed Al Maghribi — Playful yet sophisticated with fruity and floral notes on a warm musky base.')"><img src="test.jpg" alt="tif tif"><h3>Tif TiF Edp Ahmed almaghribi</h3><div class="perfume-price">Rs. 9,700</div><button class="btn-secondary">View Details</button></div>
+            <div class="feature-card" onclick="openModal('Niswah', 9700, ['niswah-ahmed-al-maghribi.jpg'], 'Niswah by Ahmed Al Maghribi — A feminine floral oriental fragrance with soft rose, jasmine, and warm amber notes.')"><img src="niswah-ahmed-al-maghribi.jpg" alt="niswah"><h3>Niswah Ahmed almaghribi</h3><div class="perfume-price">Rs. 9,700</div><button class="btn-secondary">View Details</button></div>
+            <div class="feature-card" onclick="openModal('Thomas Kosmala No.9', 4700, ['Thomas_Kosmala_No.9_.webp'], 'Thomas Kosmala No.9 — Sophisticated niche fragrance. Elegant, refined, and distinctly modern.')"><img src="Thomas_Kosmala_No.9_.webp" alt="thomas kosmala"><h3>Thomas Kosmala no.9</h3><div class="perfume-price">Rs. 4,700</div><button class="btn-secondary">View Details</button></div>
+            <div class="feature-card" onclick="openModal('Lattafa Perfume', 7500, ['lattafa ammer al oud.jpg'], 'Lattafa Ameer Al Oud — Intense, smoky oud with rich resinous undertones. A classic Arabic powerhouse.')"><img src="lattafa ammer al oud.jpg" alt="lattafa"><h3>Lattafa Ameer Al Oud</h3><div class="perfume-price">Rs. 7,500</div><button class="btn-secondary">View Details</button></div>
+            <div class="feature-card" onclick="openModal('Armaf Dubai Chocolate', 7500, ['armaf dubai chocolate perfume.webp'], 'Armaf Dubai Chocolate — Warm, sweet gourmand fragrance with rich chocolate and vanilla notes.')"><img src="armaf dubai chocolate perfume.webp" alt="armaf chocolate"><h3>Armaf Dubai Chocolate</h3><div class="perfume-price">Rs. 7,500</div><button class="btn-secondary">View Details</button></div>
+            <div class="feature-card" onclick="openModal('Reef 33', 3500, ['reef33.jpg'], 'Reef 33 — Fresh aquatic fragrance with oceanic top notes and a warm, woody dry-down.')"><img src="reef33.jpg" alt="reef 33"><h3>Reef 33</h3><div class="perfume-price">Rs. 3,500</div><button class="btn-secondary">View Details</button></div>
+            <div class="feature-card" onclick="openModal('Lattafa Asad', 5500, ['lattafa asad.webp'], 'Lattafa Asad — Bold and fierce. A powerful oriental fragrance with spicy, woody, and animalic notes.')"><img src="lattafa asad.webp" alt="ameer intense"><h3>Lattafa Asad</h3><div class="perfume-price">Rs. 5,500</div><button class="btn-secondary">View Details</button></div>
+            <div class="feature-card" onclick="openModal('Blue Oud', 5500, ['bloue oud.jpg'], 'Blue Oud — Combines crisp blue notes with deep oud for a modern oriental signature.')"><img src="bloue oud.jpg" alt="blue oud"><h3>Blue Oud</h3><div class="perfume-price">Rs. 5,500</div><button class="btn-secondary">View Details</button></div>
+            <div class="feature-card" onclick="openModal('Cherry by Ahmed', 5500, ['cherry by ahmed.jpg'], 'Cherry by Ahmed — Sweet, luscious fragrance bursting with ripe cherry and soft florals on a creamy musk base.')"><img src="cherry by ahmed.jpg" alt="cherry ahmed"><h3>Cherry by Ahmed</h3><div class="perfume-price">Rs. 5,500</div><button class="btn-secondary">View Details</button></div>
+            <div class="feature-card" onclick="openModal('Lattafa Nebra', 5500, ['latafa nebras.jpg'], 'Lattafa Nebra — Sparkling, radiant fragrance with bright citrus, floral heart, and a warm amber finish.')"><img src="latafa nebras.jpg" alt="nebra"><h3>Lattafa Nebra</h3><div class="perfume-price">Rs. 5,500</div><button class="btn-secondary">View Details</button></div>
+            <div class="feature-card" onclick="openModal('Afnan 9pm', 5500, ['afnan 9pm.jpg'], 'Afnan 9pm — The fragrance of the night. Sweet vanilla, caramel, and warm spices in a seductive musky base.')"><img src="afnan 9pm.jpg" alt="afnan 9pm"><h3>Afnan 9pm</h3><div class="perfume-price">Rs. 5,500</div><button class="btn-secondary">View Details</button></div>
+            <div class="feature-card" onclick="openModal('Lattafa Atlas', 5500, ['latafa atlas.jpg'], 'Lattafa Atlas — Majestic, adventurous. Woody spice with a fresh green opening and a rich, earthy dry-down.')"><img src="latafa atlas.jpg" alt="atlas"><h3>Lattafa Atlas</h3><div class="perfume-price">Rs. 5,500</div><button class="btn-secondary">View Details</button></div>
+        </div>
+    </div>
+</section>
+
+<!-- CART ICON -->
+<div id="cart-icon" onclick="toggleCart()"><i class="fas fa-shopping-cart"></i></div>
+
+<!-- CART POPUP -->
+<div id="cart-popup">
+    <div id="cart-content">
+        <h3>🛒 Your Cart</h3>
+        <div id="cart-view">
+            <div id="cart-items"></div>
+            <div style="margin-top:15px;font-weight:bold;text-align:right;">Total: Rs. <span id="cart-total">0</span></div>
+            <div class="cart-buttons">
+                <button onclick="showCheckoutForm()">Buy Now</button>
+                <button onclick="toggleCart()" style="background:#444;color:#fff;">Close</button>
+            </div>
+        </div>
+        <div id="checkout-form">
+            <button id="back-btn" onclick="hideCheckoutForm()">← Back to Cart</button>
+            <h4>📦 Enter Your Details</h4>
+            <input type="text" id="customer-name" placeholder="Full Name *" required>
+            <input type="tel" id="customer-phone" placeholder="Phone Number *" required>
+            <textarea id="customer-address" placeholder="Full Delivery Address *" required></textarea>
+            <button class="send-btn" onclick="sendToWhatsApp()">
+                <i class="fab fa-whatsapp"></i> Send Order on WhatsApp
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ORDER CONFIRMATION POPUP -->
+<div id="order-confirm-overlay">
+    <div id="order-confirm-box">
+        <div class="confirm-tick"><i class="fas fa-check"></i></div>
+        <h2>Order Placed! 🎉</h2>
+        <p>Your order has been sent to NexusScent via WhatsApp.</p>
+
+        <div class="order-id-badge">
+            <div class="label">Your Order ID</div>
+            <div class="code" id="confirm-order-id">NSC-0000</div>
+            <button class="copy-btn" onclick="copyOrderId()"><i class="fas fa-copy"></i> Copy</button>
+        </div>
+
+        <div class="confirm-note">
+            <strong>📌 Save this Order ID!</strong><br>
+            Use it to track your order at any time on our <strong>Track Order</strong> page.<br><br>
+            We will confirm your order on WhatsApp within <strong>1–2 hours</strong>.
+        </div>
+
+        <div class="confirm-actions">
+            <a href="track.html" class="btn-track-order">
+                <i class="fas fa-map-marker-alt"></i> Track My Order
+            </a>
+            <button class="btn-close-confirm" onclick="closeConfirm()">Close</button>
+        </div>
+    </div>
+</div>
+
+<!-- PRODUCT MODAL -->
+<div id="product-modal" onclick="handleModalBgClick(event)">
+    <div id="product-modal-inner">
+        <button id="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+        <div id="modal-slider-wrap">
+            <div id="main-img-wrap">
+                <button id="slider-prev" onclick="slideImg(-1)"><i class="fas fa-chevron-left"></i></button>
+                <img id="modal-main-img" src="" alt="">
+                <button id="slider-next" onclick="slideImg(1)"><i class="fas fa-chevron-right"></i></button>
+            </div>
+            <div id="modal-thumbs"></div>
+        </div>
+        <div id="modal-info">
+            <h2 id="modal-name"></h2>
+            <div id="modal-price"></div>
+            <p id="modal-desc"></p>
+            <div class="qty-row">
+                <span>Quantity:</span>
+                <div class="qty-controls">
+                    <button class="qty-btn" onclick="changeQty(-1)">−</button>
+                    <div id="modal-qty-display">1</div>
+                    <button class="qty-btn" onclick="changeQty(1)">+</button>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn-add-cart" onclick="modalAddToCart()"><i class="fas fa-cart-plus"></i> Add to Cart</button>
+                <button class="btn-buy-now" onclick="toggleBuyNowForm()"><i class="fas fa-bolt"></i> Buy Now</button>
+            </div>
+            <div id="modal-buynow-form">
+                <button class="btn-cancel-form" onclick="toggleBuyNowForm()">✕ Cancel</button>
+                <input type="text" id="modal-cname" placeholder="Full Name *">
+                <input type="tel" id="modal-cphone" placeholder="Phone Number *">
+                <textarea id="modal-caddress" placeholder="Full Delivery Address *"></textarea>
+                <button class="btn-wa-send" onclick="modalSendWhatsApp()"><i class="fab fa-whatsapp"></i> Send Order on WhatsApp</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+/* ========== ORDER ID GENERATOR ========== */
+function generateOrderId(){
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    let id = 'NSC-';
+    for(let i = 0; i < 6; i++) id += chars[Math.floor(Math.random() * chars.length)];
+    return id;
+}
+
+function saveOrderToStorage(orderId, name, phone, address, items, total){
+    const orders = JSON.parse(localStorage.getItem('nsc_orders') || '{}');
+    orders[orderId] = {
+        orderId, name, phone, address, items, total,
+        status: 'confirmed',
+        statusLabel: 'Order Confirmed',
+        placedAt: new Date().toISOString(),
+        updates: [
+            { status: 'confirmed', label: 'Order Confirmed', time: new Date().toISOString() }
+        ]
+    };
+    localStorage.setItem('nsc_orders', JSON.stringify(orders));
+}
+
+/* ========== CART ========== */
+let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+function addToCart(name, price, qty = 1){
+    let item = cart.find(i => i.name === name);
+    if(item){ item.quantity += qty; }
+    else{ cart.push({name, price, quantity: qty}); }
+    localStorage.setItem('cart', JSON.stringify(cart));
+    renderCart();
+}
+
+function removeFromCart(index){
+    cart.splice(index, 1);
+    localStorage.setItem('cart', JSON.stringify(cart));
+    renderCart();
+}
+
+function renderCart(){
+    const cartItems = document.getElementById('cart-items');
+    const cartTotal = document.getElementById('cart-total');
+    if(!cartItems) return;
+    cartItems.innerHTML = '';
+    let total = 0;
+    cart.forEach((item, index) => {
+        total += item.price * item.quantity;
+        const div = document.createElement('div');
+        div.className = 'cart-item';
+        div.innerHTML = `<span>${item.name} x${item.quantity}</span>
+            <span>Rs. ${(item.price * item.quantity).toLocaleString()}
+            <button onclick="removeFromCart(${index})">×</button></span>`;
+        cartItems.appendChild(div);
+    });
+    if(cartTotal) cartTotal.innerText = total.toLocaleString();
+}
+
+function toggleCart(show = null){
+    const popup = document.getElementById('cart-popup');
+    if(!popup) return;
+    if(show !== null){ popup.style.display = show ? 'flex' : 'none'; }
+    else{ popup.style.display = (popup.style.display === 'flex') ? 'none' : 'flex'; }
+    if(popup.style.display === 'flex') hideCheckoutForm();
+}
+
+function showCheckoutForm(){
+    if(cart.length === 0){ alert('Your cart is empty!'); return; }
+    document.getElementById('cart-view').style.display = 'none';
+    document.getElementById('checkout-form').style.display = 'block';
+}
+function hideCheckoutForm(){
+    document.getElementById('cart-view').style.display = 'block';
+    document.getElementById('checkout-form').style.display = 'none';
+}
+
+function sendToWhatsApp(){
+    const name    = document.getElementById('customer-name').value.trim();
+    const phone   = document.getElementById('customer-phone').value.trim();
+    const address = document.getElementById('customer-address').value.trim();
+    if(!name)    { alert('Please enter your full name.'); return; }
+    if(!phone)   { alert('Please enter your phone number.'); return; }
+    if(!address) { alert('Please enter your address.'); return; }
+
+    const orderId = generateOrderId();
+    const total   = document.getElementById('cart-total').innerText;
+    const itemsSnap = [...cart];
+
+    let msg = "🛒 *New Order - Nexus Scent*%0A";
+    msg += "🔖 *Order ID: " + orderId + "*%0A%0A";
+    cart.forEach(item => {
+        msg += "📦 " + item.name + " x" + item.quantity + " = Rs. " + (item.price * item.quantity).toLocaleString() + "%0A";
+    });
+    msg += "%0A💰 *Total: Rs. " + total + "*%0A%0A";
+    msg += "👤 *Name:* " + name + "%0A";
+    msg += "📞 *Phone:* " + phone + "%0A";
+    msg += "🏠 *Address:* " + address;
+
+    saveOrderToStorage(orderId, name, phone, address, itemsSnap, total);
+    window.open("https://wa.me/923098741371?text=" + msg, "_blank");
+
+    cart = []; localStorage.removeItem('cart');
+    renderCart(); toggleCart(false);
+
+    // Show confirmation popup
+    showConfirm(orderId);
+}
+
+/* ========== CONFIRMATION POPUP ========== */
+let lastOrderId = '';
+function showConfirm(orderId){
+    lastOrderId = orderId;
+    document.getElementById('confirm-order-id').textContent = orderId;
+    document.getElementById('order-confirm-overlay').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+function closeConfirm(){
+    document.getElementById('order-confirm-overlay').classList.remove('active');
+    document.body.style.overflow = '';
+}
+function copyOrderId(){
+    navigator.clipboard.writeText(lastOrderId).then(() => {
+        const btn = document.querySelector('.copy-btn');
+        btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+        setTimeout(() => btn.innerHTML = '<i class="fas fa-copy"></i> Copy', 1500);
+    });
+}
+
+/* ========== PRODUCT MODAL ========== */
+let modalImages = [], modalCurrentIdx = 0, modalQty = 1;
+let modalCurrentName = '', modalCurrentPrice = 0;
+
+function openModal(name, price, images, desc){
+    modalCurrentName = name; modalCurrentPrice = price;
+    modalImages = images; modalCurrentIdx = 0; modalQty = 1;
+    document.getElementById('modal-name').textContent  = name;
+    document.getElementById('modal-price').textContent = 'Rs. ' + price.toLocaleString();
+    document.getElementById('modal-desc').textContent  = desc;
+    document.getElementById('modal-qty-display').textContent = '1';
+    document.getElementById('modal-buynow-form').style.display = 'none';
+    ['modal-cname','modal-cphone','modal-caddress'].forEach(id => document.getElementById(id).value = '');
+    setSliderImage(0); buildThumbs();
+    const showArrows = images.length > 1;
+    document.getElementById('slider-prev').style.display = showArrows ? 'flex' : 'none';
+    document.getElementById('slider-next').style.display = showArrows ? 'flex' : 'none';
+    document.getElementById('product-modal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+function closeModal(){
+    document.getElementById('product-modal').classList.remove('active');
+    document.body.style.overflow = '';
+}
+function handleModalBgClick(e){ if(e.target === document.getElementById('product-modal')) closeModal(); }
+function setSliderImage(idx){
+    const img = document.getElementById('modal-main-img');
+    img.style.opacity = '0';
+    setTimeout(() => { img.src = encodeURI(modalImages[idx]); img.style.opacity = '1'; }, 150);
+    document.querySelectorAll('.modal-thumb').forEach((t,i) => t.classList.toggle('active', i === idx));
+    modalCurrentIdx = idx;
+}
+function buildThumbs(){
+    const wrap = document.getElementById('modal-thumbs'); wrap.innerHTML = '';
+    if(modalImages.length <= 1) return;
+    modalImages.forEach((src, i) => {
+        const t = document.createElement('img');
+        t.src = encodeURI(src);
+        t.className = 'modal-thumb' + (i===0?' active':'');
+        t.onclick = () => setSliderImage(i);
+        wrap.appendChild(t);
+    });
+}
+function slideImg(dir){ setSliderImage((modalCurrentIdx + dir + modalImages.length) % modalImages.length); }
+function changeQty(dir){ modalQty = Math.max(1, modalQty + dir); document.getElementById('modal-qty-display').textContent = modalQty; }
+function modalAddToCart(){
+    addToCart(modalCurrentName, modalCurrentPrice, modalQty);
+    const btn = document.querySelector('.btn-add-cart');
+    const orig = btn.innerHTML;
+    btn.innerHTML = '<i class="fas fa-check"></i> Added!';
+    btn.style.background = '#00ffcc'; btn.style.color = '#111';
+    setTimeout(() => { btn.innerHTML = orig; btn.style.background=''; btn.style.color=''; }, 1300);
+}
+function toggleBuyNowForm(){
+    const f = document.getElementById('modal-buynow-form');
+    f.style.display = f.style.display === 'flex' ? 'none' : 'flex';
+}
+function modalSendWhatsApp(){
+    const name    = document.getElementById('modal-cname').value.trim();
+    const phone   = document.getElementById('modal-cphone').value.trim();
+    const address = document.getElementById('modal-caddress').value.trim();
+    if(!name)    { alert('Please enter your full name.'); return; }
+    if(!phone)   { alert('Please enter your phone number.'); return; }
+    if(!address) { alert('Please enter your address.'); return; }
+
+    const orderId = generateOrderId();
+    const total   = modalCurrentPrice * modalQty;
+
+    let msg = "🛒 *New Order - Nexus Scent*%0A";
+    msg += "🔖 *Order ID: " + orderId + "*%0A%0A";
+    msg += "📦 " + modalCurrentName + " x" + modalQty + " = Rs. " + total.toLocaleString() + "%0A";
+    msg += "%0A💰 *Total: Rs. " + total.toLocaleString() + "*%0A%0A";
+    msg += "👤 *Name:* " + name + "%0A";
+    msg += "📞 *Phone:* " + phone + "%0A";
+    msg += "🏠 *Address:* " + address;
+
+    saveOrderToStorage(orderId, name, phone, address,
+        [{name: modalCurrentName, price: modalCurrentPrice, quantity: modalQty}],
+        total.toLocaleString()
+    );
+    window.open("https://wa.me/923098741371?text=" + msg, "_blank");
+    closeModal();
+    showConfirm(orderId);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    renderCart();
+    document.querySelectorAll('.feature-card img').forEach(img => {
+        img.src = encodeURI(img.getAttribute('src'));
+        img.onerror = () => img.style.border = '2px solid red';
+    });
+});
+</script>
+</body>
+</html>

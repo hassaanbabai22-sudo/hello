@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus Scent - AI Fragrance Labs | Pakistan</title>
+    <link href="templatemo-nexus-style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .perfume-price { color: #00ffcc; font-weight: bold; font-size: 1.2rem; margin: 10px 0; }
+        .social-links a { font-size: 1.5rem; margin: 0 15px; color: #00ffcc; transition: 0.3s; }
+        .social-links a:hover { color: #fff; transform: translateY(-3px); }
+        .about-text { line-height: 1.8; color: #adb5bd; }
+
+        /* WhatsApp Button */
+        .whatsapp-float { position:fixed; width:60px; height:60px; bottom:20px; left:20px; background-color:#25D366; color:#FFF; border-radius:50px; text-align:center; font-size:30px; box-shadow:2px 2px 3px #999; z-index:100; display:flex; align-items:center; justify-content:center; text-decoration:none; transition:transform 0.2s; }
+        .whatsapp-float:hover { transform: scale(1.1); }
+
+        /* Cart */
+        #cart-icon { position: fixed; bottom: 30px; right: 30px; background: #00ffcc; color: #111; width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; font-size: 1.5rem; z-index: 9999; box-shadow: 0 0 15px rgba(0,255,204,0.5); }
+        #cart-popup { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 9998; justify-content: center; align-items: center; }
+        #cart-content { background: #111; color: #fff; padding: 30px; border-radius: 15px; width: 90%; max-width: 500px; border: 1px solid #222; }
+
+        /* =============================================
+           AI SCANNER SECTION
+        ============================================= */
+        .ai-scanner-section {
+            padding: 90px 20px;
+            text-align: center;
+            background: linear-gradient(180deg, rgba(0,0,0,0.6) 0%, rgba(0,255,204,0.03) 50%, rgba(0,0,0,0.6) 100%);
+            border-top: 1px solid rgba(0,255,204,0.2);
+            border-bottom: 1px solid rgba(0,255,204,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        .ai-scanner-section::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(0,255,204,0.04) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .scanner-eyebrow {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.68rem; font-weight: 700;
+            letter-spacing: 5px; text-transform: uppercase;
+            color: #00ffcc; margin-bottom: 14px;
+            display: flex; align-items: center; justify-content: center; gap: 14px;
+        }
+        .scanner-eyebrow::before, .scanner-eyebrow::after {
+            content: ''; width: 40px; height: 1px;
+            background: linear-gradient(90deg, transparent, #00ffcc);
+        }
+        .scanner-eyebrow::after { transform: scaleX(-1); }
+
+        .scanner-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2rem, 5vw, 3.4rem);
+            font-weight: 300; color: #fff;
+            margin-bottom: 10px; letter-spacing: -0.5px;
+        }
+        .scanner-title span { color: #00ffcc; font-style: italic; }
+        .scanner-subtitle { color: #5a5a5a; font-size: 0.88rem; margin-bottom: 36px; max-width: 420px; margin-left: auto; margin-right: auto; line-height: 1.7; }
+
+        /* Steps */
+        .scanner-steps {
+            display: flex; justify-content: center; gap: 30px;
+            margin-bottom: 36px; flex-wrap: wrap;
+        }
+        .scanner-step {
+            display: flex; align-items: center; gap: 10px;
+            font-size: 0.8rem; color: #555;
+        }
+        .scanner-step .step-num {
+            width: 24px; height: 24px; border-radius: 50%;
+            border: 1px solid #00ffcc44;
+            color: #00ffcc; font-size: 0.72rem;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        /* Start button */
+        .scanner-start-btn {
+            background: linear-gradient(135deg, #00ffcc, #00c9a7);
+            color: #111; border: none;
+            padding: 14px 44px; border-radius: 40px;
+            font-size: 0.88rem; font-weight: 700;
+            letter-spacing: 2px; text-transform: uppercase;
+            cursor: pointer; transition: 0.3s;
+            box-shadow: 0 0 30px rgba(0,255,204,0.3);
+            font-family: 'Montserrat', sans-serif;
+            margin-bottom: 36px;
+        }
+        .scanner-start-btn:hover { transform: translateY(-3px); box-shadow: 0 0 50px rgba(0,255,204,0.5); }
+        .scanner-start-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+        /* Camera frame */
+        .scanner-frame-wrap {
+            position: relative; display: inline-block;
+            margin: 0 auto 20px;
+        }
+        #webcam-container {
+            width: 240px; height: 240px;
+            border-radius: 20px; overflow: hidden;
+            border: 2px solid rgba(0,255,204,0.4);
+            box-shadow: 0 0 40px rgba(0,255,204,0.15), inset 0 0 20px rgba(0,255,204,0.05);
+            background: #0a0a0a;
+            margin: 0 auto;
+            position: relative;
+        }
+        #webcam-container canvas { width: 100% !important; height: 100% !important; }
+
+        /* Scanning corners */
+        .scan-corner {
+            position: absolute; width: 20px; height: 20px;
+            border-color: #00ffcc; border-style: solid;
+        }
+        .scan-corner.tl { top: -4px; left: -4px; border-width: 2px 0 0 2px; border-radius: 4px 0 0 0; }
+        .scan-corner.tr { top: -4px; right: -4px; border-width: 2px 2px 0 0; border-radius: 0 4px 0 0; }
+        .scan-corner.bl { bottom: -4px; left: -4px; border-width: 0 0 2px 2px; border-radius: 0 0 0 4px; }
+        .scan-corner.br { bottom: -4px; right: -4px; border-width: 0 2px 2px 0; border-radius: 0 0 4px 0; }
+
+        /* Scan line animation */
+        .scan-line {
+            position: absolute; left: 0; right: 0; height: 2px;
+            background: linear-gradient(90deg, transparent, #00ffcc, transparent);
+            animation: scanMove 2s linear infinite;
+            display: none;
+            border-radius: 2px;
+            box-shadow: 0 0 8px #00ffcc;
+        }
+        @keyframes scanMove {
+            0%   { top: 0%; opacity: 0; }
+            10%  { opacity: 1; }
+            90%  { opacity: 1; }
+            100% { top: 100%; opacity: 0; }
+        }
+
+        /* Scanner placeholder */
+        .scanner-placeholder {
+            width: 240px; height: 240px;
+            border-radius: 20px;
+            border: 2px dashed rgba(0,255,204,0.2);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 12px; color: #333; margin: 0 auto 20px;
+            font-size: 0.82rem;
+        }
+        .scanner-placeholder i { font-size: 2.5rem; color: rgba(0,255,204,0.2); }
+
+        /* Labels */
+        #label-container {
+            font-family: 'Montserrat', monospace;
+            font-size: 0.82rem; margin-top: 20px;
+            max-width: 340px; margin-left: auto; margin-right: auto;
+        }
+        .label-row {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 8px 14px; margin-bottom: 6px;
+            background: rgba(0,255,204,0.04);
+            border: 1px solid rgba(0,255,204,0.1);
+            border-radius: 8px;
+        }
+        .label-name { color: #aaa; font-size: 0.78rem; letter-spacing: 1px; text-transform: uppercase; }
+        .label-bar-wrap { flex: 1; margin: 0 12px; height: 4px; background: #1a1a1a; border-radius: 2px; }
+        .label-bar { height: 100%; background: #00ffcc; border-radius: 2px; transition: width 0.3s ease; }
+        .label-pct { color: #00ffcc; font-weight: 700; font-size: 0.82rem; min-width: 38px; text-align: right; }
+
+        /* Result card */
+        #result-card {
+            display: none;
+            background: rgba(0,255,204,0.06);
+            border: 1px solid rgba(0,255,204,0.3);
+            border-radius: 16px; padding: 20px 28px;
+            max-width: 360px; margin: 20px auto 0;
+            animation: fadeUp 0.4s ease;
+        }
+        @keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+        #result-card .result-label { color: #555; font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 8px; }
+        #result-card .result-name  { color: #fff; font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 400; margin-bottom: 4px; }
+        #result-card .result-conf  { color: #00ffcc; font-size: 0.82rem; margin-bottom: 16px; }
+
+        #redirect-btn {
+            background: linear-gradient(135deg, #00ffcc, #00c9a7);
+            color: #111; border: none;
+            padding: 11px 28px; border-radius: 30px;
+            font-size: 0.85rem; font-weight: 700;
+            letter-spacing: 1px; text-transform: uppercase;
+            cursor: pointer; transition: 0.2s;
+            font-family: 'Montserrat', sans-serif;
+            display: none;
+        }
+        #redirect-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,255,204,0.4); }
+
+        .scanner-error {
+            color: #ff6b6b; font-size: 0.85rem;
+            background: rgba(255,107,107,0.08); border: 1px solid rgba(255,107,107,0.2);
+            border-radius: 10px; padding: 12px 20px;
+            max-width: 400px; margin: 16px auto 0;
+            display: none;
+        }
+
+        /* =============================================
+           FOOTER
+        ============================================= */
+        .footer { background: #080808; border-top: 1px solid rgba(0,255,204,0.15); }
+        .footer-content { max-width: 1200px; margin: 0 auto; }
+
+        .footer-top {
+            padding: 60px 40px 40px;
+            display: grid;
+            grid-template-columns: 1.4fr 1fr 1fr 1fr 1.3fr;
+            gap: 40px;
+            border-bottom: 1px solid #111;
+        }
+
+        /* Brand col */
+        .footer-brand .brand-logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.6rem; color: #fff; margin-bottom: 12px;
+        }
+        .footer-brand .brand-logo span { color: #00ffcc; }
+        .footer-brand p { color: #444; font-size: 0.82rem; line-height: 1.8; margin-bottom: 20px; max-width: 220px; }
+        .footer-socials { display: flex; gap: 10px; }
+        .footer-social-btn {
+            width: 36px; height: 36px; border-radius: 10px;
+            border: 1px solid #1a1a1a; background: #111;
+            display: flex; align-items: center; justify-content: center;
+            color: #444; font-size: 0.9rem; text-decoration: none;
+            transition: 0.2s;
+        }
+        .footer-social-btn:hover { border-color: #00ffcc; color: #00ffcc; background: rgba(0,255,204,0.06); }
+        .footer-social-btn.wa:hover { border-color: #25D366; color: #25D366; }
+        .footer-social-btn.fb:hover { border-color: #1877F2; color: #1877F2; }
+
+        /* Footer cols */
+        .footer-col h4 {
+            color: #fff; font-size: 0.72rem; font-weight: 700;
+            letter-spacing: 3px; text-transform: uppercase;
+            margin-bottom: 20px; display: flex; align-items: center; gap: 8px;
+        }
+        .footer-col h4::after { content: ''; flex:1; height:1px; background: linear-gradient(90deg,#1a1a1a,transparent); }
+        .footer-col ul { list-style: none; padding: 0; }
+        .footer-col ul li { margin-bottom: 10px; }
+        .footer-col ul li a {
+            color: #444; text-decoration: none;
+            font-size: 0.84rem; transition: 0.2s;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .footer-col ul li a:hover { color: #00ffcc; padding-left: 4px; }
+        .footer-col ul li a i { font-size: 0.65rem; opacity: 0.5; }
+
+        /* Newsletter */
+        .footer-newsletter p { color: #444; font-size: 0.82rem; line-height: 1.7; margin-bottom: 16px; }
+        .newsletter-wrap { position: relative; }
+        .newsletter-input {
+            background: #0d0d0d; border: 1px solid #1a1a1a;
+            color: #fff; padding: 11px 46px 11px 14px;
+            border-radius: 10px; font-size: 0.85rem; width: 100%;
+            outline: none; transition: border 0.2s;
+            font-family: 'Montserrat', sans-serif;
+            box-sizing: border-box;
+        }
+        .newsletter-input:focus { border-color: #00ffcc44; }
+        .newsletter-input::placeholder { color: #333; }
+        .newsletter-submit {
+            position: absolute; right: 6px; top: 50%; transform: translateY(-50%);
+            background: #00ffcc; color: #111; border: none;
+            width: 32px; height: 32px; border-radius: 8px;
+            cursor: pointer; font-size: 0.8rem; transition: 0.2s;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .newsletter-submit:hover { background: #00e6b8; }
+
+        /* Footer bottom */
+        .footer-bottom {
+            padding: 20px 40px;
+            display: flex; justify-content: space-between; align-items: center;
+            flex-wrap: wrap; gap: 12px;
+        }
+        .footer-bottom p { color: #2a2a2a; font-size: 0.78rem; }
+        .footer-bottom p span { color: #00ffcc; }
+        .footer-bottom-links { display: flex; gap: 20px; }
+        .footer-bottom-links a { color: #2a2a2a; font-size: 0.78rem; text-decoration: none; transition: color 0.2s; }
+        .footer-bottom-links a:hover { color: #00ffcc; }
+
+        @media (max-width: 900px) {
+            .footer-top { grid-template-columns: 1fr 1fr; padding: 40px 24px 30px; }
+            .footer-brand { grid-column: 1/-1; }
+            .footer-bottom { padding: 16px 24px; flex-direction: column; text-align: center; }
+        }
+        @media (max-width: 500px) {
+            .footer-top { grid-template-columns: 1fr; gap: 28px; }
+        }
+    </style>
+</head>
+
+<body id="top">
+    <a href="https://wa.me/923098741371" class="whatsapp-float" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <div id="cart-icon" onclick="toggleCart()">
+        <i class="fas fa-shopping-cart"></i>
+    </div>
+    <div id="cart-popup" style="display:none;">
+        <div id="cart-content">
+            <h3 style="color:#00ffcc;margin-top:0;">Your Cart</h3>
+            <div id="cart-items"></div>
+            <div style="margin-top:15px;font-weight:bold;">Total: Rs. <span id="cart-total">0</span></div>
+            <div style="margin-top:20px;display:flex;gap:10px;">
+                <button onclick="toggleCart()" style="background:#333;color:#fff;border:none;padding:10px 15px;border-radius:10px;cursor:pointer;flex:1;">Close</button>
+                <a href="gallery.html" style="background:#00ffcc;color:#111;border:none;padding:10px 15px;border-radius:10px;cursor:pointer;flex:1;text-align:center;text-decoration:none;font-weight:bold;">View Gallery</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="cyber-bg">
+        <div class="cyber-gradient"></div>
+        <div class="matrix-rain" id="matrixRain"></div>
+    </div>
+    <div class="particles" id="particlesContainer"></div>
+    <div class="grid-overlay"><div class="grid-lines"></div></div>
+    <div class="scanlines"></div>
+
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo"><span>Nexus</span> <span>Scent</span></a>
+            <ul class="nav-links">
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="gallery.html">Perfume Gallery</a></li>
+                <li><a href="stats.html">Market Stats</a></li>
+                <li><a href="track.html">Track Order</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <div class="nav-bottom">
+                <a href="gallery.html" class="cyber-button">Buy Now</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-container">
+            <h1 class="hero-title">
+                <span class="hero-nexus">Nexus </span><span class="hero-flow">Scent</span>
+            </h1>
+            <p class="hero-subtitle">The first AI-powered fragrance house in Pakistan. We decode the DNA of luxury to create scents that define the future.</p>
+            <div class="hero-buttons">
+                <a href="gallery.html" class="btn-primary">View Collection</a>
+                <a href="about.html" class="btn-secondary">Our Story</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- =============================================
+         AI FRAGRANCE SCANNER
+    ============================================= -->
+    <section class="ai-scanner-section" id="scanner">
+        <div class="scanner-eyebrow">AI Technology</div>
+        <h2 class="scanner-title">Fragrance <span>Scanner</span></h2>
+        <p class="scanner-subtitle">Point your camera at any NexusScent bottle and our AI will instantly identify it and show you full details.</p>
+
+        <div class="scanner-steps">
+            <div class="scanner-step"><div class="step-num">1</div> Click Start Scanner</div>
+            <div class="scanner-step"><div class="step-num">2</div> Allow camera access</div>
+            <div class="scanner-step"><div class="step-num">3</div> Hold bottle in view</div>
+        </div>
+
+        <div id="scanner-idle">
+            <div class="scanner-placeholder">
+                <i class="fas fa-camera"></i>
+                <span>Camera preview will appear here</span>
+            </div>
+        </div>
+
+        <div id="scanner-active" style="display:none;">
+            <div class="scanner-frame-wrap">
+                <div id="webcam-container"></div>
+                <div class="scan-line" id="scan-line"></div>
+                <div class="scan-corner tl"></div>
+                <div class="scan-corner tr"></div>
+                <div class="scan-corner bl"></div>
+                <div class="scan-corner br"></div>
+            </div>
+        </div>
+
+        <button class="scanner-start-btn" id="start-btn" onclick="init()">
+            <i class="fas fa-camera" style="margin-right:8px;"></i> Start Scanner
+        </button>
+
+        <div id="label-container"></div>
+
+        <div id="result-card">
+            <div class="result-label">Identified Fragrance</div>
+            <div class="result-name" id="result-name-text"></div>
+            <div class="result-conf" id="result-conf-text"></div>
+            <button id="redirect-btn" onclick="goToProduct()">
+                <i class="fas fa-arrow-right" style="margin-right:6px;"></i> View Product Details
+            </button>
+        </div>
+
+        <div class="scanner-error" id="scanner-error">
+            <i class="fas fa-exclamation-triangle" style="margin-right:8px;"></i>
+            <span id="scanner-error-text">Could not start camera. Please allow camera access and try again.</span>
+        </div>
+    </section>
+
+    <!-- =============================================
+         FOOTER
+    ============================================= -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-top">
+
+                <!-- Brand -->
+                <div class="footer-brand footer-col">
+                    <div class="brand-logo">Nexus<span>Scent</span></div>
+                    <p>Pakistan's first AI-powered fragrance house. Luxury scents, decoded and delivered to your door.</p>
+                    <div class="footer-socials">
+                        <a href="https://wa.me/923098741371" target="_blank" class="footer-social-btn wa" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                        <a href="https://www.facebook.com/profile.php?id=61563976653948" target="_blank" class="footer-social-btn fb" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="footer-social-btn" title="Instagram"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+
+                <!-- Shop -->
+                <div class="footer-col">
+                    <h4>Shop</h4>
+                    <ul>
+                        <li><a href="gallery.html"><i class="fas fa-chevron-right"></i> New Arrivals</a></li>
+                        <li><a href="gallery.html"><i class="fas fa-chevron-right"></i> All Perfumes</a></li>
+                        <li><a href="gallery.html"><i class="fas fa-chevron-right"></i> Premium Oud</a></li>
+                        <li><a href="gallery.html"><i class="fas fa-chevron-right"></i> Arabic Collection</a></li>
+                        <li><a href="gallery.html"><i class="fas fa-chevron-right"></i> Best Sellers</a></li>
+                    </ul>
+                </div>
+
+                <!-- Help -->
+                <div class="footer-col">
+                    <h4>Help</h4>
+                    <ul>
+                        <li><a href="track.html"><i class="fas fa-chevron-right"></i> Track My Order</a></li>
+                        <li><a href="shipping.html"><i class="fas fa-chevron-right"></i> Shipping Info</a></li>
+                        <li><a href="returns.html"><i class="fas fa-chevron-right"></i> Returns & Exchange</a></li>
+                        <li><a href="faq.html"><i class="fas fa-chevron-right"></i> FAQ</a></li>
+                        <li><a href="contact.html"><i class="fas fa-chevron-right"></i> Contact Us</a></li>
+                    </ul>
+                </div>
+
+                <!-- Company -->
+                <div class="footer-col">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="about.html"><i class="fas fa-chevron-right"></i> About NexusScent</a></li>
+                        <li><a href="policies.html"><i class="fas fa-chevron-right"></i> Privacy Policy</a></li>
+                        <li><a href="policies.html"><i class="fas fa-chevron-right"></i> Terms of Service</a></li>
+                        <li><a href="policies.html"><i class="fas fa-chevron-right"></i> Store Policies</a></li>
+                        <li><a href="contact.html"><i class="fas fa-chevron-right"></i> Get in Touch</a></li>
+                    </ul>
+                </div>
+
+                <!-- Newsletter -->
+                <div class="footer-col footer-newsletter">
+                    <h4>Stay Updated</h4>
+                    <p>Get notified about new arrivals, exclusive deals, and fragrance tips.</p>
+                    <div class="newsletter-wrap">
+                        <input type="email" class="newsletter-input" placeholder="Your email address">
+                        <button class="newsletter-submit" onclick="subscribeNewsletter()"><i class="fas fa-arrow-right"></i></button>
+                    </div>
+                    <div style="margin-top:16px;">
+                        <a href="https://wa.me/923098741371" target="_blank" style="display:flex;align-items:center;gap:8px;color:#25D366;font-size:0.82rem;text-decoration:none;">
+                            <i class="fab fa-whatsapp"></i> Chat with us on WhatsApp
+                        </a>
+                    </div>
+                </div>
+
+            </div><!-- /footer-top -->
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 <span>NexusScent</span>. All rights reserved. Made with ❤️ in  Quetta , Pakistan.</p>
+                <div class="footer-bottom-links">
+                    <a href="policies.html">Privacy</a>
+                    <a href="policies.html">Terms</a>
+                    <a href="shipping.html">Shipping</a>
+                    <a href="returns.html">Returns</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
+
+    <script>
+    /* =============================================
+       ⚠️  PASTE YOUR TEACHABLE MACHINE URL BELOW
+       It looks like: https://teachablemachine.withgoogle.com/models/XXXXXXXX/
+    ============================================= */
+    const MODEL_URL = "https://teachablemachine.withgoogle.com/models/CrRyh-nW1/";
+
+    let model, webcam, labelContainer, maxPredictions;
+    let currentDetectedProduct = "";
+    let scannerRunning = false;
+
+    function toggleCart() {
+        const popup = document.getElementById('cart-popup');
+        popup.style.display = (popup.style.display === 'flex') ? 'none' : 'flex';
+    }
+
+    async function init() {
+        const btn = document.getElementById('start-btn');
+        const errEl = document.getElementById('scanner-error');
+        errEl.style.display = 'none';
+
+        // Check if MODEL_URL is still placeholder
+        if (MODEL_URL.includes("YOUR_MODEL_ID")) {
+            document.getElementById('scanner-error-text').textContent =
+                "⚠️ Model not connected yet. Please paste your Teachable Machine URL into the code (MODEL_URL variable).";
+            errEl.style.display = 'block';
+            return;
+        }
+
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-right:8px;"></i> Loading AI Model…';
+
+        try {
+            const modelURL    = MODEL_URL + "model.json";
+            const metadataURL = MODEL_URL + "metadata.json";
+
+            model = await tmImage.load(modelURL, metadataURL);
+            maxPredictions = model.getTotalClasses();
+
+            webcam = new tmImage.Webcam(240, 240, true);
+            await webcam.setup();
+            await webcam.play();
+
+            // Show scanner frame, hide idle
+            document.getElementById('scanner-idle').style.display = 'none';
+            document.getElementById('scanner-active').style.display = 'block';
+            document.getElementById('scan-line').style.display = 'block';
+
+            const container = document.getElementById("webcam-container");
+            container.innerHTML = "";
+            container.appendChild(webcam.canvas);
+
+            // Build label rows
+            labelContainer = document.getElementById("label-container");
+            labelContainer.innerHTML = "";
+            for (let i = 0; i < maxPredictions; i++) {
+                const row = document.createElement("div");
+                row.className = "label-row";
+                row.innerHTML = `
+                    <span class="label-name" id="lname-${i}">—</span>
+                    <div class="label-bar-wrap"><div class="label-bar" id="lbar-${i}" style="width:0%"></div></div>
+                    <span class="label-pct" id="lpct-${i}">0%</span>`;
+                labelContainer.appendChild(row);
+            }
+
+            btn.innerHTML = '<i class="fas fa-stop" style="margin-right:8px;"></i> Stop Scanner';
+            btn.disabled = false;
+            btn.onclick = stopScanner;
+            scannerRunning = true;
+
+            window.requestAnimationFrame(loop);
+
+        } catch (err) {
+            console.error(err);
+            document.getElementById('scanner-error-text').textContent =
+                "Camera access denied or model failed to load. Please allow camera permissions and try again.";
+            errEl.style.display = 'block';
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-camera" style="margin-right:8px;"></i> Try Again';
+            btn.onclick = init;
+        }
+    }
+
+    function stopScanner() {
+        if (webcam) { webcam.stop(); }
+        scannerRunning = false;
+        document.getElementById('scanner-active').style.display = 'none';
+        document.getElementById('scan-line').style.display = 'none';
+        const btn = document.getElementById('start-btn');
+        btn.innerHTML = '<i class="fas fa-camera" style="margin-right:8px;"></i> Scan Again';
+        btn.onclick = init;
+        // Keep result card visible after stopping — don't clear it
+        const resultCard = document.getElementById('result-card');
+        if (resultCard.style.display !== 'block') {
+            document.getElementById('scanner-idle').style.display = 'block';
+        }
+    }
+
+    async function loop() {
+        if (!scannerRunning) return;
+        webcam.update();
+        await predict();
+        window.requestAnimationFrame(loop);
+    }
+
+    async function predict() {
+        const prediction = await model.predict(webcam.canvas);
+        let top = { className: "", probability: 0 };
+
+        for (let i = 0; i < maxPredictions; i++) {
+            const prob = prediction[i].probability;
+            const name = prediction[i].className;
+
+            document.getElementById(`lname-${i}`).textContent = name;
+            document.getElementById(`lbar-${i}`).style.width  = (prob * 100).toFixed(0) + "%";
+            document.getElementById(`lpct-${i}`).textContent  = (prob * 100).toFixed(0) + "%";
+
+            if (prob > top.probability) top = { className: name, probability: prob };
+        }
+
+        const resultCard = document.getElementById('result-card');
+        const redirectBtn = document.getElementById('redirect-btn');
+
+        // Always track best match
+        currentDetectedProduct = top.className.toLowerCase().trim();
+        document.getElementById('result-name-text').textContent = top.className;
+
+        const pct = (top.probability * 100).toFixed(0);
+
+        if (top.probability >= 0.55) {
+            // Good confidence — show result + button
+            let confColor = top.probability >= 0.75 ? '#00ffcc' : '#ffd700';
+            document.getElementById('result-conf-text').innerHTML =
+                `Confidence: <span style="color:${confColor};font-weight:700;">${pct}%</span>`;
+            resultCard.style.display = 'block';
+            redirectBtn.style.display = 'inline-flex';
+            redirectBtn.innerHTML = '<i class="fas fa-arrow-right" style="margin-right:6px;"></i> View ' + top.className;
+        } else {
+            // Low confidence — show result but say "hold closer", no button
+            document.getElementById('result-conf-text').innerHTML =
+                `<span style="color:#ff6b6b;">${pct}% — hold the bottle closer to camera</span>`;
+            resultCard.style.display = 'block';
+            redirectBtn.style.display = 'none';
+        }
+    }
+
+    function goToProduct() {
+        const productMap = {
+            "sapphire":  "sapphire.html",
+            "oud roses": "oudroses.html",
+            "oudroses":  "oudroses.html",
+            "marj":      "marj.html",
+            "deep blue": "gallery.html",
+            "deep black":"gallery.html",
+        };
+        let fileName = null;
+        for (const key in productMap) {
+            if (currentDetectedProduct.includes(key)) { fileName = productMap[key]; break; }
+        }
+        if (fileName) { window.location.href = fileName; }
+        else { window.location.href = "gallery.html"; }
+    }
+
+    function subscribeNewsletter() {
+        const input = document.querySelector('.newsletter-input');
+        const email = input.value.trim();
+        if (!email || !email.includes('@')) { input.style.borderColor = '#ff4444'; return; }
+        const btn = document.querySelector('.newsletter-submit');
+        btn.innerHTML = '<i class="fas fa-check"></i>';
+        btn.style.background = '#00e6b8';
+        input.value = '';
+        setTimeout(() => { btn.innerHTML = '<i class="fas fa-arrow-right"></i>'; btn.style.background = ''; }, 2500);
+    }
+    </script>
+</body>
+</html>

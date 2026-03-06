@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ - NexusScent</title>
+    <link href="templatemo-nexus-style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { background: #080808; color: #e8e0d0; font-family: 'Montserrat', sans-serif; }
+        .whatsapp-float { position:fixed; width:60px; height:60px; bottom:20px; left:20px; background-color:#25D366; color:#FFF; border-radius:50px; text-align:center; font-size:30px; box-shadow:2px 2px 3px #999; z-index:100; display:flex; align-items:center; justify-content:center; text-decoration:none; }
+        .page-wrap { max-width: 800px; margin: 0 auto; padding: 120px 24px 80px; }
+        .page-eyebrow { font-size:0.68rem; font-weight:700; letter-spacing:5px; text-transform:uppercase; color:#00ffcc; margin-bottom:14px; display:flex; align-items:center; gap:14px; }
+        .page-eyebrow::before,.page-eyebrow::after { content:''; width:36px; height:1px; background:linear-gradient(90deg,transparent,#00ffcc); }
+        .page-eyebrow::after { transform:scaleX(-1); }
+        .page-title { font-family:'Cormorant Garamond',serif; font-size:clamp(2.2rem,5vw,3.8rem); font-weight:300; color:#fff; margin-bottom:14px; }
+        .page-title span { color:#00ffcc; font-style:italic; }
+        .page-lead { color:#555; font-size:0.9rem; line-height:1.8; margin-bottom:50px; max-width:540px; }
+
+        /* Category tabs */
+        .faq-tabs { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:32px; }
+        .faq-tab { padding:8px 18px; border-radius:20px; border:1px solid #1a1a1a; background:#111; color:#555; font-size:0.8rem; cursor:pointer; transition:0.2s; }
+        .faq-tab:hover { border-color:#00ffcc44; color:#aaa; }
+        .faq-tab.active { border-color:#00ffcc; color:#00ffcc; background:rgba(0,255,204,0.06); }
+
+        /* FAQ items */
+        .faq-group { margin-bottom:40px; display:none; }
+        .faq-group.active { display:block; }
+        .faq-group-title { color:#333; font-size:0.68rem; letter-spacing:3px; text-transform:uppercase; margin-bottom:14px; }
+        .faq-item { background:#111; border:1px solid #1a1a1a; border-radius:14px; margin-bottom:10px; overflow:hidden; transition:border 0.2s; cursor:pointer; }
+        .faq-item:hover { border-color:#00ffcc22; }
+        .faq-item.open { border-color:#00ffcc44; }
+        .faq-q { padding:18px 20px; display:flex; justify-content:space-between; align-items:center; gap:12px; }
+        .faq-q span { color:#e8e0d0; font-size:0.88rem; font-weight:500; }
+        .faq-q i { color:#00ffcc; font-size:0.8rem; flex-shrink:0; transition:transform 0.3s; }
+        .faq-item.open .faq-q i { transform:rotate(45deg); }
+        .faq-a { max-height:0; overflow:hidden; transition:max-height 0.35s ease, padding 0.2s; padding:0 20px; }
+        .faq-item.open .faq-a { max-height:300px; padding:0 20px 18px; }
+        .faq-a p { color:#555; font-size:0.84rem; line-height:1.8; }
+        .faq-a a { color:#00ffcc; }
+
+        .cta-box { background:linear-gradient(135deg,rgba(0,255,204,0.06),rgba(0,255,204,0.02)); border:1px solid rgba(0,255,204,0.2); border-radius:16px; padding:32px 28px; text-align:center; margin-top:50px; }
+        .cta-box h3 { color:#fff; font-family:'Cormorant Garamond',serif; font-size:1.5rem; font-weight:300; margin-bottom:8px; }
+        .cta-box p { color:#555; font-size:0.84rem; margin-bottom:20px; }
+        .cta-box a { background:#25D366; color:#fff; padding:11px 28px; border-radius:30px; text-decoration:none; font-size:0.85rem; font-weight:700; display:inline-flex; align-items:center; gap:8px; transition:0.2s; }
+        .cta-box a:hover { background:#1ebe5d; transform:translateY(-2px); }
+        .footer-strip { background:#080808; border-top:1px solid #111; padding:24px 40px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-top:60px; }
+        .footer-strip p { color:#2a2a2a; font-size:0.78rem; }
+        .footer-strip p span { color:#00ffcc; }
+        .footer-strip-links { display:flex; gap:18px; }
+        .footer-strip-links a { color:#2a2a2a; font-size:0.78rem; text-decoration:none; transition:color 0.2s; }
+        .footer-strip-links a:hover { color:#00ffcc; }
+    </style>
+</head>
+<body>
+<a href="https://wa.me/923098741371" class="whatsapp-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
+<nav>
+    <div class="nav-container">
+        <a href="index.html" class="logo">Nexus<span>Scent</span></a>
+        <ul class="nav-links">
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="gallery.html">Perfume Gallery</a></li>
+            <li><a href="track.html">Track Order</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="page-wrap">
+    <div class="page-eyebrow">Help Centre</div>
+    <h1 class="page-title">Frequently Asked <span>Questions</span></h1>
+    <p class="page-lead">Find quick answers to the most common questions about our fragrances, orders, delivery, and more.</p>
+
+    <div class="faq-tabs">
+        <div class="faq-tab active" onclick="switchTab('all',this)">All</div>
+        <div class="faq-tab" onclick="switchTab('orders',this)">Orders</div>
+        <div class="faq-tab" onclick="switchTab('delivery',this)">Delivery</div>
+        <div class="faq-tab" onclick="switchTab('products',this)">Products</div>
+        <div class="faq-tab" onclick="switchTab('payment',this)">Payment</div>
+        <div class="faq-tab" onclick="switchTab('returns',this)">Returns</div>
+    </div>
+
+    <!-- ALL / ORDERS -->
+    <div class="faq-group active" id="tab-all">
+        <div class="faq-group-title">Orders</div>
+
+        <div class="faq-item" onclick="toggleFaq(this)">
+            <div class="faq-q"><span>How do I place an order?</span><i class="fas fa-plus"></i></div>
+            <div class="faq-a"><p>Browse our <a href="gallery.html">Perfume Gallery</a>, click on any product, select your quantity, and tap "Buy Now". Fill in your details and your order will be sent directly to our WhatsApp. We confirm it within 1–2 hours.</p></div>
+        </div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+            <div class="faq-q"><span>How can I track my order?</span><i class="fas fa-plus"></i></div>
+            <div class="faq-a"><p>Every order gets a unique Order ID (e.g. NSC-AB3X7K). Visit our <a href="track.html">Track Order</a> page and enter your Order ID to see the live status of your delivery.</p></div>
+        </div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+            <div class="faq-q"><span>Can I modify or cancel my order?</span><i class="fas fa-plus"></i></div>
+            <div class="faq-a"><p>Contact us on WhatsApp as soon as possible. If the order hasn't been dispatched yet, we can make changes. Once shipped, cancellation is not possible.</p></div>
+        </div>
+
+        <div class="faq-group-title" style="margin-top:28px;">Delivery</div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+            <div class="faq-q"><span>Do you deliver all over Pakistan?</span><i class="fas fa-plus"></i></div>
+            <div class="faq-a"><p>Yes! We deliver nationwide through TCS, Leopards, and M&P. Delivery typically takes 2–5 business days. Quetta orders usually arrive within 1–2 days.</p></div>
+        </div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+            <div class="faq-q"><span>What are the delivery charges?</span><i class="fas fa-plus"></i></div>
+            <div class="faq-a"><p>Delivery charges depend on your city and are calculated at checkout. We occasionally run free delivery promotions — follow us on Facebook or WhatsApp to stay updated.</p></div>
+        </div>
+
+        <div class="faq-group-title" style="margin-top:28px;">Products</div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+            <div class="faq-q"><span>Are your perfumes 100% original?</span><i class="fas fa-plus"></i></div>
+            <div class="faq-a"><p>Absolutely. Every fragrance in our collection is sourced directly and 100% authentic. We take pride in offering only genuine, original products — no replicas, no imitations.</p></div>
+        </div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+            <div class="faq-q"><span>How long do the perfumes last?</span><i class="fas fa-plus"></i></div>
+            <div class="faq-a"><p>Longevity varies by fragrance type. Our EDP (Eau de Parfum) range typically lasts 6–10 hours, while Oud-based perfumes can last 12+ hours. Check individual product descriptions for details.</p></div>
+        </div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+            <div class="faq-q"><span>Do you offer samples or testers?</span><i class="fas fa-plus"></i></div>
+            <div class="faq-a"><p>Contact us on WhatsApp to ask about availability of testers. We sometimes have sample sets available for customers who want to try before committing to a full bottle.</p></div>
+        </div>
+
+        <div class="faq-group-title" style="margin-top:28px;">Payment</div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+            <div class="faq-q"><span>What payment methods do you accept?</span><i class="fas fa-plus"></i></div>
+            <div class="faq-a"><p>We accept Cash on Delivery (COD), EasyPaisa, JazzCash, and bank transfer. Payment details are shared after order confirmation on WhatsApp.</p></div>
+        </div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+            <div class="faq-q"><span>Is Cash on Delivery available?</span><i class="fas fa-plus"></i></div>
+            <div class="faq-a"><p>Yes! COD is available for most cities across Pakistan. You pay when your order arrives at your door — simple and secure.</p></div>
+        </div>
+
+        <div class="faq-group-title" style="margin-top:28px;">Returns</div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+            <div class="faq-q"><span>Can I return or exchange a perfume?</span><i class="fas fa-plus"></i></div>
+            <div class="faq-a"><p>If you receive a damaged, defective, or wrong product, contact us on WhatsApp within 48 hours with your Order ID and photos. We'll arrange an exchange or refund. See our full <a href="returns.html">Returns Policy</a>.</p></div>
+        </div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+            <div class="faq-q"><span>Do you offer bulk or wholesale pricing?</span><i class="fas fa-plus"></i></div>
+            <div class="faq-a"><p>Yes! We have special pricing for bulk and wholesale orders. Send us a WhatsApp message with your requirements and we'll get you the best deal.</p></div>
+        </div>
+    </div>
+
+    <div class="cta-box">
+        <h3>Still have a question?</h3>
+        <p>Our team is on WhatsApp and replies within 1–2 hours.</p>
+        <a href="https://wa.me/923098741371?text=Hi! I have a question." target="_blank"><i class="fab fa-whatsapp"></i> Ask Us Directly</a>
+    </div>
+</div>
+
+<div class="footer-strip">
+    <p>&copy; 2025 <span>NexusScent</span>. All rights reserved.</p>
+    <div class="footer-strip-links">
+        <a href="index.html">Home</a>
+        <a href="gallery.html">Shop</a>
+        <a href="shipping.html">Shipping</a>
+        <a href="returns.html">Returns</a>
+        <a href="contact.html">Contact</a>
+    </div>
+</div>
+
+<script>
+function switchTab(name, el){
+    document.querySelectorAll('.faq-tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    document.querySelectorAll('.faq-group').forEach(g => g.classList.remove('active'));
+    document.getElementById('tab-all').classList.add('active');
+}
+function toggleFaq(el){
+    const wasOpen = el.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(f => f.classList.remove('open'));
+    if(!wasOpen) el.classList.add('open');
+}
+</script>
+</body>
+</html>
