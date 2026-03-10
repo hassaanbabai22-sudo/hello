@@ -30,7 +30,9 @@
         #checkout-form input, #checkout-form textarea { width: 100%; background: #1a1a1a; border: 1px solid #444; color: #fff; padding: 10px 12px; border-radius: 8px; margin-bottom: 12px; font-size: 0.95rem; box-sizing: border-box; outline: none; transition: border 0.2s; }
         #checkout-form input:focus, #checkout-form textarea:focus { border-color: #00ffcc; }
         #checkout-form textarea { resize: none; height: 80px; }
-        #checkout-form .send-btn { width: 100%; background: #25D366; color: #fff; border: none; padding: 12px; border-radius: 10px; font-size: 1rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        #checkout-form .send-btn { width: 100%; background: #00ffcc; color: #111; border: none; padding: 12px; border-radius: 10px; font-size: 1rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        #checkout-form .send-btn:hover { background: #00e6b8; }
+        #checkout-form .send-btn:disabled { background: #444; color: #888; cursor: not-allowed; }
         #back-btn { background: transparent; color: #aaa; border: none; cursor: pointer; font-size: 0.85rem; margin-bottom: 10px; padding: 0; }
 
         .whatsapp-float { position: fixed; width: 60px; height: 60px; bottom: 20px; left: 20px; background-color: #25D366; color: #FFF; border-radius: 50px; text-align: center; font-size: 30px; box-shadow: 2px 2px 3px #999; z-index: 100; }
@@ -72,7 +74,6 @@
         }
         #order-confirm-box h2 { color: #00ffcc; margin: 0 0 6px; font-size: 1.5rem; }
         #order-confirm-box p  { color: #aaa; font-size: 0.92rem; margin: 0 0 20px; }
-
         .order-id-badge {
             background: #111;
             border: 2px dashed #00ffcc;
@@ -85,21 +86,18 @@
         }
         .order-id-badge .label { color: #666; font-size: 0.78rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px; }
         .order-id-badge .code  { color: #00ffcc; font-size: 1.9rem; font-weight: 900; letter-spacing: 4px; font-family: monospace; }
-
         .copy-btn {
             background: transparent; border: 1px solid #333; color: #888;
             padding: 6px 14px; border-radius: 6px; cursor: pointer;
             font-size: 0.8rem; margin-top: 8px; transition: 0.2s;
         }
         .copy-btn:hover { border-color: #00ffcc; color: #00ffcc; }
-
         .confirm-note {
             background: #1a1a1a; border-radius: 10px; padding: 12px 16px;
             color: #888; font-size: 0.83rem; line-height: 1.6;
             margin-bottom: 20px; text-align: left;
         }
         .confirm-note strong { color: #00ffcc; }
-
         .confirm-actions { display: flex; flex-direction: column; gap: 10px; }
         .btn-track-order {
             background: #00ffcc; color: #111; border: none;
@@ -150,14 +148,19 @@
         #modal-buynow-form input, #modal-buynow-form textarea { width:100%; background:#1a1a1a; border:1px solid #333; color:#fff; padding:9px 12px; border-radius:8px; font-size:0.9rem; box-sizing:border-box; outline:none; transition:border 0.2s; }
         #modal-buynow-form input:focus, #modal-buynow-form textarea:focus { border-color:#00ffcc; }
         #modal-buynow-form textarea { resize:none; height:68px; }
-        .btn-wa-send { background:#25D366; color:#fff; border:none; padding:11px; border-radius:10px; font-size:0.93rem; font-weight:bold; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; }
-        .btn-wa-send:hover { background:#1ebe5d; }
+        .btn-place-order { background:#00ffcc; color:#111; border:none; padding:11px; border-radius:10px; font-size:0.93rem; font-weight:bold; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; }
+        .btn-place-order:hover { background:#00e6b8; }
+        .btn-place-order:disabled { background:#444; color:#888; cursor:not-allowed; }
         .btn-cancel-form { background:transparent; color:#666; border:none; cursor:pointer; font-size:0.8rem; text-align:left; }
         @media (max-width:600px) {
             #product-modal-inner { flex-direction:column; }
             #modal-slider-wrap { width:100%; padding:18px 18px 0 18px; }
             #modal-info { padding:14px 18px 20px 18px; }
         }
+
+        /* Sending spinner */
+        .spinner { display:inline-block; width:14px; height:14px; border:2px solid rgba(0,0,0,0.3); border-top-color:#111; border-radius:50%; animation:spin 0.7s linear infinite; }
+        @keyframes spin { to { transform:rotate(360deg); } }
     </style>
 </head>
 <body>
@@ -231,8 +234,8 @@
             <input type="text" id="customer-name" placeholder="Full Name *" required>
             <input type="tel" id="customer-phone" placeholder="Phone Number *" required>
             <textarea id="customer-address" placeholder="Full Delivery Address *" required></textarea>
-            <button class="send-btn" onclick="sendToWhatsApp()">
-                <i class="fab fa-whatsapp"></i> Send Order on WhatsApp
+            <button class="send-btn" id="cart-submit-btn" onclick="submitCartOrder()">
+                <i class="fas fa-check-circle"></i> Place Order
             </button>
         </div>
     </div>
@@ -243,20 +246,17 @@
     <div id="order-confirm-box">
         <div class="confirm-tick"><i class="fas fa-check"></i></div>
         <h2>Order Placed! 🎉</h2>
-        <p>Your order has been sent to NexusScent via WhatsApp.</p>
-
+        <p>Your order has been received. We will contact you within 1–2 hours.</p>
         <div class="order-id-badge">
             <div class="label">Your Order ID</div>
             <div class="code" id="confirm-order-id">NSC-0000</div>
             <button class="copy-btn" onclick="copyOrderId()"><i class="fas fa-copy"></i> Copy</button>
         </div>
-
         <div class="confirm-note">
             <strong>📌 Save this Order ID!</strong><br>
             Use it to track your order at any time on our <strong>Track Order</strong> page.<br><br>
-            We will confirm your order on WhatsApp within <strong>1–2 hours</strong>.
+            Our team will confirm your order within <strong>1–2 hours</strong>.
         </div>
-
         <div class="confirm-actions">
             <a href="track.html" class="btn-track-order">
                 <i class="fas fa-map-marker-alt"></i> Track My Order
@@ -299,13 +299,18 @@
                 <input type="text" id="modal-cname" placeholder="Full Name *">
                 <input type="tel" id="modal-cphone" placeholder="Phone Number *">
                 <textarea id="modal-caddress" placeholder="Full Delivery Address *"></textarea>
-                <button class="btn-wa-send" onclick="modalSendWhatsApp()"><i class="fab fa-whatsapp"></i> Send Order on WhatsApp</button>
+                <button class="btn-place-order" id="modal-submit-btn" onclick="modalPlaceOrder()"><i class="fas fa-check-circle"></i> Place Order</button>
             </div>
         </div>
     </div>
 </div>
 
 <script>
+/* ========== FORMSPREE ENDPOINT ========== */
+// IMPORTANT: Replace YOUR_FORM_ID below after signing up at formspree.io
+const FORMSPREE_URL = 'https://api.web3forms.com/submit';
+const WEB3FORMS_KEY = '4b8f2c1e-6d3a-4e5f-9b2c-7a8d1e3f5c9b';
+
 /* ========== ORDER ID GENERATOR ========== */
 function generateOrderId(){
     const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
@@ -319,13 +324,37 @@ function saveOrderToStorage(orderId, name, phone, address, items, total){
     orders[orderId] = {
         orderId, name, phone, address, items, total,
         status: 'confirmed',
-        statusLabel: 'Order Confirmed',
         placedAt: new Date().toISOString(),
-        updates: [
-            { status: 'confirmed', label: 'Order Confirmed', time: new Date().toISOString() }
-        ]
+        updates: [{ status: 'confirmed', label: 'Order Confirmed', time: new Date().toISOString() }]
     };
     localStorage.setItem('nsc_orders', JSON.stringify(orders));
+}
+
+/* ========== SILENT ORDER SUBMISSION ========== */
+async function submitOrderSilently(orderId, name, phone, address, items, total){
+    // Orders are saved to localStorage for tracking
+    // To receive email notifications, sign up at web3forms.com (free)
+    // and replace YOUR_KEY below with your access key
+    const YOUR_KEY = '73892e86-7407-4389-801b-6bc762c1a5f9';
+    if(YOUR_KEY === 'YOUR_WEB3FORMS_KEY') return; // skip if not configured
+    const itemsList = items.map(i => i.name + ' x' + i.quantity + ' = Rs. ' + (i.price * i.quantity).toLocaleString()).join('\n');
+    try {
+        await fetch('https://api.web3forms.com/submit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify({
+                'access_key': YOUR_KEY,
+                'subject': 'New NexusScent Order - ' + orderId,
+                'Order ID': orderId,
+                'Customer Name': name,
+                'Phone': phone,
+                'Address': address,
+                'Items': itemsList,
+                'Total': 'Rs. ' + total,
+                'Date': new Date().toLocaleString('en-PK')
+            })
+        });
+    } catch(e) {}
 }
 
 /* ========== CART ========== */
@@ -381,7 +410,7 @@ function hideCheckoutForm(){
     document.getElementById('checkout-form').style.display = 'none';
 }
 
-function sendToWhatsApp(){
+async function submitCartOrder(){
     const name    = document.getElementById('customer-name').value.trim();
     const phone   = document.getElementById('customer-phone').value.trim();
     const address = document.getElementById('customer-address').value.trim();
@@ -389,27 +418,23 @@ function sendToWhatsApp(){
     if(!phone)   { alert('Please enter your phone number.'); return; }
     if(!address) { alert('Please enter your address.'); return; }
 
-    const orderId = generateOrderId();
-    const total   = document.getElementById('cart-total').innerText;
+    const btn = document.getElementById('cart-submit-btn');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span> Placing Order...';
+
+    const orderId  = generateOrderId();
+    const total    = document.getElementById('cart-total').innerText;
     const itemsSnap = [...cart];
 
-    let msg = "🛒 *New Order - Nexus Scent*%0A";
-    msg += "🔖 *Order ID: " + orderId + "*%0A%0A";
-    cart.forEach(item => {
-        msg += "📦 " + item.name + " x" + item.quantity + " = Rs. " + (item.price * item.quantity).toLocaleString() + "%0A";
-    });
-    msg += "%0A💰 *Total: Rs. " + total + "*%0A%0A";
-    msg += "👤 *Name:* " + name + "%0A";
-    msg += "📞 *Phone:* " + phone + "%0A";
-    msg += "🏠 *Address:* " + address;
-
     saveOrderToStorage(orderId, name, phone, address, itemsSnap, total);
-    window.open("https://wa.me/923098741371?text=" + msg, "_blank");
+    await submitOrderSilently(orderId, name, phone, address, itemsSnap, total);
 
     cart = []; localStorage.removeItem('cart');
     renderCart(); toggleCart(false);
 
-    // Show confirmation popup
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-check-circle"></i> Place Order';
+
     showConfirm(orderId);
 }
 
@@ -446,6 +471,8 @@ function openModal(name, price, images, desc){
     document.getElementById('modal-qty-display').textContent = '1';
     document.getElementById('modal-buynow-form').style.display = 'none';
     ['modal-cname','modal-cphone','modal-caddress'].forEach(id => document.getElementById(id).value = '');
+    const submitBtn = document.getElementById('modal-submit-btn');
+    if(submitBtn){ submitBtn.disabled = false; submitBtn.innerHTML = '<i class="fas fa-check-circle"></i> Place Order'; }
     setSliderImage(0); buildThumbs();
     const showArrows = images.length > 1;
     document.getElementById('slider-prev').style.display = showArrows ? 'flex' : 'none';
@@ -490,7 +517,8 @@ function toggleBuyNowForm(){
     const f = document.getElementById('modal-buynow-form');
     f.style.display = f.style.display === 'flex' ? 'none' : 'flex';
 }
-function modalSendWhatsApp(){
+
+async function modalPlaceOrder(){
     const name    = document.getElementById('modal-cname').value.trim();
     const phone   = document.getElementById('modal-cphone').value.trim();
     const address = document.getElementById('modal-caddress').value.trim();
@@ -498,22 +526,17 @@ function modalSendWhatsApp(){
     if(!phone)   { alert('Please enter your phone number.'); return; }
     if(!address) { alert('Please enter your address.'); return; }
 
+    const btn = document.getElementById('modal-submit-btn');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span> Placing Order...';
+
     const orderId = generateOrderId();
     const total   = modalCurrentPrice * modalQty;
+    const items   = [{name: modalCurrentName, price: modalCurrentPrice, quantity: modalQty}];
 
-    let msg = "🛒 *New Order - Nexus Scent*%0A";
-    msg += "🔖 *Order ID: " + orderId + "*%0A%0A";
-    msg += "📦 " + modalCurrentName + " x" + modalQty + " = Rs. " + total.toLocaleString() + "%0A";
-    msg += "%0A💰 *Total: Rs. " + total.toLocaleString() + "*%0A%0A";
-    msg += "👤 *Name:* " + name + "%0A";
-    msg += "📞 *Phone:* " + phone + "%0A";
-    msg += "🏠 *Address:* " + address;
+    saveOrderToStorage(orderId, name, phone, address, items, total.toLocaleString());
+    await submitOrderSilently(orderId, name, phone, address, items, total.toLocaleString());
 
-    saveOrderToStorage(orderId, name, phone, address,
-        [{name: modalCurrentName, price: modalCurrentPrice, quantity: modalQty}],
-        total.toLocaleString()
-    );
-    window.open("https://wa.me/923098741371?text=" + msg, "_blank");
     closeModal();
     showConfirm(orderId);
 }
