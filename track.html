@@ -8,136 +8,61 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
         body { background: #0a0a0a; }
-
-        .track-wrapper {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 120px 20px 60px;
-            box-sizing: border-box;
-        }
-
-        .track-card {
-            background: #111;
-            border: 1px solid #1e1e1e;
-            border-radius: 22px;
-            padding: 42px 36px;
-            width: 100%;
-            max-width: 560px;
-        }
-
+        .track-wrapper { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 120px 20px 60px; box-sizing: border-box; }
+        .track-card { background: #111; border: 1px solid #1e1e1e; border-radius: 22px; padding: 42px 36px; width: 100%; max-width: 560px; }
         .track-header { text-align: center; margin-bottom: 32px; }
-        .track-icon {
-            width: 68px; height: 68px;
-            background: linear-gradient(135deg, #00ffcc22, #00ffcc11);
-            border: 2px solid #00ffcc44;
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            margin: 0 auto 16px;
-            font-size: 1.7rem; color: #00ffcc;
-        }
+        .track-icon { width: 68px; height: 68px; background: linear-gradient(135deg, #00ffcc22, #00ffcc11); border: 2px solid #00ffcc44; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-size: 1.7rem; color: #00ffcc; }
         .track-header h1 { color: #fff; font-size: 1.8rem; margin: 0 0 6px; }
         .track-header p  { color: #666; font-size: 0.9rem; margin: 0; }
-
-        /* Search box */
-        .search-row {
-            display: flex; gap: 10px; margin-bottom: 10px;
-        }
-        .search-row input {
-            flex: 1;
-            background: #1a1a1a;
-            border: 1px solid #2a2a2a;
-            color: #fff;
-            padding: 12px 16px;
-            border-radius: 10px;
-            font-size: 1rem;
-            outline: none;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            transition: border 0.2s;
-        }
+        .search-row { display: flex; gap: 10px; margin-bottom: 10px; }
+        .search-row input { flex: 1; background: #1a1a1a; border: 1px solid #2a2a2a; color: #fff; padding: 12px 16px; border-radius: 10px; font-size: 1rem; outline: none; letter-spacing: 2px; text-transform: uppercase; transition: border 0.2s; }
         .search-row input::placeholder { letter-spacing: 0; text-transform: none; color: #444; }
         .search-row input:focus { border-color: #00ffcc; }
-        .search-row button {
-            background: #00ffcc; color: #111; border: none;
-            padding: 12px 20px; border-radius: 10px;
-            font-weight: 700; font-size: 0.95rem; cursor: pointer;
-            transition: 0.2s; white-space: nowrap;
-        }
+        .search-row button { background: #00ffcc; color: #111; border: none; padding: 12px 20px; border-radius: 10px; font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: 0.2s; white-space: nowrap; }
         .search-row button:hover { background: #00e6b8; }
-
         #track-error { color: #ff6b6b; font-size: 0.85rem; margin-bottom: 16px; display: none; }
-
-        /* Result card */
         #result-area { display: none; }
-
-        .result-header {
-            background: #0d0d0d;
-            border: 1px solid #1e1e1e;
-            border-radius: 14px;
-            padding: 18px 20px;
-            margin-bottom: 20px;
-        }
+        .result-header { background: #0d0d0d; border: 1px solid #1e1e1e; border-radius: 14px; padding: 18px 20px; margin-bottom: 20px; }
         .result-header .rid { color: #00ffcc; font-size: 1.3rem; font-weight: 900; letter-spacing: 3px; font-family: monospace; }
         .result-header .rname { color: #aaa; font-size: 0.88rem; margin-top: 4px; }
         .result-header .rtotal { color: #fff; font-size: 0.95rem; margin-top: 6px; font-weight: 600; }
 
-        /* Items list */
+        /* TCS BOX */
+        .tcs-box { background: #0d1a2a; border: 1px solid #4fc3f733; border-radius: 12px; padding: 14px 18px; margin-bottom: 20px; display: flex; align-items: center; gap: 14px; }
+        .tcs-box .tcs-icon { font-size: 1.8rem; }
+        .tcs-box .tcs-label { color: #4fc3f7; font-size: 0.75rem; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 4px; }
+        .tcs-box .tcs-num { color: #fff; font-size: 1.1rem; font-weight: 700; letter-spacing: 2px; font-family: monospace; }
+        .tcs-box a { display: inline-block; margin-top: 6px; background: #4fc3f722; border: 1px solid #4fc3f744; color: #4fc3f7; padding: 5px 14px; border-radius: 6px; text-decoration: none; font-size: 0.8rem; font-weight: 600; transition: 0.2s; }
+        .tcs-box a:hover { background: #4fc3f733; }
+
         .items-mini { margin-bottom: 20px; }
         .items-mini .im-title { color: #555; font-size: 0.78rem; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 8px; }
         .items-mini .im-item { color: #888; font-size: 0.88rem; padding: 6px 0; border-bottom: 1px solid #1a1a1a; display: flex; justify-content: space-between; }
         .items-mini .im-item:last-child { border-bottom: none; }
-
-        /* Timeline */
         .timeline-title { color: #555; font-size: 0.78rem; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 16px; }
         .timeline { position: relative; padding-left: 28px; }
-        .timeline::before {
-            content: '';
-            position: absolute; left: 9px; top: 8px; bottom: 8px;
-            width: 2px; background: #1e1e1e;
-        }
+        .timeline::before { content: ''; position: absolute; left: 9px; top: 8px; bottom: 8px; width: 2px; background: #1e1e1e; }
         .t-step { position: relative; margin-bottom: 22px; }
         .t-step:last-child { margin-bottom: 0; }
-        .t-dot {
-            position: absolute; left: -23px; top: 3px;
-            width: 14px; height: 14px; border-radius: 50%;
-            background: #1e1e1e; border: 2px solid #333;
-            transition: 0.3s;
-        }
+        .t-dot { position: absolute; left: -23px; top: 3px; width: 14px; height: 14px; border-radius: 50%; background: #1e1e1e; border: 2px solid #333; transition: 0.3s; }
         .t-step.done .t-dot   { background: #00ffcc; border-color: #00ffcc; box-shadow: 0 0 10px rgba(0,255,204,0.5); }
         .t-step.active .t-dot { background: #00ffcc; border-color: #00ffcc; box-shadow: 0 0 16px rgba(0,255,204,0.7); animation: pulse 1.4s infinite; }
-        @keyframes pulse {
-            0%,100% { box-shadow: 0 0 10px rgba(0,255,204,0.5); }
-            50%      { box-shadow: 0 0 22px rgba(0,255,204,0.9); }
-        }
+        @keyframes pulse { 0%,100% { box-shadow: 0 0 10px rgba(0,255,204,0.5); } 50% { box-shadow: 0 0 22px rgba(0,255,204,0.9); } }
         .t-label { color: #555; font-size: 0.88rem; }
         .t-step.done .t-label   { color: #aaa; }
         .t-step.active .t-label { color: #00ffcc; font-weight: 700; }
         .t-time { color: #333; font-size: 0.75rem; margin-top: 2px; }
         .t-step.done .t-time   { color: #444; }
         .t-step.active .t-time { color: #00ffcc88; }
-
-        /* Status badge */
-        .status-badge {
-            display: inline-flex; align-items: center; gap: 6px;
-            padding: 5px 12px; border-radius: 20px;
-            font-size: 0.8rem; font-weight: 600;
-            margin-top: 8px;
-        }
+        .status-badge { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; margin-top: 8px; }
         .badge-confirmed  { background: #00ffcc18; color: #00ffcc; border: 1px solid #00ffcc44; }
         .badge-processing { background: #ffd70018; color: #ffd700; border: 1px solid #ffd70044; }
         .badge-shipped    { background: #4fc3f718; color: #4fc3f7; border: 1px solid #4fc3f744; }
         .badge-delivered  { background: #69f04018; color: #69f040; border: 1px solid #69f04044; }
         .badge-cancelled  { background: #ff444418; color: #ff4444; border: 1px solid #ff444444; }
-
         .whatsapp-float { position:fixed; width:60px; height:60px; bottom:20px; left:20px; background-color:#25D366; color:#FFF; border-radius:50px; text-align:center; font-size:30px; box-shadow:2px 2px 3px #999; z-index:100; }
         .whatsapp-float i { margin-top:16px; display:block; }
-
-        @media (max-width: 500px) {
-            .track-card { padding: 28px 20px; }
-            .search-row { flex-direction: column; }
-        }
+        @media (max-width: 500px) { .track-card { padding: 28px 20px; } .search-row { flex-direction: column; } }
     </style>
 </head>
 <body>
@@ -166,20 +91,28 @@
             <h1>Track Your Order</h1>
             <p>Enter your Order ID to see the live status</p>
         </div>
-
         <div class="search-row">
             <input type="text" id="order-input" placeholder="e.g. NSC-AB3X7K" maxlength="10" oninput="this.value=this.value.toUpperCase()">
             <button onclick="trackOrder()"><i class="fas fa-search"></i> Track</button>
         </div>
         <div id="track-error">❌ Order ID not found. Please check and try again.</div>
 
-        <!-- RESULT -->
         <div id="result-area">
             <div class="result-header">
                 <div class="rid" id="res-id"></div>
                 <div class="rname" id="res-name"></div>
                 <div class="rtotal" id="res-total"></div>
                 <div id="res-badge"></div>
+            </div>
+
+            <!-- TCS TRACKING BOX — shows only when TCS number is available -->
+            <div class="tcs-box" id="tcs-box" style="display:none;">
+                <div class="tcs-icon">🚚</div>
+                <div>
+                    <div class="tcs-label">TCS Tracking Number</div>
+                    <div class="tcs-num" id="tcs-number"></div>
+                    <a href="https://www.tcsexpress.com/track" target="_blank">Track on TCS Website →</a>
+                </div>
             </div>
 
             <div class="items-mini">
@@ -195,10 +128,10 @@
 
 <script>
 const STATUS_STEPS = [
-    { key: 'confirmed',  label: 'Order Confirmed',      icon: 'fas fa-check-circle' },
-    { key: 'processing', label: 'Being Processed',       icon: 'fas fa-box-open' },
-    { key: 'shipped',    label: 'Shipped / On the Way',  icon: 'fas fa-shipping-fast' },
-    { key: 'delivered',  label: 'Delivered',             icon: 'fas fa-home' }
+    { key: 'confirmed',  label: 'Order Confirmed' },
+    { key: 'processing', label: 'Being Processed' },
+    { key: 'shipped',    label: 'Shipped / On the Way' },
+    { key: 'delivered',  label: 'Delivered' }
 ];
 
 const BADGE_MAP = {
@@ -210,10 +143,10 @@ const BADGE_MAP = {
 };
 
 function trackOrder(){
-    const input  = document.getElementById('order-input').value.trim().toUpperCase();
-    const errEl  = document.getElementById('track-error');
+    const input   = document.getElementById('order-input').value.trim().toUpperCase();
+    const errEl   = document.getElementById('track-error');
     const resArea = document.getElementById('result-area');
-    errEl.style.display = 'none';
+    errEl.style.display  = 'none';
     resArea.style.display = 'none';
 
     if(!input){ errEl.textContent = '⚠️ Please enter your Order ID.'; errEl.style.display = 'block'; return; }
@@ -231,9 +164,18 @@ function renderResult(order){
     document.getElementById('res-name').textContent  = '👤 ' + order.name + '  |  📞 ' + order.phone;
     document.getElementById('res-total').textContent = '💰 Total: Rs. ' + order.total;
 
-    // Badge
     const [cls, label] = BADGE_MAP[order.status] || ['badge-confirmed','Order Confirmed'];
     document.getElementById('res-badge').innerHTML = `<span class="status-badge ${cls}">${label}</span>`;
+
+    // Show TCS number if available
+    const tcsBox = document.getElementById('tcs-box');
+    const tcsNum = document.getElementById('tcs-number');
+    if(order.tcsNumber && order.tcsNumber.trim() !== ''){
+        tcsNum.textContent = order.tcsNumber;
+        tcsBox.style.display = 'flex';
+    } else {
+        tcsBox.style.display = 'none';
+    }
 
     // Items
     const itemsEl = document.getElementById('res-items');
@@ -263,11 +205,8 @@ function renderResult(order){
             if(i < currentIdx) cls += ' done';
             if(i === currentIdx) cls += ' active';
             div.className = cls;
-
-            // Find time from updates array
             const upd = (order.updates || []).find(u => u.status === step.key);
             const timeStr = upd ? formatTime(upd.time) : (i <= currentIdx ? 'Completed' : 'Pending');
-
             div.innerHTML = `<div class="t-dot"></div>
                 <div class="t-label">${step.label}</div>
                 <div class="t-time">${i <= currentIdx ? timeStr : '—'}</div>`;
@@ -285,14 +224,10 @@ function formatTime(iso){
            d.toLocaleTimeString('en-PK', {hour:'2-digit',minute:'2-digit'});
 }
 
-// Auto-track if URL has ?order=NSC-XXXXX
 window.addEventListener('DOMContentLoaded', () => {
     const params = new URLSearchParams(window.location.search);
     const oid = params.get('order');
-    if(oid){
-        document.getElementById('order-input').value = oid.toUpperCase();
-        trackOrder();
-    }
+    if(oid){ document.getElementById('order-input').value = oid.toUpperCase(); trackOrder(); }
 });
 </script>
 </body>
