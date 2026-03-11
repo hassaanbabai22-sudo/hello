@@ -6,70 +6,60 @@
     <title>Admin Panel - NexusScent</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background: #080808; color: #fff; font-family: 'Segoe UI', sans-serif; min-height: 100vh; }
-        #login-screen { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; }
-        .login-box { background: #111; border: 1px solid #1e1e1e; border-radius: 20px; padding: 40px 36px; width: 100%; max-width: 380px; text-align: center; }
-        .login-box .logo-text { color: #00ffcc; font-size: 1.6rem; font-weight: 900; margin-bottom: 6px; }
-        .login-box .sub { color: #555; font-size: 0.85rem; margin-bottom: 28px; }
-        .login-box input { width: 100%; background: #1a1a1a; border: 1px solid #2a2a2a; color: #fff; padding: 12px 16px; border-radius: 10px; font-size: 1rem; outline: none; margin-bottom: 12px; transition: border 0.2s; }
-        .login-box input:focus { border-color: #00ffcc; }
-        .login-box button { width: 100%; background: #00ffcc; color: #111; border: none; padding: 13px; border-radius: 10px; font-size: 1rem; font-weight: 700; cursor: pointer; }
-        .login-box button:hover { background: #00e6b8; }
-        #login-err { color: #ff6b6b; font-size: 0.83rem; margin-top: 10px; display: none; }
-        #admin-panel { display: none; }
-        .admin-nav { background: #0d0d0d; border-bottom: 1px solid #1a1a1a; padding: 16px 28px; display: flex; align-items: center; justify-content: space-between; }
-        .admin-nav .logo-text { color: #00ffcc; font-size: 1.2rem; font-weight: 900; }
-        .admin-nav .badge-admin { background: #00ffcc22; color: #00ffcc; border: 1px solid #00ffcc44; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; }
-        .admin-nav .logout-btn { background: transparent; border: 1px solid #333; color: #666; padding: 6px 14px; border-radius: 8px; cursor: pointer; font-size: 0.82rem; }
-        .admin-nav .logout-btn:hover { border-color: #ff4444; color: #ff4444; }
-        .admin-body { padding: 30px 28px; max-width: 900px; margin: 0 auto; }
-        .stats-row { display: flex; gap: 14px; margin-bottom: 28px; flex-wrap: wrap; }
-        .stat-card { background: #111; border: 1px solid #1a1a1a; border-radius: 14px; padding: 18px 22px; flex: 1; min-width: 130px; }
-        .stat-card .s-num { font-size: 2rem; font-weight: 900; color: #00ffcc; }
-        .stat-card .s-lbl { color: #555; font-size: 0.8rem; margin-top: 2px; }
-        .filter-row { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; align-items: center; }
-        .filter-row input { background: #1a1a1a; border: 1px solid #2a2a2a; color: #fff; padding: 9px 14px; border-radius: 9px; font-size: 0.9rem; outline: none; flex: 1; min-width: 180px; }
-        .filter-row input:focus { border-color: #00ffcc; }
-        .filter-btn { background: #1a1a1a; border: 1px solid #2a2a2a; color: #888; padding: 9px 14px; border-radius: 9px; cursor: pointer; font-size: 0.83rem; transition: 0.2s; }
-        .filter-btn.active, .filter-btn:hover { border-color: #00ffcc; color: #00ffcc; background: #00ffcc11; }
-        .order-card { background: #111; border: 1px solid #1a1a1a; border-radius: 16px; padding: 20px 22px; margin-bottom: 14px; transition: border 0.2s; }
-        .order-card:hover { border-color: #2a2a2a; }
-        .oc-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
-        .oc-id { color: #00ffcc; font-size: 1.1rem; font-weight: 900; letter-spacing: 2px; font-family: monospace; }
-        .oc-time { color: #444; font-size: 0.78rem; margin-top: 3px; }
-        .oc-name { color: #aaa; font-size: 0.88rem; margin-top: 4px; }
-        .oc-items { color: #666; font-size: 0.83rem; margin-bottom: 14px; line-height: 1.8; }
-        .oc-total { color: #fff; font-weight: 700; font-size: 0.92rem; }
-        .status-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
-        .status-row label { color: #555; font-size: 0.8rem; }
-        .status-select { background: #1a1a1a; border: 1px solid #2a2a2a; color: #fff; padding: 7px 12px; border-radius: 8px; font-size: 0.85rem; cursor: pointer; outline: none; }
-        .status-select:focus { border-color: #00ffcc; }
-        .update-btn { background: #00ffcc; color: #111; border: none; padding: 7px 16px; border-radius: 8px; font-size: 0.83rem; font-weight: 700; cursor: pointer; transition: 0.2s; }
-        .update-btn:hover { background: #00e6b8; }
-        .updated-flash { color: #00ffcc; font-size: 0.8rem; display: none; }
-
-        /* TCS ROW */
-        .tcs-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
-        .tcs-row label { color: #555; font-size: 0.8rem; white-space: nowrap; }
-        .tcs-input { background: #1a1a1a; border: 1px solid #2a2a2a; color: #fff; padding: 7px 12px; border-radius: 8px; font-size: 0.85rem; outline: none; flex: 1; min-width: 160px; transition: border 0.2s; }
-        .tcs-input:focus { border-color: #00ffcc; }
-        .tcs-badge { display: inline-flex; align-items: center; gap: 6px; background: #4fc3f718; border: 1px solid #4fc3f744; color: #4fc3f7; padding: 4px 10px; border-radius: 8px; font-size: 0.78rem; font-weight: 600; margin-top: 4px; }
-
-        .status-badge { display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 16px; font-size: 0.78rem; font-weight: 600; }
-        .badge-confirmed  { background: #00ffcc18; color: #00ffcc; border: 1px solid #00ffcc33; }
-        .badge-processing { background: #ffd70018; color: #ffd700; border: 1px solid #ffd70033; }
-        .badge-shipped    { background: #4fc3f718; color: #4fc3f7; border: 1px solid #4fc3f733; }
-        .badge-delivered  { background: #69f04018; color: #69f040; border: 1px solid #69f04033; }
-        .badge-cancelled  { background: #ff444418; color: #ff4444; border: 1px solid #ff444433; }
-        .empty-state { text-align: center; padding: 60px 20px; color: #333; font-size: 0.95rem; }
-        .empty-state i { font-size: 2.5rem; margin-bottom: 12px; display: block; }
-
-        /* IMPORTANT NOTICE */
-        .notice { background: #1a1200; border: 1px solid #ffd70033; border-radius: 12px; padding: 14px 18px; margin-bottom: 24px; color: #ffd700; font-size: 0.85rem; line-height: 1.6; }
-        .notice strong { color: #ffea00; }
-
-        @media (max-width: 500px) { .admin-body { padding: 20px 16px; } }
+        *{box-sizing:border-box;margin:0;padding:0}
+        body{background:#080808;color:#fff;font-family:'Segoe UI',sans-serif;min-height:100vh}
+        #login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px}
+        .login-box{background:#111;border:1px solid #1e1e1e;border-radius:20px;padding:40px 36px;width:100%;max-width:380px;text-align:center}
+        .login-box .logo-text{color:#00ffcc;font-size:1.6rem;font-weight:900;margin-bottom:6px}
+        .login-box .sub{color:#555;font-size:0.85rem;margin-bottom:28px}
+        .login-box input{width:100%;background:#1a1a1a;border:1px solid #2a2a2a;color:#fff;padding:12px 16px;border-radius:10px;font-size:1rem;outline:none;margin-bottom:12px;transition:border 0.2s}
+        .login-box input:focus{border-color:#00ffcc}
+        .login-box button{width:100%;background:#00ffcc;color:#111;border:none;padding:13px;border-radius:10px;font-size:1rem;font-weight:700;cursor:pointer}
+        #login-err{color:#ff6b6b;font-size:0.83rem;margin-top:10px;display:none}
+        #admin-panel{display:none}
+        .admin-nav{background:#0d0d0d;border-bottom:1px solid #1a1a1a;padding:16px 28px;display:flex;align-items:center;justify-content:space-between}
+        .admin-nav .logo-text{color:#00ffcc;font-size:1.2rem;font-weight:900}
+        .badge-admin{background:#00ffcc22;color:#00ffcc;border:1px solid #00ffcc44;padding:4px 10px;border-radius:20px;font-size:0.75rem}
+        .logout-btn{background:transparent;border:1px solid #333;color:#666;padding:6px 14px;border-radius:8px;cursor:pointer;font-size:0.82rem}
+        .logout-btn:hover{border-color:#ff4444;color:#ff4444}
+        .admin-body{padding:30px 28px;max-width:900px;margin:0 auto}
+        .stats-row{display:flex;gap:14px;margin-bottom:28px;flex-wrap:wrap}
+        .stat-card{background:#111;border:1px solid #1a1a1a;border-radius:14px;padding:18px 22px;flex:1;min-width:130px}
+        .stat-card .s-num{font-size:2rem;font-weight:900;color:#00ffcc}
+        .stat-card .s-lbl{color:#555;font-size:0.8rem;margin-top:2px}
+        .filter-row{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;align-items:center}
+        .filter-row input{background:#1a1a1a;border:1px solid #2a2a2a;color:#fff;padding:9px 14px;border-radius:9px;font-size:0.9rem;outline:none;flex:1;min-width:180px}
+        .filter-row input:focus{border-color:#00ffcc}
+        .filter-btn{background:#1a1a1a;border:1px solid #2a2a2a;color:#888;padding:9px 14px;border-radius:9px;cursor:pointer;font-size:0.83rem;transition:0.2s}
+        .filter-btn.active,.filter-btn:hover{border-color:#00ffcc;color:#00ffcc;background:#00ffcc11}
+        .order-card{background:#111;border:1px solid #1a1a1a;border-radius:16px;padding:20px 22px;margin-bottom:14px;transition:border 0.2s}
+        .order-card:hover{border-color:#2a2a2a}
+        .oc-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+        .oc-id{color:#00ffcc;font-size:1.1rem;font-weight:900;letter-spacing:2px;font-family:monospace}
+        .oc-time{color:#444;font-size:0.78rem;margin-top:3px}
+        .oc-name{color:#aaa;font-size:0.88rem;margin-top:4px}
+        .oc-items{color:#666;font-size:0.83rem;margin-bottom:14px;line-height:1.8}
+        .oc-total{color:#fff;font-weight:700;font-size:0.92rem}
+        .status-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+        .status-row label{color:#555;font-size:0.8rem}
+        .status-select{background:#1a1a1a;border:1px solid #2a2a2a;color:#fff;padding:7px 12px;border-radius:8px;font-size:0.85rem;cursor:pointer;outline:none}
+        .update-btn{background:#00ffcc;color:#111;border:none;padding:7px 16px;border-radius:8px;font-size:0.83rem;font-weight:700;cursor:pointer;transition:0.2s}
+        .update-btn:hover{background:#00e6b8}
+        .updated-flash{color:#00ffcc;font-size:0.8rem;display:none}
+        .tcs-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:8px}
+        .tcs-row label{color:#555;font-size:0.8rem;white-space:nowrap}
+        .tcs-input{background:#1a1a1a;border:1px solid #2a2a2a;color:#fff;padding:7px 12px;border-radius:8px;font-size:0.85rem;outline:none;flex:1;min-width:160px;transition:border 0.2s}
+        .tcs-input:focus{border-color:#00ffcc}
+        .status-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:16px;font-size:0.78rem;font-weight:600}
+        .badge-confirmed{background:#00ffcc18;color:#00ffcc;border:1px solid #00ffcc33}
+        .badge-processing{background:#ffd70018;color:#ffd700;border:1px solid #ffd70033}
+        .badge-shipped{background:#4fc3f718;color:#4fc3f7;border:1px solid #4fc3f733}
+        .badge-delivered{background:#69f04018;color:#69f040;border:1px solid #69f04033}
+        .badge-cancelled{background:#ff444418;color:#ff4444;border:1px solid #ff444433}
+        .empty-state{text-align:center;padding:60px 20px;color:#333;font-size:0.95rem}
+        .empty-state i{font-size:2.5rem;margin-bottom:12px;display:block}
+        .loading{text-align:center;padding:40px;color:#555}
+        .refresh-btn{background:#00ffcc22;border:1px solid #00ffcc44;color:#00ffcc;padding:9px 18px;border-radius:9px;cursor:pointer;font-size:0.88rem;font-weight:600;margin-bottom:20px}
     </style>
 </head>
 <body>
@@ -92,34 +82,9 @@
         </div>
         <button class="logout-btn" onclick="doLogout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
     </div>
-
     <div class="admin-body">
-
-        <div class="notice">
-            <strong>⚠️ Important:</strong> Orders placed on your website are saved on the customer's device. To see orders here, you must be on the <strong>same device and browser</strong> the customer used — OR check your Gmail (<strong>haniyaeshal416@gmail.com</strong>) for order emails from Web3Forms. When a customer calls you, manually add their order below using the <strong>Add Manual Order</strong> button.
-        </div>
-
-        <!-- MANUAL ORDER ADD -->
-        <div style="margin-bottom:20px;">
-            <button onclick="toggleManualForm()" style="background:#00ffcc22;border:1px solid #00ffcc44;color:#00ffcc;padding:9px 18px;border-radius:9px;cursor:pointer;font-size:0.88rem;font-weight:600;">
-                <i class="fas fa-plus"></i> Add Manual Order
-            </button>
-        </div>
-        <div id="manual-form" style="display:none;background:#111;border:1px solid #1a1a1a;border-radius:16px;padding:22px;margin-bottom:20px;">
-            <h4 style="color:#00ffcc;margin-bottom:16px;">📦 Add Order Manually</h4>
-            <div style="display:flex;flex-direction:column;gap:10px;">
-                <input type="text" id="m-name" placeholder="Customer Full Name *" style="background:#1a1a1a;border:1px solid #2a2a2a;color:#fff;padding:10px 14px;border-radius:8px;font-size:0.9rem;outline:none;">
-                <input type="tel" id="m-phone" placeholder="Phone Number *" style="background:#1a1a1a;border:1px solid #2a2a2a;color:#fff;padding:10px 14px;border-radius:8px;font-size:0.9rem;outline:none;">
-                <input type="text" id="m-address" placeholder="Delivery Address *" style="background:#1a1a1a;border:1px solid #2a2a2a;color:#fff;padding:10px 14px;border-radius:8px;font-size:0.9rem;outline:none;">
-                <input type="text" id="m-items" placeholder="Items ordered (e.g. Sapphire x1, Deep Blue x2)" style="background:#1a1a1a;border:1px solid #2a2a2a;color:#fff;padding:10px 14px;border-radius:8px;font-size:0.9rem;outline:none;">
-                <input type="text" id="m-total" placeholder="Total Amount (e.g. 7000)" style="background:#1a1a1a;border:1px solid #2a2a2a;color:#fff;padding:10px 14px;border-radius:8px;font-size:0.9rem;outline:none;">
-                <input type="text" id="m-tcs" placeholder="TCS Tracking Number (optional)" style="background:#1a1a1a;border:1px solid #2a2a2a;color:#fff;padding:10px 14px;border-radius:8px;font-size:0.9rem;outline:none;">
-                <button onclick="addManualOrder()" style="background:#00ffcc;color:#111;border:none;padding:11px;border-radius:9px;font-weight:700;cursor:pointer;font-size:0.95rem;">Add Order</button>
-            </div>
-        </div>
-
+        <button class="refresh-btn" onclick="loadOrders()"><i class="fas fa-sync-alt"></i> Refresh Orders</button>
         <div class="stats-row" id="stats-row"></div>
-
         <div class="filter-row">
             <input type="text" id="search-input" placeholder="🔍  Search by Order ID or customer name..." oninput="renderOrders()">
             <button class="filter-btn active" data-filter="all"        onclick="setFilter(this)">All</button>
@@ -129,20 +94,21 @@
             <button class="filter-btn"        data-filter="delivered"  onclick="setFilter(this)">Delivered</button>
             <button class="filter-btn"        data-filter="cancelled"  onclick="setFilter(this)">Cancelled</button>
         </div>
-
-        <div id="orders-container"></div>
+        <div id="orders-container"><div class="loading"><i class="fas fa-spinner fa-spin"></i> Loading orders...</div></div>
     </div>
 </div>
 
 <script>
 const ADMIN_PASSWORD = 'nexus2024';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyeTWGkjZrB_bpi5MA2r8XybotHboBNbvGCGb10n7nwX5ZU0wDgfnzexDB1YhA8Lex6/exec';
+let allOrders = {};
 
 function doLogin(){
     const pass = document.getElementById('admin-pass').value;
     if(pass === ADMIN_PASSWORD){
         document.getElementById('login-screen').style.display = 'none';
         document.getElementById('admin-panel').style.display  = 'block';
-        renderStats(); renderOrders();
+        loadOrders();
     } else {
         document.getElementById('login-err').style.display = 'block';
     }
@@ -153,58 +119,30 @@ function doLogout(){
     document.getElementById('admin-pass').value = '';
 }
 
-function getOrders(){ return JSON.parse(localStorage.getItem('nsc_orders') || '{}'); }
-function saveOrders(o){ localStorage.setItem('nsc_orders', JSON.stringify(o)); }
-
-function generateOrderId(){
-    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-    let id = 'NSC-';
-    for(let i=0;i<6;i++) id += chars[Math.floor(Math.random()*chars.length)];
-    return id;
-}
-
-function toggleManualForm(){
-    const f = document.getElementById('manual-form');
-    f.style.display = f.style.display === 'none' ? 'block' : 'none';
-}
-
-function addManualOrder(){
-    const name    = document.getElementById('m-name').value.trim();
-    const phone   = document.getElementById('m-phone').value.trim();
-    const address = document.getElementById('m-address').value.trim();
-    const items   = document.getElementById('m-items').value.trim();
-    const total   = document.getElementById('m-total').value.trim();
-    const tcs     = document.getElementById('m-tcs').value.trim();
-    if(!name||!phone||!address||!items||!total){ alert('Please fill all required fields.'); return; }
-    const orderId = generateOrderId();
-    const orders  = getOrders();
-    orders[orderId] = {
-        orderId, name, phone, address,
-        items: [{ name: items, price: parseInt(total), quantity: 1 }],
-        total,
-        tcsNumber: tcs || '',
-        status: 'confirmed',
-        placedAt: new Date().toISOString(),
-        updates: [{ status: 'confirmed', label: 'Order Confirmed', time: new Date().toISOString() }]
-    };
-    saveOrders(orders);
-    ['m-name','m-phone','m-address','m-items','m-total','m-tcs'].forEach(id => document.getElementById(id).value = '');
-    toggleManualForm();
-    renderStats(); renderOrders();
-    alert('Order ' + orderId + ' added successfully!');
+async function loadOrders(){
+    document.getElementById('orders-container').innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Loading orders from Google Sheets...</div>';
+    try {
+        const res  = await fetch(SCRIPT_URL);
+        const data = await res.json();
+        if(data.success){
+            allOrders = data.orders || {};
+            renderStats();
+            renderOrders();
+        }
+    } catch(e){
+        document.getElementById('orders-container').innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i>Could not load orders. Check your internet connection.</div>';
+    }
 }
 
 function renderStats(){
-    const orders = getOrders();
-    const list   = Object.values(orders);
-    const counts = { all: list.length, confirmed: 0, processing: 0, shipped: 0, delivered: 0, cancelled: 0 };
-    list.forEach(o => { if(counts[o.status] !== undefined) counts[o.status]++; });
+    const list   = Object.values(allOrders);
+    const counts = {all:list.length, confirmed:0, processing:0, shipped:0, delivered:0, cancelled:0};
+    list.forEach(o => { if(counts[o.status]!==undefined) counts[o.status]++; });
     document.getElementById('stats-row').innerHTML = `
         <div class="stat-card"><div class="s-num">${counts.all}</div><div class="s-lbl">Total Orders</div></div>
         <div class="stat-card"><div class="s-num" style="color:#ffd700">${counts.confirmed}</div><div class="s-lbl">Confirmed</div></div>
         <div class="stat-card"><div class="s-num" style="color:#4fc3f7">${counts.shipped}</div><div class="s-lbl">Shipped</div></div>
-        <div class="stat-card"><div class="s-num" style="color:#69f040">${counts.delivered}</div><div class="s-lbl">Delivered</div></div>
-    `;
+        <div class="stat-card"><div class="s-num" style="color:#69f040">${counts.delivered}</div><div class="s-lbl">Delivered</div></div>`;
 }
 
 let currentFilter = 'all';
@@ -224,40 +162,27 @@ const BADGE_MAP = {
 };
 
 function renderOrders(){
-    const orders = getOrders();
     const search = document.getElementById('search-input').value.toLowerCase();
-    let list     = Object.values(orders).sort((a,b) => new Date(b.placedAt) - new Date(a.placedAt));
+    let list = Object.values(allOrders).sort((a,b) => new Date(b.placedAt) - new Date(a.placedAt));
     if(currentFilter !== 'all') list = list.filter(o => o.status === currentFilter);
-    if(search) list = list.filter(o =>
-        o.orderId.toLowerCase().includes(search) ||
-        (o.name||'').toLowerCase().includes(search)
-    );
+    if(search) list = list.filter(o => o.orderId.toLowerCase().includes(search) || (o.name||'').toLowerCase().includes(search));
     const container = document.getElementById('orders-container');
-    if(!list.length){
-        container.innerHTML = `<div class="empty-state"><i class="fas fa-inbox"></i>No orders found.</div>`;
-        return;
-    }
+    if(!list.length){ container.innerHTML = '<div class="empty-state"><i class="fas fa-inbox"></i>No orders found.</div>'; return; }
     container.innerHTML = list.map(order => {
         const [cls, lbl] = BADGE_MAP[order.status] || ['badge-confirmed','Confirmed'];
-        const itemsHtml  = (order.items||[]).map(i =>
-            `${i.name} × ${i.quantity} = Rs. ${(i.price*i.quantity).toLocaleString()}`
-        ).join('<br>');
-        const tcsHtml = order.tcsNumber
-            ? `<div class="tcs-badge"><i class="fas fa-truck"></i> TCS: ${order.tcsNumber}</div>`
-            : '';
-        return `
-        <div class="order-card" id="card-${order.orderId}">
+        const itemsText = (order.items||[]).map(i => i.name).join(', ');
+        return `<div class="order-card">
             <div class="oc-top">
                 <div>
                     <div class="oc-id">${order.orderId}</div>
                     <div class="oc-time">${formatTime(order.placedAt)}</div>
                     <div class="oc-name">👤 ${order.name} &nbsp;|&nbsp; 📞 ${order.phone}</div>
                     <div class="oc-name">🏠 ${order.address}</div>
-                    ${tcsHtml}
+                    ${order.tcsNumber ? '<div class="oc-name" style="color:#4fc3f7">🚚 TCS: ' + order.tcsNumber + '</div>' : ''}
                 </div>
                 <span class="status-badge ${cls}">${lbl}</span>
             </div>
-            <div class="oc-items">${itemsHtml}</div>
+            <div class="oc-items">${itemsText}</div>
             <div class="oc-total">Total: Rs. ${order.total}</div>
             <hr style="border:none;border-top:1px solid #1a1a1a;margin:14px 0">
             <div class="status-row">
@@ -282,34 +207,33 @@ function renderOrders(){
     }).join('');
 }
 
-function updateStatus(orderId){
-    const sel    = document.getElementById('sel-' + orderId);
-    const newSt  = sel.value;
-    const orders = getOrders();
-    if(!orders[orderId]) return;
-    orders[orderId].status      = newSt;
-    orders[orderId].statusLabel = sel.options[sel.selectedIndex].text;
-    if(!orders[orderId].updates) orders[orderId].updates = [];
-    const alreadyLogged = orders[orderId].updates.find(u => u.status === newSt);
-    if(!alreadyLogged){
-        orders[orderId].updates.push({ status: newSt, label: orders[orderId].statusLabel, time: new Date().toISOString() });
-    }
-    saveOrders(orders);
+async function updateStatus(orderId){
+    const sel   = document.getElementById('sel-' + orderId);
+    const newSt = sel.value;
+    allOrders[orderId].status = newSt;
+    try {
+        await fetch(SCRIPT_URL, {
+            method: 'POST',
+            body: JSON.stringify({ action: 'updateOrder', orderId, status: newSt })
+        });
+    } catch(e){}
     renderStats(); renderOrders();
     const flash = document.getElementById('flash-' + orderId);
-    if(flash){ flash.style.display = 'inline'; setTimeout(() => flash.style.display = 'none', 2000); }
+    if(flash){ flash.style.display='inline'; setTimeout(()=>flash.style.display='none', 2000); }
 }
 
-function saveTCS(orderId){
-    const tcsInput = document.getElementById('tcs-' + orderId);
-    const tcsNum   = tcsInput ? tcsInput.value.trim() : '';
-    const orders   = getOrders();
-    if(!orders[orderId]) return;
-    orders[orderId].tcsNumber = tcsNum;
-    saveOrders(orders);
-    const flash = document.getElementById('tcs-flash-' + orderId);
-    if(flash){ flash.style.display = 'inline'; setTimeout(() => flash.style.display = 'none', 2000); }
+async function saveTCS(orderId){
+    const tcsNum = document.getElementById('tcs-' + orderId).value.trim();
+    allOrders[orderId].tcsNumber = tcsNum;
+    try {
+        await fetch(SCRIPT_URL, {
+            method: 'POST',
+            body: JSON.stringify({ action: 'updateOrder', orderId, tcsNumber: tcsNum })
+        });
+    } catch(e){}
     renderOrders();
+    const flash = document.getElementById('tcs-flash-' + orderId);
+    if(flash){ flash.style.display='inline'; setTimeout(()=>flash.style.display='none', 2000); }
 }
 
 function formatTime(iso){

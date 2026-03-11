@@ -4,231 +4,206 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Track Order - NexusScent</title>
-    <link href="templatemo-nexus-style.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
-        body { background: #0a0a0a; }
-        .track-wrapper { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 120px 20px 60px; box-sizing: border-box; }
-        .track-card { background: #111; border: 1px solid #1e1e1e; border-radius: 22px; padding: 42px 36px; width: 100%; max-width: 560px; }
-        .track-header { text-align: center; margin-bottom: 32px; }
-        .track-icon { width: 68px; height: 68px; background: linear-gradient(135deg, #00ffcc22, #00ffcc11); border: 2px solid #00ffcc44; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-size: 1.7rem; color: #00ffcc; }
-        .track-header h1 { color: #fff; font-size: 1.8rem; margin: 0 0 6px; }
-        .track-header p  { color: #666; font-size: 0.9rem; margin: 0; }
-        .search-row { display: flex; gap: 10px; margin-bottom: 10px; }
-        .search-row input { flex: 1; background: #1a1a1a; border: 1px solid #2a2a2a; color: #fff; padding: 12px 16px; border-radius: 10px; font-size: 1rem; outline: none; letter-spacing: 2px; text-transform: uppercase; transition: border 0.2s; }
-        .search-row input::placeholder { letter-spacing: 0; text-transform: none; color: #444; }
-        .search-row input:focus { border-color: #00ffcc; }
-        .search-row button { background: #00ffcc; color: #111; border: none; padding: 12px 20px; border-radius: 10px; font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: 0.2s; white-space: nowrap; }
-        .search-row button:hover { background: #00e6b8; }
-        #track-error { color: #ff6b6b; font-size: 0.85rem; margin-bottom: 16px; display: none; }
-        #result-area { display: none; }
-        .result-header { background: #0d0d0d; border: 1px solid #1e1e1e; border-radius: 14px; padding: 18px 20px; margin-bottom: 20px; }
-        .result-header .rid { color: #00ffcc; font-size: 1.3rem; font-weight: 900; letter-spacing: 3px; font-family: monospace; }
-        .result-header .rname { color: #aaa; font-size: 0.88rem; margin-top: 4px; }
-        .result-header .rtotal { color: #fff; font-size: 0.95rem; margin-top: 6px; font-weight: 600; }
-
-        /* TCS BOX */
-        .tcs-box { background: #0d1a2a; border: 1px solid #4fc3f733; border-radius: 12px; padding: 14px 18px; margin-bottom: 20px; display: flex; align-items: center; gap: 14px; }
-        .tcs-box .tcs-icon { font-size: 1.8rem; }
-        .tcs-box .tcs-label { color: #4fc3f7; font-size: 0.75rem; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 4px; }
-        .tcs-box .tcs-num { color: #fff; font-size: 1.1rem; font-weight: 700; letter-spacing: 2px; font-family: monospace; }
-        .tcs-box a { display: inline-block; margin-top: 6px; background: #4fc3f722; border: 1px solid #4fc3f744; color: #4fc3f7; padding: 5px 14px; border-radius: 6px; text-decoration: none; font-size: 0.8rem; font-weight: 600; transition: 0.2s; }
-        .tcs-box a:hover { background: #4fc3f733; }
-
-        .items-mini { margin-bottom: 20px; }
-        .items-mini .im-title { color: #555; font-size: 0.78rem; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 8px; }
-        .items-mini .im-item { color: #888; font-size: 0.88rem; padding: 6px 0; border-bottom: 1px solid #1a1a1a; display: flex; justify-content: space-between; }
-        .items-mini .im-item:last-child { border-bottom: none; }
-        .timeline-title { color: #555; font-size: 0.78rem; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 16px; }
-        .timeline { position: relative; padding-left: 28px; }
-        .timeline::before { content: ''; position: absolute; left: 9px; top: 8px; bottom: 8px; width: 2px; background: #1e1e1e; }
-        .t-step { position: relative; margin-bottom: 22px; }
-        .t-step:last-child { margin-bottom: 0; }
-        .t-dot { position: absolute; left: -23px; top: 3px; width: 14px; height: 14px; border-radius: 50%; background: #1e1e1e; border: 2px solid #333; transition: 0.3s; }
-        .t-step.done .t-dot   { background: #00ffcc; border-color: #00ffcc; box-shadow: 0 0 10px rgba(0,255,204,0.5); }
-        .t-step.active .t-dot { background: #00ffcc; border-color: #00ffcc; box-shadow: 0 0 16px rgba(0,255,204,0.7); animation: pulse 1.4s infinite; }
-        @keyframes pulse { 0%,100% { box-shadow: 0 0 10px rgba(0,255,204,0.5); } 50% { box-shadow: 0 0 22px rgba(0,255,204,0.9); } }
-        .t-label { color: #555; font-size: 0.88rem; }
-        .t-step.done .t-label   { color: #aaa; }
-        .t-step.active .t-label { color: #00ffcc; font-weight: 700; }
-        .t-time { color: #333; font-size: 0.75rem; margin-top: 2px; }
-        .t-step.done .t-time   { color: #444; }
-        .t-step.active .t-time { color: #00ffcc88; }
-        .status-badge { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; margin-top: 8px; }
-        .badge-confirmed  { background: #00ffcc18; color: #00ffcc; border: 1px solid #00ffcc44; }
-        .badge-processing { background: #ffd70018; color: #ffd700; border: 1px solid #ffd70044; }
-        .badge-shipped    { background: #4fc3f718; color: #4fc3f7; border: 1px solid #4fc3f744; }
-        .badge-delivered  { background: #69f04018; color: #69f040; border: 1px solid #69f04044; }
-        .badge-cancelled  { background: #ff444418; color: #ff4444; border: 1px solid #ff444444; }
-        .whatsapp-float { position:fixed; width:60px; height:60px; bottom:20px; left:20px; background-color:#25D366; color:#FFF; border-radius:50px; text-align:center; font-size:30px; box-shadow:2px 2px 3px #999; z-index:100; }
-        .whatsapp-float i { margin-top:16px; display:block; }
-        @media (max-width: 500px) { .track-card { padding: 28px 20px; } .search-row { flex-direction: column; } }
+        *{box-sizing:border-box;margin:0;padding:0}
+        body{background:#080808;color:#fff;font-family:'Segoe UI',sans-serif;min-height:100vh}
+        nav{background:#0d0d0d;border-bottom:1px solid #1a1a1a;padding:16px 28px;display:flex;align-items:center;justify-content:space-between}
+        .logo{color:#00ffcc;font-size:1.3rem;font-weight:900;text-decoration:none}
+        .logo span{color:#fff}
+        .nav-links{display:flex;gap:22px;list-style:none}
+        .nav-links a{color:#aaa;text-decoration:none;font-size:0.88rem;transition:color 0.2s}
+        .nav-links a:hover,.nav-links a.active{color:#00ffcc}
+        .track-wrap{max-width:600px;margin:80px auto;padding:0 20px}
+        .track-header{text-align:center;margin-bottom:40px}
+        .track-header h1{font-size:2rem;font-weight:900;color:#00ffcc;margin-bottom:8px}
+        .track-header p{color:#555;font-size:0.9rem}
+        .search-box{background:#111;border:1px solid #1e1e1e;border-radius:16px;padding:28px 24px;margin-bottom:24px}
+        .search-box label{color:#888;font-size:0.82rem;letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:8px}
+        .input-row{display:flex;gap:10px}
+        .input-row input{flex:1;background:#1a1a1a;border:1px solid #2a2a2a;color:#fff;padding:12px 16px;border-radius:10px;font-size:1rem;outline:none;transition:border 0.2s;font-family:monospace;letter-spacing:2px;text-transform:uppercase}
+        .input-row input:focus{border-color:#00ffcc}
+        .track-btn{background:#00ffcc;color:#111;border:none;padding:12px 22px;border-radius:10px;font-size:0.95rem;font-weight:700;cursor:pointer;white-space:nowrap;transition:0.2s}
+        .track-btn:hover{background:#00e6b8}
+        .track-btn:disabled{background:#444;color:#888;cursor:not-allowed}
+        #track-result{display:none}
+        .result-card{background:#111;border:1px solid #1e1e1e;border-radius:16px;padding:24px;margin-bottom:16px}
+        .result-card .rc-id{color:#00ffcc;font-size:1.3rem;font-weight:900;letter-spacing:3px;font-family:monospace;margin-bottom:4px}
+        .result-card .rc-sub{color:#555;font-size:0.8rem;margin-bottom:16px}
+        .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+        .info-item .lbl{color:#444;font-size:0.75rem;text-transform:uppercase;letter-spacing:1px;margin-bottom:3px}
+        .info-item .val{color:#ccc;font-size:0.9rem}
+        .status-hero{background:#00ffcc11;border:1px solid #00ffcc33;border-radius:12px;padding:16px 20px;display:flex;align-items:center;gap:14px;margin-bottom:20px}
+        .status-icon{width:44px;height:44px;background:#00ffcc;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#111;font-size:1.1rem;flex-shrink:0}
+        .status-icon.processing{background:#ffd700}
+        .status-icon.shipped{background:#4fc3f7}
+        .status-icon.delivered{background:#69f040}
+        .status-icon.cancelled{background:#ff4444}
+        .status-text .s-label{font-size:0.75rem;color:#555;text-transform:uppercase;letter-spacing:1px}
+        .status-text .s-val{font-size:1.1rem;font-weight:700;color:#fff;margin-top:2px}
+        .tcs-card{background:#4fc3f711;border:1px solid #4fc3f733;border-radius:12px;padding:16px 20px;margin-bottom:20px}
+        .tcs-card .tcs-title{color:#4fc3f7;font-size:0.8rem;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+        .tcs-card .tcs-num{font-size:1.4rem;font-weight:900;color:#fff;letter-spacing:3px;font-family:monospace;margin-bottom:10px}
+        .tcs-track-btn{background:#4fc3f7;color:#111;border:none;padding:9px 18px;border-radius:8px;font-size:0.85rem;font-weight:700;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+        .tcs-track-btn:hover{background:#29b6f6}
+        .timeline{padding-left:4px}
+        .timeline-title{color:#555;font-size:0.78rem;text-transform:uppercase;letter-spacing:1px;margin-bottom:14px}
+        .tl-item{display:flex;gap:14px;margin-bottom:14px;align-items:flex-start}
+        .tl-dot-wrap{display:flex;flex-direction:column;align-items:center;gap:0}
+        .tl-dot{width:12px;height:12px;border-radius:50%;background:#00ffcc;flex-shrink:0;margin-top:3px}
+        .tl-dot.inactive{background:#2a2a2a}
+        .tl-line{width:2px;background:#1e1e1e;flex:1;min-height:24px}
+        .tl-info .tl-status{color:#fff;font-size:0.88rem;font-weight:600}
+        .tl-info .tl-time{color:#444;font-size:0.78rem;margin-top:2px}
+        .not-found{text-align:center;padding:40px 20px}
+        .not-found i{font-size:2.5rem;color:#333;display:block;margin-bottom:12px}
+        .not-found p{color:#555;font-size:0.9rem}
+        .spinner-inline{display:inline-block;width:16px;height:16px;border:2px solid rgba(0,0,0,0.3);border-top-color:#111;border-radius:50%;animation:spin 0.7s linear infinite;vertical-align:middle}
+        @keyframes spin{to{transform:rotate(360deg)}}
+        @media(max-width:500px){.info-grid{grid-template-columns:1fr}.input-row{flex-direction:column}}
     </style>
 </head>
 <body>
 
-<a href="https://wa.me/923098741371" class="whatsapp-float" target="_blank">
-    <i class="fab fa-whatsapp"></i>
-</a>
-
 <nav>
-    <div class="nav-container">
-        <a href="index.html" class="logo">Nexus<span>Scent</span></a>
-        <ul class="nav-links">
-            <li><a href="about.html">About Us</a></li>
-            <li><a href="gallery.html">Perfume Gallery</a></li>
-            <li><a href="stats.html">Market Stats</a></li>
-            <li><a href="track.html" class="active">Track Order</a></li>
-            <li><a href="contact.html">Contact</a></li>
-        </ul>
-    </div>
+    <a href="index.html" class="logo">Nexus<span>Scent</span></a>
+    <ul class="nav-links">
+        <li><a href="about.html">About</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="track.html" class="active">Track Order</a></li>
+        <li><a href="contact.html">Contact</a></li>
+    </ul>
 </nav>
 
-<div class="track-wrapper">
-    <div class="track-card">
-        <div class="track-header">
-            <div class="track-icon"><i class="fas fa-map-marker-alt"></i></div>
-            <h1>Track Your Order</h1>
-            <p>Enter your Order ID to see the live status</p>
-        </div>
-        <div class="search-row">
-            <input type="text" id="order-input" placeholder="e.g. NSC-AB3X7K" maxlength="10" oninput="this.value=this.value.toUpperCase()">
-            <button onclick="trackOrder()"><i class="fas fa-search"></i> Track</button>
-        </div>
-        <div id="track-error">❌ Order ID not found. Please check and try again.</div>
+<div class="track-wrap">
+    <div class="track-header">
+        <h1><i class="fas fa-map-marker-alt"></i> Track Your Order</h1>
+        <p>Enter your Order ID to get real-time updates from any device</p>
+    </div>
 
-        <div id="result-area">
-            <div class="result-header">
-                <div class="rid" id="res-id"></div>
-                <div class="rname" id="res-name"></div>
-                <div class="rtotal" id="res-total"></div>
-                <div id="res-badge"></div>
-            </div>
-
-            <!-- TCS TRACKING BOX — shows only when TCS number is available -->
-            <div class="tcs-box" id="tcs-box" style="display:none;">
-                <div class="tcs-icon">🚚</div>
-                <div>
-                    <div class="tcs-label">TCS Tracking Number</div>
-                    <div class="tcs-num" id="tcs-number"></div>
-                    <a href="https://www.tcsexpress.com/track" target="_blank">Track on TCS Website →</a>
-                </div>
-            </div>
-
-            <div class="items-mini">
-                <div class="im-title">Items Ordered</div>
-                <div id="res-items"></div>
-            </div>
-
-            <div class="timeline-title">Order Journey</div>
-            <div class="timeline" id="res-timeline"></div>
+    <div class="search-box">
+        <label>Order ID</label>
+        <div class="input-row">
+            <input type="text" id="order-input" placeholder="NSC-XXXXXX" maxlength="10" oninput="this.value=this.value.toUpperCase()" onkeydown="if(event.key==='Enter') trackOrder()">
+            <button class="track-btn" id="track-btn" onclick="trackOrder()"><i class="fas fa-search"></i> Track</button>
         </div>
     </div>
+
+    <div id="track-result"></div>
 </div>
 
 <script>
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyeTWGkjZrB_bpi5MA2r8XybotHboBNbvGCGb10n7nwX5ZU0wDgfnzexDB1YhA8Lex6/exec';
+
 const STATUS_STEPS = [
-    { key: 'confirmed',  label: 'Order Confirmed' },
-    { key: 'processing', label: 'Being Processed' },
-    { key: 'shipped',    label: 'Shipped / On the Way' },
-    { key: 'delivered',  label: 'Delivered' }
+    {key:'confirmed',  icon:'fas fa-check',          label:'Order Confirmed',  desc:'Your order has been received.'},
+    {key:'processing', icon:'fas fa-cog',             label:'Processing',       desc:'We are preparing your order.'},
+    {key:'shipped',    icon:'fas fa-truck',           label:'Shipped via TCS',  desc:'Your order is on its way!'},
+    {key:'delivered',  icon:'fas fa-gift',            label:'Delivered',        desc:'Package delivered successfully!'},
 ];
+const STATUS_ORDER = ['confirmed','processing','shipped','delivered'];
 
-const BADGE_MAP = {
-    confirmed:  ['badge-confirmed',  '✅ Order Confirmed'],
-    processing: ['badge-processing', '⚙️ Processing'],
-    shipped:    ['badge-shipped',    '🚚 Shipped'],
-    delivered:  ['badge-delivered',  '🎉 Delivered'],
-    cancelled:  ['badge-cancelled',  '❌ Cancelled']
-};
+async function trackOrder(){
+    const orderId = document.getElementById('order-input').value.trim().toUpperCase();
+    if(!orderId || orderId.length < 4){ alert('Please enter a valid Order ID.'); return; }
+    const btn = document.getElementById('track-btn');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner-inline"></span> Searching...';
+    const result = document.getElementById('track-result');
+    result.style.display = 'none';
 
-function trackOrder(){
-    const input   = document.getElementById('order-input').value.trim().toUpperCase();
-    const errEl   = document.getElementById('track-error');
-    const resArea = document.getElementById('result-area');
-    errEl.style.display  = 'none';
-    resArea.style.display = 'none';
+    try {
+        const res  = await fetch(SCRIPT_URL + '?order=' + encodeURIComponent(orderId));
+        const data = await res.json();
+        if(data.success && data.order){
+            renderOrder(data.order);
+        } else {
+            result.style.display = 'block';
+            result.innerHTML = `<div class="not-found"><i class="fas fa-search"></i><p>Order <strong>${orderId}</strong> not found.<br>Please check your Order ID and try again.</p></div>`;
+        }
+    } catch(e){
+        result.style.display = 'block';
+        result.innerHTML = `<div class="not-found"><i class="fas fa-wifi"></i><p>Could not connect. Please check your internet and try again.</p></div>`;
+    }
 
-    if(!input){ errEl.textContent = '⚠️ Please enter your Order ID.'; errEl.style.display = 'block'; return; }
-
-    const orders = JSON.parse(localStorage.getItem('nsc_orders') || '{}');
-    const order  = orders[input];
-
-    if(!order){ errEl.textContent = '❌ Order ID not found. Please check and try again.'; errEl.style.display = 'block'; return; }
-
-    renderResult(order);
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-search"></i> Track';
 }
 
-function renderResult(order){
-    document.getElementById('res-id').textContent    = order.orderId;
-    document.getElementById('res-name').textContent  = '👤 ' + order.name + '  |  📞 ' + order.phone;
-    document.getElementById('res-total').textContent = '💰 Total: Rs. ' + order.total;
+function renderOrder(order){
+    const result   = document.getElementById('track-result');
+    const statusIdx= STATUS_ORDER.indexOf(order.status);
+    const isCancelled = order.status === 'cancelled';
 
-    const [cls, label] = BADGE_MAP[order.status] || ['badge-confirmed','Order Confirmed'];
-    document.getElementById('res-badge').innerHTML = `<span class="status-badge ${cls}">${label}</span>`;
+    const statusIconMap = {
+        confirmed:  {cls:'',          icon:'fas fa-check',  text:'Order Confirmed'},
+        processing: {cls:'processing', icon:'fas fa-cog',    text:'Processing'},
+        shipped:    {cls:'shipped',    icon:'fas fa-truck',  text:'Shipped via TCS'},
+        delivered:  {cls:'delivered',  icon:'fas fa-gift',   text:'Delivered!'},
+        cancelled:  {cls:'cancelled',  icon:'fas fa-times',  text:'Cancelled'},
+    };
+    const si = statusIconMap[order.status] || statusIconMap.confirmed;
 
-    // Show TCS number if available
-    const tcsBox = document.getElementById('tcs-box');
-    const tcsNum = document.getElementById('tcs-number');
-    if(order.tcsNumber && order.tcsNumber.trim() !== ''){
-        tcsNum.textContent = order.tcsNumber;
-        tcsBox.style.display = 'flex';
-    } else {
-        tcsBox.style.display = 'none';
-    }
-
-    // Items
-    const itemsEl = document.getElementById('res-items');
-    itemsEl.innerHTML = '';
-    (order.items || []).forEach(item => {
-        const d = document.createElement('div');
-        d.className = 'im-item';
-        d.innerHTML = `<span>${item.name} × ${item.quantity}</span><span>Rs. ${(item.price * item.quantity).toLocaleString()}</span>`;
-        itemsEl.appendChild(d);
-    });
-
-    // Timeline
-    const tl = document.getElementById('res-timeline');
-    tl.innerHTML = '';
-    const currentIdx = STATUS_STEPS.findIndex(s => s.key === order.status);
-
-    if(order.status === 'cancelled'){
-        tl.innerHTML = `<div class="t-step active">
-            <div class="t-dot" style="background:#ff4444;border-color:#ff4444;box-shadow:0 0 10px rgba(255,68,68,0.5)"></div>
-            <div class="t-label" style="color:#ff4444">Order Cancelled</div>
-            <div class="t-time">Please contact us on WhatsApp for help.</div>
+    const timelineHTML = isCancelled ? '' : STATUS_STEPS.map((step, idx) => {
+        const done = idx <= statusIdx;
+        return `<div class="tl-item">
+            <div class="tl-dot-wrap">
+                <div class="tl-dot ${done?'':'inactive'}"></div>
+                ${idx < STATUS_STEPS.length-1 ? '<div class="tl-line"></div>' : ''}
+            </div>
+            <div class="tl-info">
+                <div class="tl-status" style="color:${done?'#fff':'#333'}">${step.label}</div>
+                <div class="tl-time">${done ? step.desc : 'Pending'}</div>
+            </div>
         </div>`;
-    } else {
-        STATUS_STEPS.forEach((step, i) => {
-            const div = document.createElement('div');
-            let cls = 't-step';
-            if(i < currentIdx) cls += ' done';
-            if(i === currentIdx) cls += ' active';
-            div.className = cls;
-            const upd = (order.updates || []).find(u => u.status === step.key);
-            const timeStr = upd ? formatTime(upd.time) : (i <= currentIdx ? 'Completed' : 'Pending');
-            div.innerHTML = `<div class="t-dot"></div>
-                <div class="t-label">${step.label}</div>
-                <div class="t-time">${i <= currentIdx ? timeStr : '—'}</div>`;
-            tl.appendChild(div);
-        });
-    }
+    }).join('');
 
-    document.getElementById('result-area').style.display = 'block';
+    const tcsHTML = order.tcsNumber ? `
+        <div class="tcs-card">
+            <div class="tcs-title"><i class="fas fa-truck"></i> TCS Tracking Number</div>
+            <div class="tcs-num">${order.tcsNumber}</div>
+            <a class="tcs-track-btn" href="https://www.tcsexpress.com/track/${order.tcsNumber}" target="_blank">
+                <i class="fas fa-external-link-alt"></i> Track on TCS Website
+            </a>
+        </div>` : '';
+
+    result.style.display = 'block';
+    result.innerHTML = `
+        <div class="result-card">
+            <div class="rc-id">${order.orderId}</div>
+            <div class="rc-sub">Placed: ${formatTime(order.placedAt)}</div>
+            <div class="status-hero">
+                <div class="status-icon ${si.cls}"><i class="${si.icon}"></i></div>
+                <div class="status-text">
+                    <div class="s-label">Current Status</div>
+                    <div class="s-val">${si.text}</div>
+                </div>
+            </div>
+            ${tcsHTML}
+            <div class="info-grid">
+                <div class="info-item"><div class="lbl">Customer</div><div class="val">${order.name||'—'}</div></div>
+                <div class="info-item"><div class="lbl">Phone</div><div class="val">${order.phone||'—'}</div></div>
+                <div class="info-item" style="grid-column:1/-1"><div class="lbl">Delivery Address</div><div class="val">${order.address||'—'}</div></div>
+                <div class="info-item" style="grid-column:1/-1"><div class="lbl">Items</div><div class="val">${(order.items||[]).map(i=>i.name).join(', ')||'—'}</div></div>
+                <div class="info-item"><div class="lbl">Total</div><div class="val">Rs. ${order.total||'—'}</div></div>
+            </div>
+            ${timelineHTML ? `<div class="timeline"><div class="timeline-title">Order Progress</div>${timelineHTML}</div>` : ''}
+        </div>`;
 }
 
 function formatTime(iso){
-    if(!iso) return '';
+    if(!iso) return '—';
     const d = new Date(iso);
-    return d.toLocaleDateString('en-PK', {day:'numeric',month:'short',year:'numeric'}) + ' ' +
-           d.toLocaleTimeString('en-PK', {hour:'2-digit',minute:'2-digit'});
+    return d.toLocaleDateString('en-PK',{day:'numeric',month:'short',year:'numeric'}) + ' ' +
+           d.toLocaleTimeString('en-PK',{hour:'2-digit',minute:'2-digit'});
 }
 
-window.addEventListener('DOMContentLoaded', () => {
-    const params = new URLSearchParams(window.location.search);
-    const oid = params.get('order');
-    if(oid){ document.getElementById('order-input').value = oid.toUpperCase(); trackOrder(); }
-});
+// Auto-track if order ID in URL
+const params = new URLSearchParams(window.location.search);
+if(params.get('order')){
+    document.getElementById('order-input').value = params.get('order').toUpperCase();
+    trackOrder();
+}
 </script>
 </body>
 </html>
